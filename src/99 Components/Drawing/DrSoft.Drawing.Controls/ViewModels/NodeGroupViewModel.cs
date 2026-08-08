@@ -72,7 +72,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
 
         public IEnumerable<IShape> GetAllShapes()
         {
-            return [Model];//Children.ModelChildren;
+            return new IShape[] { Model };//Children.ModelChildren;
         }
     }
 }

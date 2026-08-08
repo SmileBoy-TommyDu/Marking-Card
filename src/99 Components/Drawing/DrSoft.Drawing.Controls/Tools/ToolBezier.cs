@@ -85,7 +85,7 @@ namespace DrSoft.Drawing.Controls.Tools
 
             if (context.CurrentShape is DrawBezier bezier)
             {
-                bezier.Points = [.. _anchors];
+                bezier.Points = new List<SKPoint>(_anchors);
                 CommitBezierPosition(bezier);
                 _anchors.Clear();
 
@@ -111,7 +111,7 @@ namespace DrSoft.Drawing.Controls.Tools
             }
             else if (context.CurrentShape is DrawBezier bezier)
             {
-                bezier.Points = [.. _anchors];
+                bezier.Points = new List<SKPoint>(_anchors);
                 context.MarkDirty(new SKRect(point.X - 1, point.Y - 1, point.X + 1, point.Y + 1));
             }
         }

@@ -47,7 +47,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
 
         public SerialNumberGenerator SerialNumber = new();
 
-        public ObservableCollection<LayerViewModel> LayerViewModels { get; } = [];
+        public ObservableCollection<LayerViewModel> LayerViewModels { get; } = new ObservableCollection<LayerViewModel>();
 
         // 绑定到 UI 的图层数量
         public int LayerCount => LayerViewModels.Count;
@@ -128,7 +128,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
         private void AddLayer()
         {
             var newLayer = new LayerViewModel(new DrawingLayer { Name = $"L{SerialNumber.NextId()}", SortId = LayerViewModels.Count });
-            _canvas.CommandHistory.Execute(new CommandAddLayer(LayerViewModels, [newLayer]));
+            _canvas.CommandHistory.Execute(new CommandAddLayer(LayerViewModels, new LayerViewModel[] { newLayer }));
 
             // 清除所有选中，切换选中到新增图层
             ClearAllSelection();
@@ -143,9 +143,9 @@ namespace DrSoft.Drawing.Controls.ViewModels
         private void RemoveLayer()
         {
             if (ActiveLayer == null) return;
-            if (!CanRemoveLayer([ActiveLayer])) return;
+            if (!CanRemoveLayer(new List<LayerViewModel> { ActiveLayer })) return;
 
-            var command = new CommandRemoveLayer(LayerViewModels, [ActiveLayer]);
+            var command = new CommandRemoveLayer(LayerViewModels, new LayerViewModel[] { ActiveLayer });
             _canvas.CommandHistory.Execute(command);
             OnLayerChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -613,7 +613,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
 
             ParallelExecutor.ForEach(selectedShapes, shape =>
             {
-                shape?.IsSelected = true;
+                if (shape != null) shape.IsSelected = true;
             });
 
             bool selectionChanged = _canvas.Context.CompareSelectedShapes(selectedShapes);

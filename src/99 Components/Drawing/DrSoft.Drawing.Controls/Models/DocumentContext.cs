@@ -429,7 +429,7 @@ public sealed class DocumentContext
         set => InteractionState.SeparateNodeDistance = value;
     }
 
-    private IReadOnlyList<IShape> _old_selectedShapes = [];
+    private IReadOnlyList<IShape> _old_selectedShapes = new List<IShape>();
 
     /// <summary>
     /// 分离节点模式下被选中节点的世界坐标（由 ToolSelect 设置，由 SelectionRenderer 读取）。
@@ -845,7 +845,7 @@ public sealed class DocumentContext
     internal SelectionCapabilities BuildCapabilities()
     {
         IReadOnlyDictionary<ShapeType, int> target = ActiveCanvas?.SelectedCountByType
-            .ToDictionary(kvp => ShapeTypeMapper.Map(kvp.Key), kvp => kvp.Value) ?? [];
+            .ToDictionary(kvp => ShapeTypeMapper.Map(kvp.Key), kvp => kvp.Value) ?? new Dictionary<ShapeType, int>();
 
         IReadOnlyList<IShape> selectedShapes = ActiveCanvas is { } canvas
             ? canvas.Selection

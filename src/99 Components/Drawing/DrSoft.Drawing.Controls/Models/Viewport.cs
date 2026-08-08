@@ -59,7 +59,8 @@ public class Viewport:IViewport
                     // 确保缩放比例在有效范围内
                     _scale = Math.Clamp(_scale, 0.05f, 500.0f);
                     //保存初始值比例
-                    DocumentContext.Instance.ActiveCanvas?.InitZoomPercent = _scale > 0?_scale:1;
+                    if (DocumentContext.Instance.ActiveCanvas != null)
+                        DocumentContext.Instance.ActiveCanvas.InitZoomPercent = _scale > 0 ? _scale : 1;
                 }
             }
         }
@@ -138,7 +139,8 @@ public class Viewport:IViewport
             // 确保缩放比例在有效范围内
             _scale = Math.Clamp(_scale, 0.05f, 500.0f);
             //保存初始值比例
-            DocumentContext.Instance.ActiveCanvas?.InitZoomPercent = _scale > 0 ? _scale : 1;
+            if (DocumentContext.Instance.ActiveCanvas != null)
+                DocumentContext.Instance.ActiveCanvas.InitZoomPercent = _scale > 0 ? _scale : 1;
         }
     }
 

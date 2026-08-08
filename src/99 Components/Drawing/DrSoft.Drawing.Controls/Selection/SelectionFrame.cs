@@ -55,7 +55,7 @@ internal static class SelectionFrameFactory
             geometry.Bounds,
             geometry.Center,
             ToTypedHandles(geometry.ControlPoints, hideEdgeMidpoints),
-            []);
+            Array.Empty<SelectionGlyphHandle>());
     }
 
     public static SelectionFrame CreateSingleAabbResizeFrame(
@@ -127,7 +127,7 @@ internal static class SelectionFrameFactory
     {
         if (corners == null || corners.Length == 0)
         {
-            return corners ?? [];
+            return corners ?? Array.Empty<SKPoint>();
         }
 
         float rad = angleDegrees * MathF.PI / 180f;
@@ -207,7 +207,7 @@ internal static class SelectionFrameFactory
             aabb,
             new SKPoint(aabb.MidX, aabb.MidY),
             FilterTypedHandles(typedHandles, hideEdgeMidpoints),
-            []);
+            Array.Empty<SelectionGlyphHandle>());
     }
 
     private static SelectionFrame CreateAabbRotateSkewFrame(
@@ -234,26 +234,26 @@ internal static class SelectionFrameFactory
             BuildAxisAlignedCorners(aabb),
             aabb,
             center,
-            [],
+            Array.Empty<SelectionTypedHandle>(),
             FilterGlyphHandles(glyphHandles, hideEdgeMidpoints));
     }
 
     private static SKPoint[] BuildAxisAlignedCorners(SKRect bounds)
     {
-        return
-        [
+        return new SKPoint[]
+        {
             new SKPoint(bounds.Left, bounds.Top),
             new SKPoint(bounds.Right, bounds.Top),
             new SKPoint(bounds.Right, bounds.Bottom),
             new SKPoint(bounds.Left, bounds.Bottom),
-        ];
+        };
     }
 
     private static SelectionTypedHandle[] ToTypedHandles(SKPoint[] controlPoints, bool hideEdgeMidpoints)
     {
         if (controlPoints.Length < 8)
         {
-            return [];
+            return Array.Empty<SelectionTypedHandle>();
         }
 
         var typedHandles = new[]
@@ -297,6 +297,6 @@ internal static class SelectionFrameFactory
 
     private static SelectionFrame Empty(SelectionFrameKind kind)
     {
-        return new SelectionFrame(kind, [], SKRect.Empty, SKPoint.Empty, [], []);
+        return new SelectionFrame(kind, Array.Empty<SKPoint>(), SKRect.Empty, SKPoint.Empty, Array.Empty<SelectionTypedHandle>(), Array.Empty<SelectionGlyphHandle>());
     }
 }

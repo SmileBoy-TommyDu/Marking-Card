@@ -721,10 +721,11 @@ namespace DrSoft.Drawing.Controls.DrawShapes
             string description)
         {
             return new CompositeCommand(description,
-            [
+            new List<IDrawingCommand>
+            {
                 new CommandRemove(layerViewModels, selectedShapes, suppressSelectionPublish: true),
                 new CommandAdd(resultPreparation.TargetLayer, resultPreparation.ResultShapes, suppressSelectionPublish: true),
-            ]);
+            });
         }
 
         internal static void ExecuteSelectionReplacement(
@@ -778,10 +779,11 @@ namespace DrSoft.Drawing.Controls.DrawShapes
             string description)
         {
             return new CompositeCommand(description,
-            [
+            new List<IDrawingCommand>
+            {
                 new CommandRemove(layerViewModels, selectedShapes, suppressSelectionPublish: true),
-            new CommandAdd(targetLayer, [containerShape], suppressSelectionPublish: true),
-        ]);
+            new CommandAdd(targetLayer, new IShape[] { containerShape }, suppressSelectionPublish: true),
+        });
         }
 
         internal static void ExecuteContainerReplacement(

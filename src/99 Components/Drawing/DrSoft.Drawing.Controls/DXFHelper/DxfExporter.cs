@@ -135,7 +135,7 @@ namespace DrSoft.Drawing.Controls.DXFHelper
 
             foreach (var layerDto in layerDtos)
             {
-                List<IShape> AllShape = [];
+                List<IShape> AllShape = new List<IShape>();
                 if (layerDto.Shapes == null || layerDto.Shapes.Count() == 0)
                     continue;
 

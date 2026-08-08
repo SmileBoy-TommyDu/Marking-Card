@@ -14,10 +14,11 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         public bool IsAnchorY { get; set; }
         // IDotShapeData 无额外属性，CenterX/CenterY/ChildShapes 由基类处理
         // 点的半径（直径 = Pen.StrokeWidth * 2）
+        private float? _radius;
         public float Radius
         {
-            get => 2 / (2 * (DocumentContext.Instance.ActiveCanvas?.Viewport?.Scale ?? 1));
-            set;
+            get => _radius ?? 2 / (2 * (DocumentContext.Instance.ActiveCanvas?.Viewport?.Scale ?? 1));
+            set => _radius = value;
         }
 
         public override List<Point2D> OutlinePoints { get => Points.Select(it => new Point2D(it.X, it.Y)).ToList(); set => throw new NotImplementedException(); }
@@ -41,10 +42,9 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         public DrawDot()
         {
             this.UId = UniqueIdGenerator.NextId();
-            Points = [];
+            Points = new List<SKPoint>();
             Type = ShapeType.Point;
             Pen.Style = SKPaintStyle.Fill;
-            Radius = 1.0f; // 默认半径
         }
 
         public DrawDot(SKPoint point, bool isDxf = false) : this()
@@ -55,13 +55,13 @@ namespace DrSoft.Drawing.Controls.DrawShapes
                 return;
             }
 
-            Points = [point];
+            Points = new List<SKPoint> { point };
             UpdateSetProperty(Points);
         }
 
         private void InitializeFromDxfPoints(SKPoint point)
         {
-            Points = [point];
+            Points = new List<SKPoint> { point };
             UpdateSetProperty(Points);
             RestoreTransformCommandSnapshot(new TransformCommandSnapshot(
                 SKMatrix.CreateTranslation(point.X, point.Y),
@@ -198,7 +198,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
             float stepY,
             Func<List<List<SKPoint>>, SKRect, List<List<SKPoint>>>? clipContours = null)
         {
-            return [this];
+            return new List<IShape> { this };
         }
     }
 }

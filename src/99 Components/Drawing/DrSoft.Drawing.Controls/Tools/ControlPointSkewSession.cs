@@ -8,7 +8,6 @@ using DrSoft.Drawing.Controls.Commands;
 using DrSoft.Drawing.Controls.DrawShapes;
 using DrSoft.Drawing.Controls.Models;
 using DrSoft.Drawing.Model;
-using OpenTK.Graphics.OpenGL;
 using SkiaSharp;
 using System.Windows.Input;
 using Cursor = System.Windows.Input.Cursor;

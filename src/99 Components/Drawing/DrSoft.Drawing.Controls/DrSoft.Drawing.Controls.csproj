@@ -168,6 +168,8 @@
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
 	  <PackageReference Include="Riok.Mapperly" Version="4.3.1" PrivateAssets="all" />
 	  <PackageReference Include="Rougamo.Fody" Version="5.0.2" />
+	  <PackageReference Include="SkiaSharp.Views" Version="3.119.2" />
+	  <PackageReference Include="SkiaSharp.Views.Desktop.Common" Version="3.119.2" />
 	  <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.2" />
 	  <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
 	  <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.6" />

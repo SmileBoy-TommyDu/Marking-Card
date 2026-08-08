@@ -139,7 +139,7 @@ namespace DrSoft.Drawing.Controls.Service
                 }
                 if (name != null) RenameCanvas(name);
                 CanvasSnapshotDto snapShot = GetActiveSnapshot();
-                return [snapShot];
+                return new CanvasSnapshotDto[] { snapShot };
 
             }
             catch (Exception ex)

@@ -1063,7 +1063,7 @@ namespace DrSoft.Drawing.Rendering
                 StrokeCap = SKStrokeCap.Round,
                 StrokeJoin = SKStrokeJoin.Round,
                 Color = new SKColor(0x80, 0x80, 0x80, 0x80),
-                PathEffect = SKPathEffect.CreateDash([2f, 1f], 0f),
+                PathEffect = SKPathEffect.CreateDash(new float[] { 2f, 1f }, 0f),
             };
         }
 

@@ -102,7 +102,7 @@ namespace DrSoft.Drawing.Controls.Rendering
 
             // 应用变换矩阵（叠加到当前变换）
             var matrix = polygon.GetTransformMatrix();
-            canvas.Concat(ref matrix);
+            canvas.Concat(matrix);
 
             var lines = hatchable.HatchPattern.HatchLineObjects;
             SKMatrix totalMatrix = canvas.TotalMatrix;
@@ -162,7 +162,7 @@ namespace DrSoft.Drawing.Controls.Rendering
 
             // 应用变换矩阵（叠加到当前变换）
             var matrix = polygon.GetTransformMatrix();
-            canvas.Concat(ref matrix);
+            canvas.Concat(matrix);
 
             // 根据视口缩放比例调整线宽，保持视觉上的恒定线宽
             var adjustedWidth = polygon.Pen.StrokeWidth * 6.83f / vp.Scale;

@@ -487,7 +487,7 @@ internal sealed class PathNodeEditSession : IToolSelectSession
                 return true;
             }
 
-            SetSelectedPathNodes([(combo, child, childIdx)]);
+            SetSelectedPathNodes(new[] { (combo, child, childIdx) });
             _context.ReportStatus($"选中节点 [{child.GetType().Name}][{childIdx}]");
             return true;
         }

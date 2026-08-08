@@ -1028,7 +1028,7 @@ namespace DrSoft.Drawing.Controls.Models
             {
                 this.ExecuteSelectionReplacement(
                     hatchs,
-                    new ActiveLayerResultPreparation(targetLayer, [group]),
+                    new ActiveLayerResultPreparation(targetLayer, new List<IShape> { group }),
                     "打散填满物件",
                     requestRedraw: true);
             }
@@ -1097,7 +1097,7 @@ namespace DrSoft.Drawing.Controls.Models
                 cmds.Add(new CommandGroupInContainer(layer, commonParent, Selection.ToList(), group, minIndex, "群组"));
                 CommandManager.Execute(new CompositeCommand("群组", cmds));
 
-                SetSelectedShapes([group]);
+                SetSelectedShapes(new IShape[] { group });
                 return GraphicResult.Ok();
             }
 
@@ -1121,11 +1121,11 @@ namespace DrSoft.Drawing.Controls.Models
                 .CreateContainerReplacementCommand(Selection, targetLayer, topGroup, "群组")
                 is CompositeCommand cc
                     ? cc.Commands
-                    : [LayerViewModels.CreateContainerReplacementCommand(Selection, targetLayer, topGroup, "群组")]);
+                    : new IDrawingCommand[] { LayerViewModels.CreateContainerReplacementCommand(Selection, targetLayer, topGroup, "群组") });
 
             CommandManager.Execute(new CompositeCommand("群组", topCmds));
 
-            SetSelectedShapes([topGroup]);
+            SetSelectedShapes(new IShape[] { topGroup });
             return GraphicResult.Ok();
         }
 
@@ -1291,7 +1291,7 @@ namespace DrSoft.Drawing.Controls.Models
                 cmds.Add(new CommandGroupInContainer(layer, commonParent, Selection.ToList(), combination, minIndex, "组合"));
                 CommandManager.Execute(new CompositeCommand("组合", cmds));
 
-                SetSelectedShapes([combination]);
+                SetSelectedShapes(new IShape[] { combination });
                 return GraphicResult.Ok();
             }
 
@@ -1315,11 +1315,11 @@ namespace DrSoft.Drawing.Controls.Models
                 .CreateContainerReplacementCommand(Selection, targetLayer, topCombination, "组合")
                 is CompositeCommand cc
                     ? cc.Commands
-                    : [LayerViewModels.CreateContainerReplacementCommand(Selection, targetLayer, topCombination, "组合")]);
+                    : new IDrawingCommand[] { LayerViewModels.CreateContainerReplacementCommand(Selection, targetLayer, topCombination, "组合") });
 
             CommandManager.Execute(new CompositeCommand("组合", cmds2));
 
-            SetSelectedShapes([topCombination]);
+            SetSelectedShapes(new IShape[] { topCombination });
             return GraphicResult.Ok();
         }
 
@@ -1704,7 +1704,7 @@ namespace DrSoft.Drawing.Controls.Models
                         CommandManager.Execute(new CommandGroupInContainer(
                             layer, commonParent, selectedShapes, newShape, minIndex, "向量合并"));
 
-                        SetSelectedShapes([newShape]);
+                        SetSelectedShapes(new IShape[] { newShape });
                         DocumentContext.Instance?.RequestRedraw();
                         return GraphicResult.Ok();
                     }
@@ -1713,7 +1713,7 @@ namespace DrSoft.Drawing.Controls.Models
                 // 常规场景：选中的图形不在同一个父群组内，在图层顶层替换
                 var resultPreparation = ((DrawingCanvas)canvas).ActiveLayer
                     .CreateActiveLayerResultPreparation(
-                        [newShape],
+                        new List<IShape> { newShape },
                         "向量合并后无法生成有效图形");
                 if (!resultPreparation.IsSuccess)
                     return GraphicResult.Fail(resultPreparation.ErrorCode, resultPreparation.Message);
@@ -1790,7 +1790,7 @@ namespace DrSoft.Drawing.Controls.Models
                         CommandManager.Execute(new CommandGroupInContainer(
                             layer, commonParent, selectedShapes, newShape, minIndex, "保留主物件"));
 
-                        SetSelectedShapes([newShape]);
+                        SetSelectedShapes(new IShape[] { newShape });
                         DocumentContext.Instance?.RequestRedraw();
                         return GraphicResult.Ok();
                     }
@@ -1799,7 +1799,7 @@ namespace DrSoft.Drawing.Controls.Models
                 // 常规场景：选中的图形不在同一个父群组内，在图层顶层替换
                 var resultPreparation = ((DrawingCanvas)canvas).ActiveLayer
                     .CreateActiveLayerResultPreparation(
-                        [newShape],
+                        new List<IShape> { newShape },
                         "向量合并后无法生成有效图形");
                 if (!resultPreparation.IsSuccess)
                     return GraphicResult.Fail(resultPreparation.ErrorCode, resultPreparation.Message);
@@ -2656,7 +2656,7 @@ namespace DrSoft.Drawing.Controls.Models
                 preparation.Sources.Cast<IShape>().ToList(),
                 new ActiveLayerResultPreparation(
                     resultPreparation.Value!.TargetLayer,
-                    [group]),
+                    new List<IShape> { group }),
                 "转换为点/圆",
                 requestRedraw: true);
             return GraphicResult.Ok();

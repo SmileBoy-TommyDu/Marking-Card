@@ -133,7 +133,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
             var removedFromNodes = RemoveNodeRecursive(children, shape);
             if (removedFromNodes || layerModel.AllShapesInternal.Any(existing => ReferenceEquals(existing, shape) || existing.UId == shape.UId))
             {
-                layerModel.RemoveShapes([shape]);
+                layerModel.RemoveShapes(new IShape[] { shape });
             }
         }
 
@@ -177,7 +177,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
             var removedFromNodes = RemoveNodeRecursive(children, shape);
             if (removedFromNodes || layerModel.AllShapesInternal.Any(existing => ReferenceEquals(existing, shape) || existing.UId == shape.UId))
             {
-                layerModel.RemoveShapes([shape]);
+                layerModel.RemoveShapes(new IShape[] { shape });
                 // 不在这里清除 HatchParamInfo：
                 // 1. BreakFill 已在自身逻辑中显式清除；
                 // 2. 撤销/重做依赖 HatchParamInfo 保持原值，

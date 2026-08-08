@@ -285,8 +285,16 @@ namespace DrSoft.MarkCard.UI.ViewModes
                     CenterX = dto.EditingObject.OBBInfo.Center.X;
                     CenterY = dto.EditingObject.OBBInfo.Center.Y;
 
-                    Width = GetDistance(dto.EditingObject.OBBInfo.Corners[0], dto.EditingObject.OBBInfo.Corners[1]);
-                    Height = GetDistance(dto.EditingObject.OBBInfo.Corners[0], dto.EditingObject.OBBInfo.Corners[3]);
+                    if (dto.EditingObject.OBBInfo.Corners.Length >= 4)
+                    {
+                        Width = GetDistance(dto.EditingObject.OBBInfo.Corners[0], dto.EditingObject.OBBInfo.Corners[1]);
+                        Height = GetDistance(dto.EditingObject.OBBInfo.Corners[0], dto.EditingObject.OBBInfo.Corners[3]);
+                    }
+                    else
+                    {
+                        Width = dto.DrawObjectDtoData.Width;
+                        Height = dto.DrawObjectDtoData.Height;
+                    }
                 }
                 else
                 {

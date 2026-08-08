@@ -93,13 +93,13 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         {
             var bounds = GetCommittedAabbBounds();
 
-            SKPoint[] corners =
-            [
+            SKPoint[] corners = new SKPoint[]
+            {
                 new(bounds.Left, bounds.Top),     // 左上
                 new(bounds.Right, bounds.Top),    // 右上
                 new(bounds.Right, bounds.Bottom), // 右下
                 new(bounds.Left, bounds.Bottom)   // 左下
-            ];
+            };
 
 
             var center = new SKPoint(bounds.MidX, bounds.MidY);

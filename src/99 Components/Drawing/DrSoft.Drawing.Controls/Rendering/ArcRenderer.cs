@@ -120,7 +120,7 @@ namespace DrSoft.Drawing.Controls.Rendering
 
             // 应用变换矩阵（叠加到当前变换）
             var matrix = arc.GetTransformMatrix();
-            canvas.Concat(ref matrix);
+            canvas.Concat(matrix);
 
             var lines = hatchable.HatchPattern.HatchLineObjects;
             SKMatrix totalMatrix = canvas.TotalMatrix;

@@ -2745,7 +2745,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
 
             // 提交后按子图形真实几何重新回算组合边界，避免多选缩放结束后
             // 组合仍停留在预览框尺寸，导致后续合并外框偶发包不住全部子图形。
-            UpdateSetProperty([]);
+            UpdateSetProperty(new List<SKPoint>());
         }
 
         /// <summary>

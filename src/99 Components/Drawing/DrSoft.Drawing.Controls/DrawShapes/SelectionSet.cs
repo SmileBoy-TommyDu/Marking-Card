@@ -10,7 +10,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
     /// </summary>
     public sealed class SelectionSet : ISelectionSet
     {
-        private List<IShape> _items = [];
+        private List<IShape> _items = new List<IShape>();
 
         public int Count => _items.Count;
 
@@ -19,7 +19,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         ISelectionSet ISelectionSet.Transformables => new SelectionSet { _items = _items.Where(x => x.CanTransform).ToList() };
         internal void Reset(IEnumerable<IShape>? shapes)
         {
-            _items = shapes?.ToList() ?? [];
+            _items = shapes?.ToList() ?? new List<IShape>();
         }
 
         public void Translate(float dx, float dy, bool commit = false)

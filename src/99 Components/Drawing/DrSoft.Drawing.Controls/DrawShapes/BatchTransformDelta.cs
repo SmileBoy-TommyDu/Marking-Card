@@ -345,7 +345,7 @@ internal static class BatchTransformHelper
         {
             hatch.SuppressChildPropagation = false;
         }
-        hatch.UpdateSetProperty([]);
+        hatch.UpdateSetProperty(new List<SKPoint>());
     }
 
     public static SKPoint TransformScaledPoint(

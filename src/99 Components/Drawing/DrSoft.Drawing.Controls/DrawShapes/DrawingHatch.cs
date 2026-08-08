@@ -51,7 +51,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         /// <summary>
         /// 目标对象
         /// </summary>
-        public List<IShape> Boundaries { get; set; } = [];
+        public List<IShape> Boundaries { get; set; } = new List<IShape>();
 
         /// <summary>
         /// 填充参数
@@ -119,7 +119,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         }
         public override IEnumerable<IShape> Flatten()
         {
-            return [this];
+            return new IShape[] { this };
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
                 {
                     fillObj.SetHatchParam(hatchParam);
                     fillObj.InvalidateHatch(rebuildImmediately: true);
-                    foreach (var hatchObject in fillObj.HatchPattern?.HatchObjects ?? [])
+                    foreach (var hatchObject in fillObj.HatchPattern?.HatchObjects ?? new List<DrawObject>())
                     {
                         Children.Add(hatchObject);
                         if (hatchObject is DrawObject hatchChild)
@@ -242,7 +242,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
                 .SelectMany(shape =>
                 {
                     shape.SetHatchParam(hatchParam);
-                    return shape.HatchPattern?.HatchObjects ?? [];
+                    return shape.HatchPattern?.HatchObjects ?? new List<DrawObject>();
                 })
                 .Cast<IShape>()
                 .ToList();
@@ -458,7 +458,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
                 shapes.AddRange(hatch.Children);
             }
             var group = new DrawingGroup(shapes);
-            group.UpdateSetProperty([]);
+            group.UpdateSetProperty(new List<SKPoint>());
             return group;
         }
 
@@ -519,7 +519,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
 
                 if (drawObject is DrawDot dot)
                 {
-                    sources.Add((dot, [dot.Points]));
+                    sources.Add((dot, new List<List<SKPoint>> { dot.Points }));
                     continue;
                 }
 

@@ -39,7 +39,7 @@ internal static class SelectionSkewConstraintResolver
             return SelectionResizeConstraint.None;
         }
 
-        return ResolveForSelection([shape]);
+        return ResolveForSelection(new[] { shape });
     }
 
     /// <summary>

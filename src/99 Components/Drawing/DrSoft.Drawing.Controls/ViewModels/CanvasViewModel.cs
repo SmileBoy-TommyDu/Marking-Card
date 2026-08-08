@@ -236,7 +236,7 @@ public partial class CanvasViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private ObservableCollection<DrawingCanvas> _canvasList = new ObservableCollection<DrawingCanvas>();
     internal const int MaxCanvasNameLength = 15;
-    private static readonly char[] InvalidCanvasNameChars = [':', '\\', '/', '?', '*', '[', ']'];
+    private static readonly char[] InvalidCanvasNameChars = new char[] { ':', '\\', '/', '?', '*', '[', ']' };
 
     public bool GridVisible
     {

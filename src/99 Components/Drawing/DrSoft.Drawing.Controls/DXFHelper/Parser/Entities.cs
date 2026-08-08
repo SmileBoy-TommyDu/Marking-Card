@@ -140,7 +140,7 @@ namespace DrSoft.Drawing.Controls.DXFHelper.Parser
 
     public sealed class DxfRectangle : DxfEntity
     {
-        public List<(double X, double Y)> Points = [];   // 4个顶点
+        public List<(double X, double Y)> Points = new List<(double X, double Y)>();   // 4个顶点
         public List<double>? Concor; // 圆角半径
         public List<double>? Chamfer; // 倒角半径
 

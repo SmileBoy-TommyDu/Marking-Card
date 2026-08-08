@@ -995,7 +995,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
 
         internal override List<IShape> CreateCurveChildren()
         {
-            return [this];
+            return new List<IShape> { this };
         }
 
         #region 填充

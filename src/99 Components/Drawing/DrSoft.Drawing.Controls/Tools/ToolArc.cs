@@ -180,7 +180,7 @@ namespace DrSoft.Drawing.Controls.Tools
                 arc.PreviewLineEndPoint = null;
                 arc.PreviewLineEndPoint2 = null;
 
-                arc.UpdateSetProperty([new(_p1.Value.X, _p1.Value.Y), new(_p2.Value.X, _p2.Value.Y), new(_p3.Value.X, _p3.Value.Y)]);
+                arc.UpdateSetProperty(new List<SKPoint> { new(_p1.Value.X, _p1.Value.Y), new(_p2.Value.X, _p2.Value.Y), new(_p3.Value.X, _p3.Value.Y) });
 
 
                 var circ = ArcMath.Circumcircle(_p1.Value, _p2.Value, _p3.Value);

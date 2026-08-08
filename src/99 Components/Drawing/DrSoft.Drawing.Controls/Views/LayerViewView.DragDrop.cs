@@ -35,7 +35,7 @@ namespace DrSoft.Drawing.Controls.Views
         private int? _currentNodeDropSlotIndex;
         private int? _currentNodeDropContainerId;
         private INodeViewModel? _currentNodeDropContainer;
-        private readonly Dictionary<int, (double Top, double Height)> _layerDragBaseGeometries = [];
+        private readonly Dictionary<int, (double Top, double Height)> _layerDragBaseGeometries = new Dictionary<int, (double Top, double Height)>();
 
         private DropIndicatorAdorner? _currentAdorner;
         private AdornerLayer? _adornerLayer;

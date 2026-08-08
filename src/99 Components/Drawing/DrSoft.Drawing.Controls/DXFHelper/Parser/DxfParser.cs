@@ -1,5 +1,4 @@
 using DrSoft.Drawing.DTO;
-using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -399,15 +398,17 @@ namespace DrSoft.Drawing.Controls.DXFHelper.Parser
                             case 20:
                                 if (curLwp!.Verts.Count > 0)
                                 {
-                                    ref var v = ref CollectionsMarshal.AsSpan(curLwp.Verts)[curLwp.Verts.Count - 1];
-                                    v.Y = GroupReader.ToDouble(val);
+                                    var v20 = curLwp.Verts[curLwp.Verts.Count - 1];
+                                    v20.Y = GroupReader.ToDouble(val);
+                                    curLwp.Verts[curLwp.Verts.Count - 1] = v20;
                                 }
                                 break;
                             case 42:
                                 if (curLwp!.Verts.Count > 0)
                                 {
-                                    ref var v = ref CollectionsMarshal.AsSpan(curLwp.Verts)[curLwp.Verts.Count - 1];
-                                    v.Bulge = GroupReader.ToDouble(val);
+                                    var v42 = curLwp.Verts[curLwp.Verts.Count - 1];
+                                    v42.Bulge = GroupReader.ToDouble(val);
+                                    curLwp.Verts[curLwp.Verts.Count - 1] = v42;
                                 }
                                 break;
                             case -3:
@@ -446,16 +447,18 @@ namespace DrSoft.Drawing.Controls.DXFHelper.Parser
                     case Phase.Vertex:
                         if (curLwp!.Verts.Count > 0)
                         {
-                            ref var v = ref CollectionsMarshal.AsSpan(curLwp.Verts)[curLwp.Verts.Count - 1];
+                            int lastIdx = curLwp.Verts.Count - 1;
+                            var vVert = curLwp.Verts[lastIdx];
                             switch (code)
                             {
                                 case 8:
                                     // VERTEX 的 layer（通常与 POLYLINE 同，可忽略）
                                     break;
-                                case 10: v.X = GroupReader.ToDouble(val); break;
-                                case 20: v.Y = GroupReader.ToDouble(val); break;
-                                case 42: v.Bulge = GroupReader.ToDouble(val); break;
+                                case 10: vVert.X = GroupReader.ToDouble(val); break;
+                                case 20: vVert.Y = GroupReader.ToDouble(val); break;
+                                case 42: vVert.Bulge = GroupReader.ToDouble(val); break;
                             }
+                            curLwp.Verts[lastIdx] = vVert;
                         }
                         break;
 

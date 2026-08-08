@@ -39,7 +39,7 @@ namespace DrSoft.Drawing.Controls.Rendering
             canvas.Save();
 
             var matrix = rectangle.GetTransformMatrix();
-            canvas.Concat(ref matrix);
+            canvas.Concat(matrix);
 
             var shader = GetOrCreateShader(rectangle, lines, viewportScale);
             if (shader == null) return;

@@ -73,7 +73,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         public DrawPolyLines() : base()
         {
             UId = UniqueIdGenerator.NextId();
-            Points = [];
+            Points = new List<SKPoint>();
             Type = ShapeType.PolyLine;
         }
 

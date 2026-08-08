@@ -27,7 +27,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
         // 直接使用图形接口定义
         public IShape Model { get; }
 
-        public ObservableCollection<INodeViewModel> Children { get; } = [];
+        public ObservableCollection<INodeViewModel> Children { get; } = new ObservableCollection<INodeViewModel>();
 
         // INodeViewModel 显式实现
         IList<INodeViewModel> INodeViewModel.Children => Children;
@@ -78,7 +78,7 @@ namespace DrSoft.Drawing.Controls.ViewModels
 
         public IEnumerable<IShape> GetAllShapes()
         {
-            return [Model];
+            return new IShape[] { Model };
         }
     }
 }

@@ -230,7 +230,7 @@ namespace DrSoft.Drawing.Controls.Models
                 foreach (var s in selected)
                     s.IsSelected = false; // setter 会自动 UnregisterSelected + OnShapeDeselected
             }
-            UpdateSelectedShapes([], publishSelectionChanged: true, publishCanvasSelectionChange: true);
+            UpdateSelectedShapes(new List<IShape>(), publishSelectionChanged: true, publishCanvasSelectionChange: true);
             return true;
         }
 
@@ -254,7 +254,7 @@ namespace DrSoft.Drawing.Controls.Models
             List<IShape> selected;
             if (shapes == null)
             {
-                selected = [];
+                selected = new List<IShape>();
             }
             else
             {
@@ -421,7 +421,7 @@ namespace DrSoft.Drawing.Controls.Models
             }
 
             //var list = new List<DrawObject>();
-            _visibleDrawObjectsCache = [];
+            _visibleDrawObjectsCache = new List<DrawObject>();
             foreach (var layer in Layers.Where(l => l.IsVisible))
             {
                 _visibleDrawObjectsCache.AddRange(layer.Shapes.AsParallel().SelectMany(s => s.Flatten()).OfType<DrawObject>());
@@ -1031,7 +1031,7 @@ namespace DrSoft.Drawing.Controls.Models
             }
 
             // 清空选中状态
-            _selection.Reset([]);
+            _selection.Reset(new List<IShape>());
             _selectedCountByType.Clear();
             LastSelectedShape = null;
 

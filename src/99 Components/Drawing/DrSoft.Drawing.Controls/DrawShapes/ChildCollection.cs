@@ -24,7 +24,7 @@ namespace DrSoft.Drawing.Controls.DrawShapes
         /// <param name="isPropagationSuppressed">检查父容器是否正在抑制子级传播（对应 _suppressChildPropagation）</param>
         public ChildCollection(Action invalidateParentCaches, Func<bool>? isPropagationSuppressed = null)
         {
-            _items = [];
+            _items = new List<IShape>();
             _invalidateParentCaches = invalidateParentCaches;
             _isPropagationSuppressed = isPropagationSuppressed ?? (() => false);
         }

@@ -155,13 +155,13 @@ internal static class SelectionGeometryBuilder
     {
         float visualTop = Math.Max(localBounds.Top, localBounds.Bottom);
         float visualBottom = Math.Min(localBounds.Top, localBounds.Bottom);
-        return
-        [
+        return new SKPoint[]
+        {
             matrix.MapPoint(new SKPoint(localBounds.Left, visualTop)),
             matrix.MapPoint(new SKPoint(localBounds.Right, visualTop)),
             matrix.MapPoint(new SKPoint(localBounds.Right, visualBottom)),
             matrix.MapPoint(new SKPoint(localBounds.Left, visualBottom))
-        ];
+        };
     }
 
     private static bool TryGetContainerPathBounds(DrawObject drawObject, out SKRect localBounds)
