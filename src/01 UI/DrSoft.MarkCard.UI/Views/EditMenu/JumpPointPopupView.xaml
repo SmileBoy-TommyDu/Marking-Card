@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.EditMenu.JumpPointPopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views.EditMenu"
+              xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             mc:Ignorable="d" 
+            >
+   
+        <Grid VerticalAlignment="Top" >
+           
+ 
+            <Grid Margin="8 8 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+               
+       
+          
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="长度" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+            <uc:NumericUpDownControl Grid.Column="1" Width="120" Value="{Binding JumpSize, UpdateSourceTrigger=PropertyChanged}" Title="" Margin="0 0 0 0" MinValue="0" Unit="mm"/>
+            </Grid>
+        </Grid>
+
+</UserControl>

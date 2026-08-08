@@ -1,0 +1,306 @@
+<Window x:Class="DrSoft.MarkCard.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrSoft.MarkCard.UI"
+        xmlns:docking="clr-namespace:DrSoft.Docking;assembly=DrSoft.Docking"
+        xmlns:controls="clr-namespace:DrSoft.MarkCard.UI.Views"
+        xmlns:usercontrols="clr-namespace:DrSoft.MarkCard.UI.UserControls"
+        xmlns:viewmodes="clr-namespace:DrSoft.MarkCard.UI.ViewModes"
+        d:DataContext="{d:DesignInstance Type=viewmodes:MainViewModel}"
+        mc:Ignorable="d"
+        Title="DR MarkCard"
+        Width="1280"    
+        Height="1024" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        Background="{StaticResource BackgroundBrush}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome 
+            CaptionHeight="0" 
+            ResizeBorderThickness="5" 
+            GlassFrameThickness="0" 
+            CornerRadius="0" 
+            UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
+
+    <!-- 命令绑定 -->
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}"
+                        Executed="CloseWindow_Executed" />
+        <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}"
+                        Executed="MinimizeWindow_Executed" />
+        <!-- 如果需要最大化/还原，也一并添加 --><!--
+        <CommandBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}"
+                        Executed="MaximizeWindow_Executed" />-->
+    </Window.CommandBindings>
+    
+    <Window.InputBindings>
+        <!-- 文件 -->
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding FileVm.NewFileCommand}" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding FileVm.OpenFileCommand}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding FileVm.SaveFileCommand}" />
+        <KeyBinding Key="F4" Modifiers="Ctrl" Command="{Binding FileVm.CloseFileCommand}" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- R0: Menu Bar -->
+            <RowDefinition Height="30"/>
+            <!-- R1: Icon Toolbar Strip (row of 32×32 icon placeholders) -->
+            <RowDefinition Height="Auto"/>
+            <!-- R3: Main Content -->
+            <RowDefinition Height="*"/>
+            <!-- R5: Status bar -->
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- R0 ▸ Menu Bar                                                  -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <Border Grid.Row="0"
+            Background="{StaticResource ToolbarBgBrush}"
+            BorderBrush="{StaticResource BorderBrush}"  
+            PreviewMouseLeftButtonDown="TitleBar_PreviewMouseLeftButtonDown"
+            BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="#F7F7F7" Width="110" Height="30">
+                    <TextBlock Text="LOGO" Foreground="#2A2C2B"   FontWeight="Medium" FontSize="14" Width="44" Height="20" TextAlignment="Center"  Margin="30 5"/>
+                </Border>
+
+                <!-- 垂直分割线 -->
+                <Separator Grid.Column="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="1" Margin="5,0" Background="Gray"/>
+
+                <Menu Grid.Column="2" Style="{StaticResource TopMenuStyle}" >
+                    <MenuItem Header="文件" Style="{StaticResource TopLevelMenuItemStyle}" ItemContainerStyle="{StaticResource MainWindowMenuItemStyle}">
+                        <MenuItem Header="新建" InputGestureText="Ctrl+N" Command="{Binding FileVm.NewFileCommand}"  />
+                        <MenuItem Header="打开" InputGestureText="Ctrl+O" Command="{Binding FileVm.OpenFileCommand}" />
+                        <MenuItem Header="关闭" InputGestureText="Ctrl+F4" Command="{Binding FileVm.CloseFileCommand}" />
+                        
+                        <MenuItem Header="保存" InputGestureText="Ctrl+S" Command="{Binding FileVm.SaveFileCommand}" />
+                        <MenuItem Header="另存为" Command="{Binding FileVm.SaveAsFileCommand}" />
+                        
+                        <MenuItem Header="导入DXF" InputGestureText="Ctrl+I" Command="{Binding FileVm.ImportDxfCommand}" />
+                        <MenuItem Header="导出DXF" Command="{Binding FileVm.ExportDxfCommand}" />
+                        
+                   </MenuItem>
+                    <MenuItem  Header="配置" Style="{StaticResource TopLevelMenuItemStyle}" ItemContainerStyle="{StaticResource MainWindowMenuItemStyle}">
+                        <MenuItem Header="首选项" Command="{Binding OpenPreferencesCommand}"/>
+                        <MenuItem Header="快捷键"/>
+                    </MenuItem>
+                    <MenuItem  Header="编辑" Style="{StaticResource TopLevelMenuItemStyle}" ItemContainerStyle="{StaticResource MainWindowMenuItemStyle}">
+                        <MenuItem Header="撤销" x:Name="UndoMenuItem"  InputGestureText="Ctrl+Z" Command="{Binding EditMenuVm.unDoCommand}" CommandParameter="Undo"/>
+                        <MenuItem Header="重做" x:Name="RedoMenuItem"  InputGestureText="Ctrl+Y" Command="{Binding EditMenuVm.reDoCommand}" CommandParameter="Redo"/>
+                        
+                        <MenuItem Header="剪切" x:Name="CutMenuItem"  InputGestureText="Ctrl+X" Command="{Binding EditMenuVm.cutCommand}" CommandParameter="Cut"/>
+                        <MenuItem Header="复制" x:Name="CopyMenuItem"  InputGestureText="Ctrl+C" Command="{Binding EditMenuVm.copyCommand}" CommandParameter="Copy"/>
+                        <MenuItem Header="粘贴" x:Name="PasteMenuItem"  InputGestureText="Ctrl+V" Command="{Binding EditMenuVm.pasteCommand}" CommandParameter="Paste"/>
+                        <MenuItem Header="删除" x:Name="DeleteMenuItem"  InputGestureText="DEL" Command="{Binding EditMenuVm.deleteCommand}" CommandParameter="Delete"/>
+                        <MenuItem Header="选择全部" x:Name="ChooseAllMenuItem"  InputGestureText="Ctrl+A" Command="{Binding EditMenuVm.chooseAllCommand}" CommandParameter="SelectAll"/>
+                        <MenuItem Header="反向选取" x:Name="ChooseNoSelectMenuItem"  Command="{Binding EditMenuVm.chooseNoSelectCommand}" CommandParameter="InverseSelect"/>
+                        <MenuItem Header="替换" x:Name="DisplaceMenuItem"  Command="{Binding EditMenuVm.displaceCommand}" CommandParameter="Replace"/>
+                        <MenuItem Header="组合" x:Name="CombineMenuItem"  InputGestureText="Ctrl+K" Command="{Binding EditMenuVm.combineCommand}" CommandParameter="Combine"/>
+                        <MenuItem Header="打散" x:Name="UnCombineMenuItem"  InputGestureText="Ctrl+B" Command="{Binding EditMenuVm.unCombineCommand}" CommandParameter="Break"/>
+                        <MenuItem Header="打散填满物件" x:Name="UnCombineFillMenuItem"  Command="{Binding EditMenuVm.unCombineFillCommand}" CommandParameter="BreakFill"/>
+                        <MenuItem Header="群组" x:Name="GroupMenuItem"  InputGestureText="Ctrl+M" Command="{Binding EditMenuVm.groupCommand}" CommandParameter="Group"/>
+                        <MenuItem Header="解散群组" x:Name="UnGroupMenuItem"  InputGestureText="Ctrl+Q" Command="{Binding EditMenuVm.unGroupCommand}" CommandParameter="Ungroup"/>
+                        <!--<MenuItem Header="向量组合" x:Name="VectorCombinationMenuItem"  InputGestureText="Ctrl+G" Command="{Binding EditMenuVm.vectorCombinationCommand}" CommandParameter="VectorCombine"/>-->
+                        <MenuItem Header="移动至新图层" x:Name="MoveToNewLayerMenuItem"  Command="{Binding EditMenuVm.moveToNewLayerCommand}" CommandParameter="MoveToNewLayer"/>
+                        <MenuItem Header="反转" x:Name="InverseMenuItem"  Command="{Binding EditMenuVm.inverseCommand}" CommandParameter="Inverse"/>
+                        <MenuItem Header="水平镜像" x:Name="HorizontalMirrorReflectionMenuItem"  InputGestureText="Ctrl+H" Command="{Binding EditMenuVm.horizontalMirrorReflectionCommand}" CommandParameter="HorizontalMirrorReflection"/>
+                        <MenuItem Header="垂直镜像" x:Name="VerticalMirrorReflectionMenuItem"  InputGestureText="Ctrl+L" Command="{Binding EditMenuVm.verticalMirrorReflectionCommand}" CommandParameter="VerticalMirrorReflection"/>
+                        <MenuItem Header="物件置中" x:Name="MaterialCenterMenuItem"  InputGestureText="F8" Command="{Binding EditMenuVm.materialCenterCommand}" CommandParameter="MaterialCenter"/>
+                        <MenuItem Header="转成点圆" x:Name="ConvertToPointOrCircleMenuItem"  Command="{Binding EditMenuVm.convertToPointOrCircleCommand}" CommandParameter="ConvertToPointOrCircle"/>
+                        <MenuItem Header="扩展节点" x:Name="ConvertToExtendNodeMenuItem"  InputGestureText="Ctrl+U" Command="{Binding EditMenuVm.convertToExtendNodeCommand}" CommandParameter="ConvertToExtendNode"/>
+                        <MenuItem Header="跳点" x:Name="JumpPointMenuItem"  Command="{Binding EditMenuVm.jumpPointCommand}" CommandParameter="JumpPoint"/>
+                        <!--<MenuItem Header="对齐" x:Name="AlignMenuItem"  Command="{Binding EditMenuVm.alignCommand}" CommandParameter="Align"/>
+                        <MenuItem Header="分布" x:Name="DistributionMenuItem"  Command="{Binding EditMenuVm.distributionCommand}" CommandParameter="Distribution"/>-->
+                        <MenuItem Header="头尾点延伸" x:Name="ExtendHeadAndTailMenuItem"  Command="{Binding EditMenuVm.extendHeadAndTailCommand}" CommandParameter="ExtendHeadAndTail"/>
+                        <MenuItem Header="SkyWriting功能" x:Name="SkyWritingMenuItem"  Command="{Binding EditMenuVm.skyWritingCommand}" CommandParameter="SkyWriting"/>
+                        <MenuItem Header="依分区打断物件" x:Name="PartitionMenuItem"  Command="{Binding EditMenuVm.partitionCommand}" CommandParameter="Partition"/>
+                        <MenuItem Header="{Binding EditMenuVm.LockHeaderName}" x:Name="LockMenuItem"  Command="{Binding EditMenuVm.lockCommand}" CommandParameter="Lock"/>
+                    </MenuItem>
+                    <!--<MenuItem Header="绘图">
+                        <MenuItem Header="直线"/>
+                        <MenuItem Header="多边形"/>
+                        <MenuItem Header="矩形"/>
+                        <MenuItem Header="圆形"/>
+                    </MenuItem>-->
+                    <MenuItem Header="视图" Style="{StaticResource TopLevelMenuItemStyle}"  x:Name="ViewMenu" ItemContainerStyle="{StaticResource ViewMenuItemStyle}">
+                        <MenuItem Header="工具栏" x:Name="ToolbarGroupMenu">
+                            <MenuItem.Icon>
+                                <Image Source="/Resource/image/10.png" Width="16" Height="16" Stretch="Uniform"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="图层" Name="LayerMenuItem" Click="OnViewClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Resource/image/10.png" Width="16" Height="16" Stretch="Uniform"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="画布" IsEnabled="False"  Name="CanvasMenuItem" Click="OnViewClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Resource/image/10.png" Width="16" Height="16" Stretch="Uniform"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="属性" Name="ParametersTabMenuItem" Click="OnViewClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Resource/image/10.png" Width="16" Height="16" Stretch="Uniform"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!--<MenuItem Header="雕刻工具" Name="LaserToolbarMenuItem" Click="OnViewClick"/>-->
+                        <MenuItem Header="雕刻工具" Name="EngravingToolMenuItem"  Click="OnViewClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Resource/image/10.png" Width="16" Height="16" Stretch="Uniform"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="位置工具栏" Name="TransformToolbarMenuItem" Click="OnViewClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Resource/image/10.png" Width="16" Height="16" Stretch="Uniform"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="尺寸工具栏" Name="SizeToolbarMenuItem"  Click="OnViewClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Resource/image/10.png" Width="16" Height="16" Stretch="Uniform"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem  Header="说明" Style="{StaticResource TopLevelMenuItemStyle}" ItemContainerStyle="{StaticResource MainWindowMenuItemStyle}">
+                        <MenuItem Header="帮助文档"/>
+                        <MenuItem Header="关于"/>
+                    </MenuItem>
+                </Menu>
+
+                <StackPanel Grid.Column="3" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <usercontrols:ImageButton x:Name="MinimizeButton"
+                              Command="{x:Static SystemCommands.MinimizeWindowCommand}"
+                              NormalImage="/Resource/image/MinimizeButton.png"
+                              HoverBackground="LightGray"
+                              Width="60" Height="28"/>
+                    <usercontrols:ImageButton x:Name="MaximizeButton"
+                              Click="MaximizeButton_Click"
+                              NormalImage="/Resource/image/MaximizeButton.png"
+                              HoverBackground="LightGray"
+                              Width="60" Height="28"/>
+                    <usercontrols:ImageButton  x:Name="CloseButton"
+                              Command="{x:Static SystemCommands.CloseWindowCommand}"
+                              NormalImage="/Resource/image/CloseButton.png"
+                              HoverBackground="Pink"
+                              Width="60" Height="28"/>
+
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- R1 ▸ Icon Toolbar Strip                                        -->
+        <!--      Full-width row of 32×32 icon placeholder boxes            -->
+        <!--      Spans entire width matching the 5 main columns            -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <controls:ToolbarView Grid.Row="1" DataContext="{Binding ToolbarVm}"/>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- R2 ▸ Full-width Horizontal Ruler                               -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--<Border Grid.Row="2"
+            Background="{StaticResource RulerBackgroundBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="155"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="215"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="{StaticResource RulerBackgroundBrush}"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0"/>
+                <Border Grid.Column="1" Background="{StaticResource RulerBackgroundBrush}"/>
+                --><!--<controls:RulerControl Grid.Column="2" Orientation="Horizontal"/>--><!--
+                <Border Grid.Column="3" Background="{StaticResource RulerBackgroundBrush}"/>
+                <Border Grid.Column="4" Background="{StaticResource RulerBackgroundBrush}"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1,0,0,0"/>
+            </Grid>
+        </Border>-->
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- R3 ▸ Main Content                                              -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- Dock 管理器 -->
+        <docking:DockManager Grid.Row="2" x:Name="DockManager"/>
+
+        <!-- Toast 通知 -->
+        <usercontrols:ToastNotification x:Name="ToastNotification"
+                                   Grid.Row="2"
+                                   Panel.ZIndex="9999"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Margin="0,20,0,0"/>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- R4 ▸ Status Bar  (height 24)                                   -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <Border Grid.Row="3"
+            Background="{StaticResource ToolbarBgBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <!-- Status text area -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
+                    <TextBlock  x:Name="Showtxt" Text="导入" Margin="8,0" FontSize="11" Foreground="{StaticResource DimTextBrush}"/>
+                    <ProgressBar   x:Name="LoadBar" Width="120" Height="5" Minimum="0" Maximum="100" Foreground="#4A9EFF" Background="#141430"/>
+                    <TextBlock Text="{Binding FileVm.CurrentFilePath}" Margin="8,0" FontSize="11" Foreground="{StaticResource DimTextBrush}"/>
+                    <TextBlock x:Name="StatusText" Margin="8,0" FontSize="11" Foreground="{StaticResource DimTextBrush}"/>
+                </StackPanel>
+                <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                    <TextBlock Margin="0,0,24,0"
+                        FontSize="11" 
+                        Foreground="{StaticResource DimTextBrush}"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center">
+                            <Run x:Name="CoordinateText" Text=""/>
+                            <Run Text=" | "/>
+                            <Run x:Name="RightsText" Text="权限：系统管理员"/>
+                    </TextBlock>    
+
+                    <Border Width="72"
+                        Background="Transparent"
+                        HorizontalAlignment="Right"
+                        MouseLeftButtonDown="OnDebugStatusAreaMouseLeftButtonDown"/>
+                </Grid>
+            </Grid>
+        </Border>
+        <!-- 隐藏容器：放置将要被注册为 Dock 的原始控件（初始化时由代码移动到 DockManager） -->
+        <!--<StackPanel x:Name="HiddenParts" Visibility="Collapsed">
+
+            --><!-- 工具箱 --><!--
+            <Border x:Name="ToolboxBorder">
+            </Border>
+
+            --><!-- 图层面板 --><!--
+            <Border x:Name="LayerBorder">
+
+            </Border>
+
+            --><!-- 画布 --><!--
+            <Grid x:Name="CanvasContainer">
+                
+            </Grid>
+
+        </StackPanel>-->
+    </Grid>
+</Window>

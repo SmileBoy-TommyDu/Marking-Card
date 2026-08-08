@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<OutputType>WinExe</OutputType>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+	  <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+  <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.Controls\DrSoft.Drawing.Controls.csproj" />
+  <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.Registration\DrSoft.Drawing.Registration.csproj" />
+</ItemGroup>
+
+</Project>

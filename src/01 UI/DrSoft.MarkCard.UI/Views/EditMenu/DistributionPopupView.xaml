@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.EditMenu.DistributionPopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views.EditMenu" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             >
+ 
+    <Grid Margin="8 12 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+  
+
+        <!-- 分布类型图标区域 -->
+
+
+
+                <!-- 水平分布行 -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                            Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_left.png"
+                            IsChecked="{Binding IsAlignLeftDistribute, Mode=TwoWay}"/>-->
+            <ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                            ToolTip="水平居中分布" 
+                            Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_middle.png"
+                            IsChecked="{Binding IsAlignCenterDistribute, Mode=TwoWay}"/>
+            <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                          ToolTip="水平等间距分布" 
+                          Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_spacing.png"
+                          IsChecked="{Binding IsAlignHorizontalSpaceDistribute, Mode=TwoWay}"/>
+            <ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                            ToolTip="右对齐分布" 
+                            Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_right.png"
+                            IsChecked="{Binding IsAlignRightDistribute, Mode=TwoWay}"/>-->
+
+
+            <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}" Margin="12 0 0 0"
+                            ToolTip="顶部对齐分布" 
+                            Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_top.png"
+                            IsChecked="{Binding IsAlignTopDistribute, Mode=TwoWay}"/>-->
+            <ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                            ToolTip="垂直居中分布" 
+                            Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_middle.png"
+                            IsChecked="{Binding IsAlignMiddleDistribute, Mode=TwoWay}"/>
+            <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                  ToolTip="垂直等间距分布"
+                  Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_middle.png"
+                  IsChecked="{Binding IsAlignVerticalSpaceDistribute, Mode=TwoWay}"/>
+            <ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                            ToolTip="底部对齐分布" Tag="底对齐"
+                            Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_bottom.png"
+                            IsChecked="{Binding IsAlignBottomDistribute, Mode=TwoWay}"/>-->
+                  
+         </StackPanel>
+        
+
+
+        <!-- 分布区域标题 -->
+        <TextBlock Grid.Row="4" Text="分布区域" FontSize="12" Foreground="#858e90" VerticalAlignment="Center"/>
+
+        <!-- 分布区域选项 -->
+        <StackPanel Grid.Row="6" Orientation="Horizontal">
+            <RadioButton GroupName="DistributionSettingsStandard" Tag="SelectArea" Style="{StaticResource DrRadioButtonStyle}" Content="选取范围" IsChecked="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding DistributionStandardRadioCheckedCommand}" CommandParameter="SelectArea"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
+            <RadioButton GroupName="DistributionSettingsStandard" Tag="CanvasArea" Style="{StaticResource DrRadioButtonStyle}" Margin="16,0,0,0" Content="画布范围">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding DistributionStandardRadioCheckedCommand}" CommandParameter="CanvasArea"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
+        </StackPanel>
+    </Grid>
+</UserControl>

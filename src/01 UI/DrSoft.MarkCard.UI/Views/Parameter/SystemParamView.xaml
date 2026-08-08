@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.SystemParamView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views" 
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             mc:Ignorable="d" 
+             Background="#F5F5F5" 
+             Foreground="#2A2C2B"
+              d:DesignHeight="420"
+             d:DesignWidth="328">
+    <Grid  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid Margin="8,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="4" Text="雕刻头速度范围" Style="{StaticResource HeaderLabel}"/>
+            <TextBlock Grid.Row="1"  Grid.Column="0"  Text="最大" Margin="4"  />
+            <uc:NumericUpDownControl  MinValue="0" Grid.Row="1" Grid.Column="1" Title="" Unit="mm/ms"    Value="{Binding Model.HeadSpeedMax}" Style="{StaticResource MainNumericUpDown}"/>
+            <TextBlock Text="最小" Grid.Column="2" Grid.Row="1" Margin="4"  />
+            <uc:NumericUpDownControl MinValue="0"  Grid.Row="1" Grid.Column="4" Title="" Unit="mm/ms"    Value="{Binding Model.HeadSpeedMin}" Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <TextBlock Grid.Row="2" Grid.ColumnSpan="4" Text="功率范围" Style="{StaticResource HeaderLabel}"/>
+                <TextBlock Grid.Row="3"  Grid.Column="0"  Text="最大" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0"  Grid.Row="3" Grid.Column="1" Title="" Unit="%"    Value="{Binding Model.Power100}" Style="{StaticResource MainNumericUpDown}"/>
+                <TextBlock Text="最小" Grid.Column="2" Grid.Row="3" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="3" Grid.Column="4" Title="" Unit="%"    Value="{Binding Model.Power0}" Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <TextBlock Grid.Row="4" Grid.ColumnSpan="4" Text="频率范围" Style="{StaticResource HeaderLabel}"/>
+                <TextBlock Grid.Row="5"  Grid.Column="0"  Text="最大" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="5" Grid.Column="1" Title="" Unit="kHz"    Value="{Binding Model.FreqMax}" Style="{StaticResource MainNumericUpDown}"/>
+                <TextBlock Text="最小" Grid.Column="2" Grid.Row="5" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="5" Grid.Column="4" Title="" Unit="kHz"    Value="{Binding Model.FreqMin}" Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <TextBlock Grid.Row="6" Grid.ColumnSpan="4" Text="雕刻次数范围" Style="{StaticResource HeaderLabel}"/>
+                <TextBlock Grid.Row="7"  Grid.Column="0"  Text="最大" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="7" Grid.Column="1" Title="" Unit="次"  Step="1" DecimalPlaces="0"   Value="{Binding Model.CountMax}" Style="{StaticResource MainNumericUpDown}"/>
+                <TextBlock Text="最小" Grid.Column="2" Grid.Row="7" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="7" Grid.Column="4" Title="" Unit="次" Step="1" DecimalPlaces="0"   Value="{Binding Model.CountMin}" Style="{StaticResource MainNumericUpDown}"/>
+
+                <TextBlock Grid.Row="8" Grid.ColumnSpan="4" Text="点雕刻时间范围" Style="{StaticResource HeaderLabel}"/>
+                <TextBlock Grid.Row="9"  Grid.Column="0"  Text="最大" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="9" Grid.Column="1" Title="" Unit="ms" Step="1" DecimalPlaces="0"   Value="{Binding Model.PointTimeMax}" Style="{StaticResource MainNumericUpDown}"/>
+                <TextBlock Text="最小" Grid.Column="2" Grid.Row="9" Margin="4"/>
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="9" Grid.Column="4" Title="" Unit="ms" Step="1" DecimalPlaces="0"   Value="{Binding Model.PointTimeMin}" Style="{StaticResource MainNumericUpDown}"/>
+
+            </Grid>
+        </ScrollViewer>
+        <Border Grid.Row="1" BorderBrush="#E2E2E2" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch"/>
+        <Button  HorizontalAlignment="Right" Grid.Row="1"   Content="套用当前页面" Style="{StaticResource  ActionButtonStyle}" Width="116"  Command="{Binding ApplyCommand}"/>
+
+    </Grid>
+</UserControl>

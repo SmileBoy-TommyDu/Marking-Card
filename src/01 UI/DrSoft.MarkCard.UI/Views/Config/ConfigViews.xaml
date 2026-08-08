@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:DrSoft.MarkCard.UI.ViewModes.Config"
+                    xmlns:views="clr-namespace:DrSoft.MarkCard.UI.Views.Config">
+
+    <!-- System Views -->
+    <DataTemplate DataType="{x:Type vm:LogSettingsViewModel}">
+        <views:LogSettingsView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:GridMicroAdjustViewModel}">
+        <views:GridMicroAdjustView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:AutomationProcessViewModel}">
+        <views:AutomationProcessView/>
+    </DataTemplate>
+
+    <!-- Main Config Views -->
+    <DataTemplate DataType="{x:Type vm:MarkCardConfigViewModel}">
+        <views:MarkCardConfigView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ScanHeadConfigViewModel}">
+        <views:ScanHeadConfigView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LaserConfigViewModel}">
+        <views:LaserConfigView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:IOInputViewModel}">
+        <views:IOInputView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:IOOutputViewModel}">
+        <views:IOOutputView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:PowerMeterConfigViewModel}">
+        <views:PowerMeterConfigView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ImportExportConfigViewModel}">
+        <views:ImportExportConfigView/>
+    </DataTemplate>
+
+</ResourceDictionary>

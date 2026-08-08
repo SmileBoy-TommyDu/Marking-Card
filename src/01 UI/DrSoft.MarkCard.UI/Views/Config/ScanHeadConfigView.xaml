@@ -1,0 +1,175 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.Config.ScanHeadConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="600"
+            >
+    <Grid Margin="8 8 8 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+           
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource MyBorderGradient}" Height="20">
+            <TextBlock Grid.Row="0" Text="扫描头" Margin="4 0 0 0" VerticalAlignment="Center" FontSize="14" Foreground="#ffffff"/>
+        </Border>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="基础设置" FontSize="12" Foreground="#858e90" FontWeight="SemiBold" Margin="0,8,0,0"/>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="打标卡类型" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding MarkCardTypes}" Width="120" Style="{StaticResource DrComboxStyle}" SelectedItem="{Binding MarkCardType}" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="3" Text="打标卡序号" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <ComboBox Grid.Column="4" Style="{StaticResource DrComboxStyle}" Width="120"  ItemsSource="{Binding CardNos}" SelectedItem="{Binding CardNo}" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
+                </Grid>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="扫描头序号" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <ComboBox Grid.Column="1" Style="{StaticResource DrComboxStyle}" ItemsSource="{Binding ScanHeadNos}" SelectedItem="{Binding ScanHeadNo}" VerticalContentAlignment="Center" Width="120" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="3" Text="通信协议" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 8 0" FontSize="14"/>
+                    <ComboBox Grid.Column="4" ItemsSource="{Binding Protocols}" Style="{StaticResource DrComboxStyle}" SelectedItem="{Binding Protocol}" VerticalContentAlignment="Center" Width="120" HorizontalAlignment="Left"/>
+                
+                </Grid>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="加工幅面X" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="1" Value="{Binding ProcessingAreaX}" MinValue="1" MaxValue="1000" Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="3" Text="加工幅面Y" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="4" Value="{Binding ProcessingAreaY}" MinValue="1" MaxValue="1000"  Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                </Grid>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="最大速度" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="14" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="1" Width="120" HorizontalAlignment="Left" MinValue="0" MaxValue="1000" Value="{Binding MaxSpeed}" Unit="mm/ms"/>
+                    <TextBlock Grid.Column="3" Text="旋转角度" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="4" MinValue="-360" MaxValue="360" Value="{Binding RotationAngle}" Unit="度"  Width="120" HorizontalAlignment="Left"/>
+                </Grid>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="场景焦距" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="1" MinValue="0" MaxValue="1000" Value="{Binding FocalLength}" Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="3" Text="最大温度" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="4" MinValue="0" MaxValue="80" Value="{Binding MaxTemperature}" Unit="°C"  Width="120" HorizontalAlignment="Left"/>
+                </Grid>
+
+                <TextBlock Text="原点与偏移" Foreground="#858e90" FontSize="12" FontWeight="SemiBold" Margin="0,8,0,0"/>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="原点X" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="1" MinValue="-1000" MaxValue="1000" Value="{Binding OriginX}" Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="3" Text="原点Y" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="4" Value="{Binding OriginY}" MinValue="-1000" MaxValue="1000" Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                </Grid>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="整体偏移X" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="1" MinValue="-1000" MaxValue="1000" Value="{Binding OffsetX}" Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="3" Text="整体偏移Y" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="4" MinValue="-1000" MaxValue="1000" Value="{Binding OffsetY}" Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                </Grid>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="角度偏移" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="1" MinValue="-360" MaxValue="360" Value="{Binding AngleOffset}" Unit="度"  Width="120" HorizontalAlignment="Left"/>
+                    <Button Grid.Column="4" Content="校正工具" Margin="0" Width="120" Height="24" Command="{Binding OpenCalibrationToolCommand}" HorizontalAlignment="Left" Style="{StaticResource SecondActionButtonStyle}"/>
+                </Grid>
+
+
+
+                <TextBlock Text="PSO设置" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,0" Foreground="#858e90"/>
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                    <TextBlock Text="PSO" Grid.Column="0" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <CheckBox IsChecked="{Binding PsoEnabled}" Grid.Column="1" Style="{StaticResource DrCheckBoxStyle}" Content="启用" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                </Grid>
+
+                <Grid Margin="0,4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="间距" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="1" MaxValue="1000" MinValue="0" Value="{Binding PsoSpacing}" Unit="mm"  Width="120" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Column="3" Text="脉宽" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Margin="0 0 8 0"/>
+                    <uc:NumericUpDownControl Grid.Column="4" Value="{Binding PsoPulseWidth}" MinValue="0" MaxValue="1000000"  Width="120" HorizontalAlignment="Left"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

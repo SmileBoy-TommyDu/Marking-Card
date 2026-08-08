@@ -1,0 +1,36 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.Config.ImportExportConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="600"
+             Background="Transparent">
+    <StackPanel Orientation="Vertical" Margin="8 8 8 8">
+       
+
+        <!-- 标题 -->
+        <Border Background="{StaticResource MyBorderGradient}" Height="20">
+            <TextBlock Grid.Row="0" Text="导入/导出" Margin="4 0 0 0" VerticalAlignment="Center" FontSize="14" Foreground="#ffffff"/>
+        </Border>
+
+
+        <!-- 文件路径标签 -->
+        <TextBlock Text="文件路径" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0"  Foreground="#858e90"/>
+
+        <!-- 文件路径 + 按钮 -->
+        <StackPanel  Orientation="Horizontal" Margin="0 4 0 0">
+            
+
+            <TextBox Grid.Column="0" VerticalContentAlignment="Center"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     Width="400"
+                     Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button Grid.Column="1" Content="导入" Width="48" Margin="4 0 0 0" Style="{StaticResource SecondActionButtonStyle}" HorizontalAlignment="Right"
+                    Command="{Binding ImportCommand}"/>
+            <Button Grid.Column="2" Content="导出" Width="48" Margin="4 0 0 0" Style="{StaticResource ActionButtonStyle}" HorizontalAlignment="Right"
+                    Command="{Binding ExportCommand}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

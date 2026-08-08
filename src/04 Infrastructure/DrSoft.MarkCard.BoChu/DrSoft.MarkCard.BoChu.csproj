@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\03 Domain\DrSoft.MarkCard.Interface\DrSoft.MarkCard.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="package\**\*">
+      <!-- 编译/调试时复制到输出目录 -->
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <!-- 发布时也复制到 publish 输出 -->
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- 将 package 下的所有文件扁平复制到输出目录根（在 Build 和 Publish 后运行） -->
+  <Target Name="CopyPackageFilesToOutputRoot" AfterTargets="Build;Publish">
+    <!-- 匹配 package 目录下的所有文件 -->
+    <ItemGroup>
+      <_PackageFiles Include="package\**\*" />
+    </ItemGroup>
+
+    <!-- 复制到输出目录根（如果有同名文件会被覆盖） -->
+    <Copy
+      SourceFiles="@(_PackageFiles)"
+      DestinationFiles="@(_PackageFiles->'$(OutputPath)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

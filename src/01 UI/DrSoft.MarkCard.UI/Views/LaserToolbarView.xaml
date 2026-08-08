@@ -1,0 +1,115 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.LaserToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:DrSoft.MarkCard.UI.ViewModes"
+             d:DataContext="{d:DesignInstance Type=vm:LaserToolbarViewModel}"
+             mc:Ignorable="d"
+             Width="40"
+             Background="#F0F0F0">
+
+    <UserControl.Resources>
+        <!-- 工具按钮样式 -->
+        <Style x:Key="ToolButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#D0E0F0"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#B0D0E8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 切换按钮样式 -->
+        <Style x:Key="ToolToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#D0E0F0"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#0078D4"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#B0D0E8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 分隔线样式 -->
+        <Style x:Key="SeparatorStyle" TargetType="Line">
+            <Setter Property="X1" Value="4"/>
+            <Setter Property="X2" Value="36"/>
+            <Setter Property="Y1" Value="0"/>
+            <Setter Property="Y2" Value="0"/>
+            <Setter Property="Stroke" Value="#CCCCCC"/>
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,4"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+
+            <!-- 雕刻工具 -->
+            <ToggleButton Style="{StaticResource ToolToggleButtonStyle}"
+                          IsChecked="{Binding IsEngravingToolChecked}"
+                          Command="{Binding EngravingToolCommand}"
+                          ToolTip="雕刻工具">
+                <!--<ToggleButton.Background>
+                    <ImageBrush ImageSource="/YourAssemblyName;component/Images/YourImage.png"
+                    Stretch="Uniform" />
+                </ToggleButton.Background>-->
+                <Path Data="M 12,4 L 12,14 M 10,8 L 14,8 M 12,14 L 8,22 L 16,22 Z"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
+                      StrokeThickness="1.5"
+
+                      Stretch="None"/>
+            </ToggleButton>
+
+            <!-- 打样工具 -->
+            <ToggleButton Style="{StaticResource ToolToggleButtonStyle}"
+                          IsChecked="{Binding IsTestMarkingToolChecked}"
+                          Command="{Binding TestMarkingToolCommand}"
+                          ToolTip="打样工具">
+                <Path Data="M 6,8 L 26,8 M 10,4 L 10,12 M 22,4 L 22,12 M 8,22 L 24,22"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
+                      StrokeThickness="1.5"
+
+                      Stretch="None"/>
+            </ToggleButton>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

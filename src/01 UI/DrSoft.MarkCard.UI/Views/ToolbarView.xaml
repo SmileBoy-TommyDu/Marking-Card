@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.ToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views"
+             xmlns:vm="clr-namespace:DrSoft.MarkCard.UI.ViewModes"
+             xmlns:controls="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             xmlns:models="clr-namespace:DrSoft.MarkCard.UI.Models">
+
+    <Border Background="#F5F5F5"
+        BorderBrush="#D0D0D0"
+        BorderThickness="0,0,0,1">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 工具组列表：WrapPanel 整组换行 -->
+            <ItemsControl x:Name="GroupsPanel"
+                      Grid.Column="0"
+                      ItemsSource="{Binding VisibleGroups}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:ToolbarGroup}">
+                        <local:ToolbarGroupView
+                        DataContext="{Binding}"                         
+                        Margin="0,0,0,0"
+                        Loaded="GroupControl_Loaded"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- ⋮ 设置按钮 -->
+            <!--<Button x:Name="MoreButton"
+                Grid.Column="1"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Foreground="#707070"
+                FontSize="14"
+                VerticalAlignment="Top"
+                Height="30"
+                Content="⋮"
+                Cursor="Hand"
+                ToolTip="工具栏设置"
+                Click="MoreButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>-->
+
+            <!-- ⋮ 设置按钮 -->
+            <controls:StateButton x:Name="MoreButton"
+                      Grid.Column="1"        
+                      ToolTip="工具栏设置"
+                      Click="MoreButton_Click"/>
+
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,25 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.ShapeParamView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:conv="clr-namespace:DrSoft.MarkCard.UI.Converters"
+             
+             mc:Ignorable="d" Background="#F5F5F5" >
+
+    <UserControl.Resources>
+        <conv:ShapeTypeToViewConverter x:Key="ShapeTypeToViewConverter"/>
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!-- 内容区：各形状面板 -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. 动态内容区（带滚动条，防止文字页等内容过长） -->
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" BorderThickness="0">
+            <ContentControl Content="{Binding CurrentShapeType, Converter={StaticResource ShapeTypeToViewConverter}}"/>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.ParametersTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:DrSoft.MarkCard.UI.Views"
+             xmlns:converters="clr-namespace:DrSoft.MarkCard.UI.Converters"
+             mc:Ignorable="d" 
+             Background="#F5F5F5"
+             d:DesignHeight="420"
+             d:DesignWidth="328" 
+         >
+    <UserControl.Resources>
+        <converters:ParameterTabTypeToViewConverter x:Key="TabTypeToViewConverter"/>
+    </UserControl.Resources>
+    <Grid  >
+     
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>-->
+
+        <!-- 元素选项卡容器 -->
+        <TabControl HorizontalAlignment="Stretch" Grid.Row="0" Name="ElementTab"     Style="{StaticResource DrTabControlStyle}" ItemsSource="{Binding ElementTabs}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}"  TextAlignment="Center" Margin="4" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <ContentControl MinHeight="328" Content="{Binding TabType, Converter={StaticResource TabTypeToViewConverter}}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+
+        <TabControl HorizontalAlignment="Stretch" x:Name="SystemTab" Grid.Row="0" Style="{StaticResource DrTabControlStyle}">
+
+            <TabItem x:Name="SystemParaItem" Header="幅面设定" >
+            
+                <views:DrawingBoardView/>
+             
+            </TabItem>
+            <TabItem x:Name="GalvoSettingItem" Header="振镜设定">
+                <views:GalvoSettingView/>
+            </TabItem>
+            <TabItem x:Name="IOSettingItem" Header="IO信号">
+                <views:IOView/>
+               
+            </TabItem>
+            <TabItem x:Name="SyestemParaItem" Header="系统参数">
+                <views:SystemParamView/>
+            
+            </TabItem>
+            <TabItem x:Name="LaserEnergyItem" Header="镭射测试">
+                <views:LaserTestView x:Name="LaserTestView"/>
+              
+            </TabItem>
+        </TabControl>
+
+        <!-- 底部固定按钮 -->
+        <!--<Border Grid.Row="1" BorderBrush="#E2E2E2" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch"/>
+        <Button Grid.Row="1" Content="套用全部" Width="116" Height="24"   HorizontalAlignment="Right"    Command="{Binding ApplyAllCommand}" Style="{StaticResource ActionButtonStyle}"/>-->
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,134 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);AnyCPU;x64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>$(DefineConstants);x86</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);AnyCPU;x64</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>$(DefineConstants);x86</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DrMarkPlugin.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\03 Domain\DrSoft.MarkCard.Interface\DrSoft.MarkCard.Interface.csproj" />
+  </ItemGroup>
+
+  <!-- x64 / AnyCPU COM 互操作引用 -->
+  <ItemGroup Condition="'$(Platform)'=='AnyCPU' Or '$(Platform)'=='x64'">
+    <Reference Include="AxMMMark_x64_1">
+      <HintPath>AxMMMark_x64_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMIO_x64_1">
+      <HintPath>AxMMIO_x64_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMEdit_x64_1">
+      <HintPath>AxMMEdit_x64_1.dll</HintPath>
+    </Reference>
+    <Reference Include="MMMarkx641Lib">
+      <HintPath>MMMarkx641Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMIOx641Lib">
+      <HintPath>MMIOx641Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMEditx641Lib">
+      <HintPath>MMEditx641Lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <!-- x86 COM 互操作引用 -->
+  <ItemGroup Condition="'$(Platform)'=='x86'">
+    <Reference Include="AxMMMark_1">
+      <HintPath>AxMMMark_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMIO_1">
+      <HintPath>AxMMIO_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMEdit_1">
+      <HintPath>AxMMEdit_1.dll</HintPath>
+    </Reference>
+    <Reference Include="MMMark_1Lib">
+      <HintPath>MMMark_1Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMIO_1Lib">
+      <HintPath>MMIO_1Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMEdit_1Lib">
+      <HintPath>MMEdit_1Lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="AxMMLensCal_x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AxMMMark_x64_1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AxMMMark_1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AxMMIO_x64_1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AxMMIO_1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AxMMEdit_x64_1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AxMMEdit_1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMIOx64Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMLensCalx64Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMMarkx641Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMMarkx64Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMMark_1Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMIOx641Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMIO_1Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMEditx641Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="MMEdit_1Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

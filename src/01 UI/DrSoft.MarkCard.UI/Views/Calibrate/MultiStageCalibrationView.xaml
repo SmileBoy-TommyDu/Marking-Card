@@ -1,0 +1,155 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.Calibrate.MultiStageCalibrationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             mc:Ignorable="d" 
+             Foreground="#2a2c2b"
+            FontSize="14">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="170"/>
+            <RowDefinition Height="264"/>
+ 
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="#E0E0E0" BorderThickness="1" ></Border>
+        <!-- 顶部参数设置 -->
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0 4 0 0">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <!-- 第一行: 校正幅面、二次元数据 -->
+                <TextBlock Grid.Column="0" Text="校正幅面" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                <uc:NumericUpDownControl Grid.Column="1" Width="120" Value="{Binding CalibrationArea}" Unit="mm"/>
+
+                <TextBlock  Grid.Column="3" Text="校正阶数" VerticalAlignment="Center"/>
+                <ComboBox  Grid.Column="4" Style="{StaticResource DrComboxStyle}" ItemsSource="{Binding AvailableStages}"  SelectedItem="{Binding CalibrationStage}" />
+
+            </Grid>
+
+            <Grid Margin="0 4 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 第二行: 图形长度、图形类型 -->
+                <TextBlock Grid.Column="0" Text="图形长度" VerticalAlignment="Center" />
+                <uc:NumericUpDownControl  Grid.Column="1" Width="120" Value="{Binding GraphicsLength}" Unit="mm"/>
+
+
+                <TextBlock  Grid.Column="3" Text="校正文件" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                <TextBox  Grid.Column="4" Style="{StaticResource RoundedTextBoxStyle}" Text="{Binding CalibrationFilePath}" Width="120"  TextWrapping="NoWrap" IsReadOnly="True" VerticalContentAlignment="Center"/>
+
+
+            </Grid>
+
+            <Grid Margin="0 8 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="160"/>
+                    
+                </Grid.ColumnDefinitions>
+                <TextBlock  Grid.Column="0" Text="图形类型" VerticalAlignment="Center"/>
+                <StackPanel  Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <RadioButton Content="十字" IsChecked="{Binding IsCrossSelected}" Style="{StaticResource DrRadioButtonStyle}" GroupName="GraphicsType" Margin="0,0,4,0"/>
+                    <RadioButton Content="网格" IsChecked="{Binding IsGridSelected}" Style="{StaticResource DrRadioButtonStyle}" GroupName="GraphicsType" Margin="0,0,4,0"/>
+                    <RadioButton Content="圆" IsChecked="{Binding IsCircleSelected}" Style="{StaticResource DrRadioButtonStyle}" GroupName="GraphicsType"/>
+                </StackPanel>
+
+            </Grid>
+
+
+            <Grid Margin="0 4 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="二次元数据" VerticalAlignment="Center" Margin="0,0,4,0"/>
+           
+                    
+                    <TextBox Grid.Column="1" Style="{StaticResource RoundedTextBoxStyle}" Width="300"  Text="{Binding SecondaryDataPath}" IsReadOnly="True" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                <Button Grid.Column="2" Content="..." Width="24" Style="{StaticResource ImportButtonStyle}" Command="{Binding BrowseSecondaryDataCommand}"/>
+             
+            </Grid>
+
+            <!--<TextBlock Grid.Row="0" Grid.Column="2" Text="" VerticalAlignment="Center" Margin="5,0,20,0"/>-->
+
+            <!-- 添加XY方向标识 -->
+            <StackPanel Orientation="Horizontal" Margin="0 4 0 0">
+                <CheckBox Grid.ColumnSpan="2" Style="{StaticResource DrCheckBoxStyle}" Content="添加XY方向标识" IsChecked="{Binding AddXYDirection}" VerticalAlignment="Center"/>
+
+                <TextBlock  Text="标识尺寸" VerticalAlignment="Center" Margin="80,0,4,0"/>
+
+                <uc:NumericUpDownControl Value="{Binding SignDimension}" Unit="mm" Width="120"/>
+            </StackPanel>
+
+            <!-- 中间按钮区域 -->
+            <StackPanel  Orientation="Horizontal" Margin="0,4,0,0">
+                <Button Content="1 生成图形" Width="80"  Margin="0,0,10,0" Style="{StaticResource ActionButtonStyle}" Command="{Binding CreateGraphicsCommand}"/>
+                <Button Content="2 标刻图形" Width="80" Margin="0,0,10,0" Command="{Binding MarkGraphicsCommand}" Style="{StaticResource SecondActionButtonStyle}"/>
+                <Button Content="3 创建并另载入" Width="108"  Margin="0,0,10,0" Command="{Binding ExecuteAndSaveCommand}" Style="{StaticResource SecondActionButtonStyle}"/>
+                <Button Content="清除校正" Width="80" Command="{Binding ClearCalibrationCommand}" Visibility="Collapsed" Style="{StaticResource SecondActionButtonStyle}" Cursor="Hand"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        
+        <!-- 数据列表区域 -->
+        <Border Grid.Row="2" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" Margin="0,8,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <DataGrid ItemsSource="{Binding CalibrationDataList}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="All">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="ToolTip" Value=""/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SourceX}" Value="{x:Null}">
+                                    <Setter Property="Background" Value="#FFF6C9C9"/>
+                                    <Setter Property="ToolTip" Value="缺少源点数据"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SourceY}" Value="{x:Null}">
+                                    <Setter Property="Background" Value="#FFF6C9C9"/>
+                                    <Setter Property="ToolTip" Value="缺少源点数据"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding TargetX}" Value="{x:Null}">
+                                    <Setter Property="Background" Value="#FFFFE7B0"/>
+                                    <Setter Property="ToolTip" Value="缺少二次元目标点数据"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding TargetY}" Value="{x:Null}">
+                                    <Setter Property="Background" Value="#FFFFE7B0"/>
+                                    <Setter Property="ToolTip" Value="缺少二次元目标点数据"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="序号" Binding="{Binding Index}" Width="60"/>
+                        <DataGridTextColumn Header="理论X" Binding="{Binding SourceX, StringFormat=F4}" Width="*"/>
+                        <DataGridTextColumn Header="理论Y" Binding="{Binding SourceY, StringFormat=F4}" Width="*"/>
+                        <DataGridTextColumn Header="测量X" Binding="{Binding TargetX, StringFormat=F4}" Width="*"/>
+                        <DataGridTextColumn Header="测量Y" Binding="{Binding TargetY, StringFormat=F4}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

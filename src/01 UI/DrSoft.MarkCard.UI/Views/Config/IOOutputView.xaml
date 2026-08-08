@@ -1,0 +1,122 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.Config.IOOutputView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:DrSoft.MarkCard.UI.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="600"
+             Background="Transparent">
+    <UserControl.Resources>
+        <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <Style TargetType="DataGrid">
+
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <!-- 浅灰色背景 -->
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <!-- 边框颜色 -->
+            <Setter Property="RowHeight" Value="30"/>
+            <!-- 行高 -->
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <!-- 仅显示列头 -->
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <!-- 禁止自动生成列 -->
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <!-- 禁止新增行 -->
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <!-- 禁止删除行 -->
+            <Setter Property="IsReadOnly" Value="False"/>
+
+
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="8 8 8 8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource MyBorderGradient}" Height="20">
+            <TextBlock Grid.Row="0" Text="输出信号" Margin="4 0 0 0" VerticalAlignment="Center" FontSize="14" Foreground="#ffffff"/>
+        </Border>
+        <!-- Scanner Card Selection -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="123"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="打标卡类型" VerticalAlignment="Center" Margin="0 0 4 0" HorizontalAlignment="Right"/>
+            <ComboBox Grid.Column="1" 
+                      Width="120"
+                      Style="{StaticResource DrComboxStyle}"
+                      ItemsSource="{Binding MarkCardTypes}"
+                      HorizontalAlignment="Left"
+                      SelectedItem="{Binding SelectedMarkCardType}"/>
+            <TextBlock Grid.Column="2" Text="打标卡号" VerticalAlignment="Center" Margin="0 0 4 0" HorizontalAlignment="Right"/>
+            <ComboBox Grid.Column="3" 
+                      Width="120"
+                       HorizontalAlignment="Left"
+                      Style="{StaticResource DrComboxStyle}"
+                      ItemsSource="{Binding CardNos}"
+                      SelectedItem="{Binding SelectedCardNo}"/>
+        </Grid>
+
+        <!-- Data Grid -->
+        <Border Grid.Row="4" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Items}" 
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          BorderThickness="1"
+                           GridLinesVisibility="None"
+                          RowBackground="#eeeeee"
+                          RowStyle="{StaticResource IOCustomColumnRowStyle}"
+                         ColumnHeaderStyle="{StaticResource IOCustomColumnHeaderStyle}">
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            <Setter Property="BorderBrush" Value="#cacaca"/>
+                            <Setter Property="Padding" Value="2"/>
+
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="输出口" Binding="{Binding Index}" Width="80" IsReadOnly="True" ElementStyle="{StaticResource CenterTextStyle}"/>
+                        <DataGridTemplateColumn Header="系统名称" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding SystemFunctionOptions}" 
+                                              Style="{StaticResource DrComboxStyle}"
+                                              SelectedItem="{Binding SelectedSystemFunction, UpdateSourceTrigger=PropertyChanged}" >
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="自定义命名" Width="279">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding CustomName, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="4 0 0 0"
+                                      Style="{StaticResource RoundedTextBoxStyle}"
+                                      Width="270"
+                                      Height="24"
+                                     HorizontalAlignment="Left" VerticalContentAlignment="Center"
+                                     />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

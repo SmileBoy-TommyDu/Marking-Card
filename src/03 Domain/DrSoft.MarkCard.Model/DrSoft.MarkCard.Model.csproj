@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTO\Storage\**" />
+    <EmbeddedResource Remove="DTO\Storage\**" />
+    <None Remove="DTO\Storage\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.Contracts\DrSoft.Drawing.Contracts.csproj" />
+    <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.DTO\DrSoft.Drawing.DTO.csproj" />
+  </ItemGroup>
+
+</Project>

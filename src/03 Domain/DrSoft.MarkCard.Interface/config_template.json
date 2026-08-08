@@ -1,0 +1,41 @@
+{
+  "SystemConfig": {
+    "EnableLogging": true,
+    "LogFilePath": "",
+    "EnableDownloadToBuffer": false,
+    "DownloadToBufferInterval": 100,
+    "GridSpacingX": 120,
+    "GridSpacingY": 102,
+    "MicroAdjustStepX": 0.01,
+    "MicroAdjustStepY": 0.1
+  },
+  "CardConfigs": [
+    {
+      "MarkCardType": 1,
+      "IsMaster": false,
+      "MarkingTimeout": 1001,
+      "InitTimeout": 1002,
+      "IsActive": true,
+      "EnableIOTrigger": false,
+      "ConnectionType": 2,
+      "IOTriggerType": 0,
+      "CardCount": 1,
+      "CardDescConfigs": [],
+      "CardConfigFliePath": null
+    }
+  ],
+  "ScanHeadConfigs": [],
+  "LaserConfigs": [],
+  "PowerMeterConfig": {
+    "PowerMeterModel": 0,
+    "ConnectType": 2,
+    "ConnectString": null
+  },
+  "IOConfig": {
+    "EnableIO": false,
+    "InputCount": 16,
+    "OutputCount": 16,
+    "OutputFunctions": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+    "InputFunctions": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+  }
+}

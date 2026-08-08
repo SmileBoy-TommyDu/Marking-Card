@@ -1,0 +1,1792 @@
+﻿using DrSoft.Docking.Enum;
+using DrSoft.Docking.Interface;
+using DrSoft.Docking.Model.Layout;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Xml.Linq;
+
+namespace DrSoft.Docking.View
+{
+    /// <summary>
+    /// the core class for layout and resize region
+    /// </summary>
+    public class LayoutGroupPanel : Panel, ILayoutPanel, IDragTarget
+    {
+        internal LayoutGroupPanel(DockSide side = DockSide.None)
+        {
+            _side = side;
+        }
+
+        /// <summary>
+        /// 表示该Panel的Children中除了<see cref="LayoutDragSplitter"/>就是<see cref="LayoutDocumentGroupControl"/>
+        /// </summary>
+        public bool IsDocumentPanel
+        {
+            get
+            {
+                return this is LayoutGroupDocumentPanel;
+            }
+        }
+
+
+        /// <summary>
+        /// 表示该Panel的Children中除了<see cref="LayoutDragSplitter"/>就是<see cref="AnchorSideGroupControl"/>
+        /// </summary>
+        public bool IsAnchorPanel
+        {
+            get
+            {
+                return _isAnchorPanel;
+            }
+            internal set
+            {
+                if (_isAnchorPanel != value)
+                    _isAnchorPanel = value;
+            }
+        }
+        private bool _isAnchorPanel = false;
+
+        /// <summary>
+        /// 表示该Panel的Children中递归包含<see cref="LayoutDocumentGroupControl"/>
+        /// </summary>
+        public bool ContainDocument
+        {
+            get
+            {
+                return _side == DockSide.None;
+            }
+        }
+
+        public bool IsEmpty
+        {
+            get { return Children.Count == 0; }
+        }
+
+        public int Count
+        {
+            get { return Children.Count; }
+        }
+
+        public bool IsRootPanel
+        {
+            get
+            {
+                return DockViewParent is LayoutRootPanel;
+            }
+        }
+
+        public DockManager DockManager
+        {
+            get
+            {
+                var parent = DockViewParent;
+                while (parent?.DockViewParent != null)
+                {
+                    if (parent.DockViewParent is DockManager)
+                        return parent.DockViewParent as DockManager;
+                    else parent = parent.DockViewParent;
+                }
+                return null;
+            }
+        }
+
+        private double _desiredWidth;
+        public double DesiredWidth
+        {
+            get
+            {
+                return _desiredWidth;
+            }
+            set
+            {
+                if (_desiredWidth != value)
+                    _desiredWidth = value;
+            }
+        }
+
+        private double _desiredHeight;
+        public double DesiredHeight
+        {
+            get
+            {
+                return _desiredHeight;
+            }
+            set
+            {
+                if (_desiredHeight != value)
+                    _desiredHeight = value;
+            }
+        }
+
+        public double FloatLeft
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double FloatTop
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private Direction _direction = Direction.None;
+        public Direction Direction
+        {
+            get { return _direction; }
+            set { _direction = value; }
+        }
+
+        private DockSide _side;
+        public DockSide Side
+        {
+            get
+            {
+                return _side;
+            }
+            internal set
+            {
+                if (_side != value)
+                {
+                    _side = value;
+                    foreach (var child in Children)
+                    {
+                        if (child is ILayoutPanel)
+                            (child as LayoutGroupPanel).Side = value;
+                        if (child is BaseGroupControl)
+                            ((child as BaseGroupControl).Model as BaseLayoutGroup).Side = value;
+                    }
+                }
+            }
+        }
+
+        public IDockModel Model
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public IDockView DockViewParent
+        {
+            get
+            {
+                return Parent == null ? null : Parent as IDockView;
+            }
+        }
+
+        public DragMode Mode
+        {
+            get
+            {
+                return DragMode.RootPanel;
+            }
+        }
+
+        #region MeasureOverride
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (InternalChildren.Count == 0) return availableSize;
+            if (IsAnchorPanel || IsDocumentPanel)
+                return _MeasureOverrideFull(availableSize);
+            else return _MeasureOverrideSplit(availableSize);
+        }
+
+        /// <summary>
+        /// Children全部为同一种<see cref="ILayoutGroupControl"/>时调用
+        /// </summary>
+        /// <param name="availableSize"></param>
+        /// <returns></returns>
+        private Size _MeasureOverrideFull(Size availableSize)
+        {
+            var layoutgroups = new List<ILayoutSize>();
+            for (int i = 0; i < InternalChildren.Count; i += 2)
+                layoutgroups.Add(InternalChildren[i] as ILayoutSize);
+
+            double wholelength = 0;
+            double availableLength = 0;
+            var stars = new List<double>();
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    wholelength = layoutgroups.Sum(group => group.DesiredWidth);
+                    foreach (var group in layoutgroups)
+                        stars.Add(group.DesiredWidth / wholelength);
+                    availableLength = Math.Max(availableSize.Width - Constants.SplitterSpan * (layoutgroups.Count - 1), 0);
+                    //当children中的最小可用空间都大于各自最小尺寸，则按每个child的实际长度比来分配空间
+                    bool canUniverseH = true;
+                    for (int i = 0; i < InternalChildren.Count; i += 2)
+                    {
+                        if (availableLength * stars[i / 2] < _GetMinLength(InternalChildren[i]))
+                        {
+                            canUniverseH = false;
+                            break;
+                        }
+                    }
+                    if (canUniverseH)
+                    {
+                        for (int i = 0; i < InternalChildren.Count; i += 2)
+                        {
+                            (InternalChildren[i] as ILayoutSize).DesiredWidth = stars[i / 2] * availableLength;
+                            InternalChildren[i].Measure(new Size((InternalChildren[i] as ILayoutSize).DesiredWidth, availableSize.Height));
+                            if (i + 1 < InternalChildren.Count)
+                                InternalChildren[i + 1].Measure(new Size(Constants.SplitterSpan, availableSize.Height));
+                        }
+                    }
+                    else
+                    {
+                        double totalMinH = 0;
+                        for (int i = 0; i < InternalChildren.Count; i += 2)
+                            totalMinH += _GetMinLength(InternalChildren[i]);
+                        double deceed = wholelength - availableLength;
+                        if (deceed >= 0 && (availableLength - totalMinH > 0))
+                        {
+                            for (int i = 0; i < InternalChildren.Count; i += 2)
+                            {
+                                double childlen = layoutgroups[i / 2].DesiredWidth;
+                                double childMin = _GetMinLength(InternalChildren[i]);
+                                if (deceed > 0)
+                                {
+                                    if (childlen - deceed > childMin)
+                                    {
+                                        InternalChildren[i].Measure(new Size(childlen - deceed, availableSize.Height));
+                                        deceed = 0;
+                                    }
+                                    else
+                                    {
+                                        InternalChildren[i].Measure(new Size(childMin, availableSize.Height));
+                                        deceed -= childlen - childMin;
+                                    }
+                                }
+                                else InternalChildren[i].Measure(new Size(childlen, availableSize.Height));
+                                if (i + 1 < InternalChildren.Count)
+                                    InternalChildren[i + 1].Measure(new Size(Constants.SplitterSpan, availableSize.Height));
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            return _ClipToBounds_Measure(availableSize);
+                        }
+                    }
+                    break;
+                case Direction.Vertical:
+                    wholelength = layoutgroups.Sum(group => group.DesiredHeight);
+                    foreach (var group in layoutgroups)
+                        stars.Add(group.DesiredHeight / wholelength);
+                    availableLength = Math.Max(availableSize.Height - Constants.SplitterSpan * (layoutgroups.Count - 1), 0);
+                    //当children中的最小可用空间都大于各自最小尺寸，则按每个child的实际长度比来分配空间
+                    bool canUniverseV = true;
+                    for (int i = 0; i < InternalChildren.Count; i += 2)
+                    {
+                        if (availableLength * stars[i / 2] < _GetMinLength(InternalChildren[i]))
+                        {
+                            canUniverseV = false;
+                            break;
+                        }
+                    }
+                    if (canUniverseV)
+                    {
+                        for (int i = 0; i < InternalChildren.Count; i += 2)
+                        {
+                            (InternalChildren[i] as ILayoutSize).DesiredHeight = stars[i / 2] * availableLength;
+                            InternalChildren[i].Measure(new Size(availableSize.Width, (InternalChildren[i] as ILayoutSize).DesiredHeight));
+                            if (i + 1 < InternalChildren.Count)
+                                InternalChildren[i + 1].Measure(new Size(availableSize.Width, Constants.SplitterSpan));
+                        }
+                    }
+                    else
+                    {
+                        double totalMinV = 0;
+                        for (int i = 0; i < InternalChildren.Count; i += 2)
+                            totalMinV += _GetMinLength(InternalChildren[i]);
+                        double deceed = wholelength - availableLength;
+                        if (deceed >= 0 && (availableLength - totalMinV > 0))
+                        {
+                            for (int i = 0; i < InternalChildren.Count; i += 2)
+                            {
+                                double childlen = layoutgroups[i / 2].DesiredHeight;
+                                double childMin = _GetMinLength(InternalChildren[i]);
+                                if (deceed > 0)
+                                {
+                                    if (childlen - deceed > childMin)
+                                    {
+                                        InternalChildren[i].Measure(new Size(availableSize.Width, childlen - deceed));
+                                        deceed = 0;
+                                    }
+                                    else
+                                    {
+                                        InternalChildren[i].Measure(new Size(availableSize.Width, childMin));
+                                        deceed -= childlen - childMin;
+                                    }
+                                }
+                                else InternalChildren[i].Measure(new Size(availableSize.Width, childlen));
+                                if (i + 1 < InternalChildren.Count)
+                                    InternalChildren[i + 1].Measure(new Size(availableSize.Width, Constants.SplitterSpan));
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            return _ClipToBounds_Measure(availableSize);
+                        }
+                    }
+                    break;
+                case Direction.None:
+                    InternalChildren[0].Measure(availableSize);
+                    break;
+            }
+
+            return availableSize;
+        }
+
+        private Size _MeasureOverrideSplit(Size availableSize)
+        {
+            ILayoutSize sizechild = default(ILayoutSize);
+            FrameworkElement documentChild = default(FrameworkElement);
+            //这里的wholeLength表示不需要调整child类型为LayoutDocumentGroupControl大小的最小总长度
+            double wholeLength = 0;
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    foreach (var child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                            wholeLength += Constants.SplitterSpan;
+                        else
+                        {
+                            if (_IsDocumentChild(child))
+                                wholeLength += _GetMinLength(child);
+                            else wholeLength += (child as ILayoutSize).DesiredWidth;
+                        }
+                    }
+
+                    //自动调整child类型为LayoutDocumentGroupControl的大小，以适应布局
+                    if (wholeLength <= availableSize.Width)
+                    {
+                        double useLength = 0;
+                        foreach (FrameworkElement child in InternalChildren)
+                        {
+                            if (child is LayoutDragSplitter)
+                            {
+                                useLength += Constants.SplitterSpan;
+                                child.Measure(new Size(Constants.SplitterSpan, availableSize.Height));
+                            }
+                            else
+                            {
+                                if (documentChild == null && _IsDocumentChild(child))
+                                    documentChild = child;
+                                else
+                                {
+                                    useLength += (child as ILayoutSize).DesiredWidth;
+                                    child.Measure(new Size((child as ILayoutSize).DesiredWidth, availableSize.Height));
+                                }
+                            }
+                        }
+                        (documentChild as ILayoutSize).DesiredWidth = availableSize.Width - useLength;
+                        (documentChild as ILayoutSize).DesiredHeight = availableSize.Height;
+                        documentChild.Measure(new Size((documentChild as ILayoutSize).DesiredWidth, (documentChild as ILayoutSize).DesiredHeight));
+                    }
+                    else//否则减小其它child的大小，以适应布局
+                    {
+                        //这里计算所有child的最小长度和
+                        if (_GetMinLength(this) <= availableSize.Width)
+                        {
+                            double exceed = wholeLength - availableSize.Width;
+                            foreach (FrameworkElement child in InternalChildren)
+                            {
+                                if (_IsDocumentChild(child))
+                                    child.Measure(new Size(_GetMinLength(child), availableSize.Height));
+                                else
+                                {
+                                    if (child is LayoutDragSplitter)
+                                        child.Measure(new Size(Constants.SplitterSpan, availableSize.Height));
+                                    else
+                                    {
+                                        sizechild = child as ILayoutSize;
+                                        double childMin = _GetMinLength(child);
+                                        if (exceed > 0)
+                                        {
+                                            if (sizechild.DesiredWidth - exceed >= childMin)
+                                            {
+                                                child.Measure(new Size(sizechild.DesiredWidth - exceed, availableSize.Height));
+                                                exceed = 0;
+                                            }
+                                            else
+                                            {
+                                                exceed -= sizechild.DesiredWidth - childMin;
+                                                child.Measure(new Size(childMin, availableSize.Height));
+                                            }
+                                        }
+                                        else child.Measure(new Size(sizechild.DesiredWidth, availableSize.Height));
+                                    }
+                                }
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            return _ClipToBounds_Measure(availableSize);
+                        }
+                    }
+                    break;
+                case Direction.Vertical:
+                    foreach (var child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                            wholeLength += Constants.SplitterSpan;
+                        else
+                        {
+                            if (_IsDocumentChild(child))
+                                wholeLength += _GetMinLength(child);
+                            else wholeLength += (child as ILayoutSize).DesiredHeight;
+                        }
+                    }
+                    //自动调整child类型为LayoutDocumentGroupControl的大小，以适应布局
+                    if (wholeLength <= availableSize.Height)
+                    {
+                        double useLength = 0;
+                        foreach (FrameworkElement child in InternalChildren)
+                        {
+                            if (child is LayoutDragSplitter)
+                            {
+                                useLength += Constants.SplitterSpan;
+                                child.Measure(new Size(availableSize.Width, Constants.SplitterSpan));
+                            }
+                            else
+                            {
+                                if (documentChild == null && _IsDocumentChild(child))
+                                    documentChild = child;
+                                else
+                                {
+                                    useLength += (child as ILayoutSize).DesiredHeight;
+                                    child.Measure(new Size(availableSize.Width, (child as ILayoutSize).DesiredHeight));
+                                }
+                            }
+                        }
+                        (documentChild as ILayoutSize).DesiredWidth = availableSize.Width;
+                        (documentChild as ILayoutSize).DesiredHeight = availableSize.Height - useLength;
+                        documentChild.Measure(new Size(availableSize.Width, availableSize.Height - useLength));
+                    }
+                    else//否则减小其它child的大小，以适应布局
+                    {
+                        //这里计算所有child的最小长度和
+                        if (_GetMinLength(this) <= availableSize.Height)
+                        {
+                            double exceed = wholeLength - availableSize.Height;
+                            foreach (FrameworkElement child in InternalChildren)
+                            {
+                                if (_IsDocumentChild(child))
+                                    child.Measure(new Size(availableSize.Width, _GetMinLength(child)));
+                                else
+                                {
+                                    if (child is LayoutDragSplitter)
+                                        child.Measure(new Size(availableSize.Width, Constants.SplitterSpan));
+                                    else
+                                    {
+                                        sizechild = child as ILayoutSize;
+                                        double childMin = _GetMinLength(child);
+                                        if (exceed > 0)
+                                        {
+                                            if (sizechild.DesiredHeight - exceed >= childMin)
+                                            {
+                                                child.Measure(new Size(availableSize.Width, sizechild.DesiredHeight - exceed));
+                                                exceed = 0;
+                                            }
+                                            else
+                                            {
+                                                exceed -= sizechild.DesiredHeight - childMin;
+                                                child.Measure(new Size(availableSize.Width, childMin));
+                                            }
+                                        }
+                                        else child.Measure(new Size(availableSize.Width, sizechild.DesiredHeight));
+                                    }
+                                }
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            return _ClipToBounds_Measure(availableSize);
+                        }
+                    }
+                    break;
+            }
+            return availableSize;
+        }
+
+        private Size _ClipToBounds_Measure(Size availableSize)
+        {
+            double minLength;
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    double availableLength = availableSize.Width;
+                    for (int i = 0; i < InternalChildren.Count; i += 2)
+                    {
+                        minLength = _GetMinLength(InternalChildren[i]);
+                        if (availableLength >= minLength)
+                        {
+                            InternalChildren[i].Measure(new Size(minLength, availableSize.Height));
+                            availableLength -= minLength;
+                        }
+                        else
+                        {
+                            InternalChildren[i].Measure(new Size(availableLength, availableSize.Height));
+                            availableLength = 0;
+                        }
+                        if (i + 1 < InternalChildren.Count)
+                        {
+                            if (availableLength >= Constants.SplitterSpan)
+                            {
+                                InternalChildren[i + 1].Measure(new Size(Constants.SplitterSpan, availableSize.Height));
+                                availableLength -= Constants.SplitterSpan;
+                            }
+                            else
+                            {
+                                InternalChildren[i + 1].Measure(new Size(availableLength, availableSize.Height));
+                                availableLength = 0;
+                            }
+                        }
+                    }
+                    break;
+                case Direction.Vertical:
+                    availableLength = availableSize.Height;
+                    for (int i = 0; i < InternalChildren.Count; i += 2)
+                    {
+                        minLength = _GetMinLength(InternalChildren[i]);
+                        if (availableLength >= minLength)
+                        {
+                            InternalChildren[i].Measure(new Size(availableSize.Width, minLength));
+                            availableLength -= minLength;
+                        }
+                        else
+                        {
+                            InternalChildren[i].Measure(new Size(availableSize.Width, availableLength));
+                            availableLength = 0;
+                        }
+                        if (i + 1 < InternalChildren.Count)
+                        {
+                            if (availableLength >= Constants.SplitterSpan)
+                            {
+                                InternalChildren[i + 1].Measure(new Size(availableSize.Width, Constants.SplitterSpan));
+                                availableLength -= Constants.SplitterSpan;
+                            }
+                            else
+                            {
+                                InternalChildren[i + 1].Measure(new Size(availableSize.Width, availableLength));
+                                availableLength = 0;
+                            }
+                        }
+                    }
+                    break;
+            }
+            return availableSize;
+        }
+        #endregion
+
+        #region ArrangeOverride
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (InternalChildren.Count == 0) return finalSize;
+            if (IsAnchorPanel || IsDocumentPanel)
+                return _ArrangeOverrideFull(finalSize);
+            else return _ArrangeOverrideSplit(finalSize);
+        }
+
+        private Size _ArrangeOverrideFull(Size finalSize)
+        {
+            var layoutgroups = new List<ILayoutSize>();
+            for (int i = 0; i < InternalChildren.Count; i += 2)
+                layoutgroups.Add(InternalChildren[i] as ILayoutSize);
+
+            double wholelength = 0;
+            double availableLength = 0;
+            var stars = new List<double>();
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    wholelength = layoutgroups.Sum(group => group.DesiredWidth);
+                    foreach (var group in layoutgroups)
+                        stars.Add(group.DesiredWidth / wholelength);
+                    availableLength = Math.Max(finalSize.Width - Constants.SplitterSpan * (layoutgroups.Count - 1), 0);
+                    //当children中的最小可用空间都大于各自最小尺寸，则按每个child的实际长度比来分配空间
+                    bool canArrUniverseH = true;
+                    for (int i = 0; i < InternalChildren.Count; i += 2)
+                    {
+                        if (availableLength * stars[i / 2] < _GetMinLength(InternalChildren[i]))
+                        {
+                            canArrUniverseH = false;
+                            break;
+                        }
+                    }
+                    if (canArrUniverseH)
+                        return _ArrangeUniverse(finalSize);
+                    else
+                    {
+                        double totalMinArrH = 0;
+                        for (int i = 0; i < InternalChildren.Count; i += 2)
+                            totalMinArrH += _GetMinLength(InternalChildren[i]);
+                        double deceed = wholelength - availableLength;
+                        if (deceed >= 0 && (availableLength - totalMinArrH > 0))
+                        {
+                            double offset = 0;
+                            for (int i = 0; i < InternalChildren.Count; i += 2)
+                            {
+                                double childlen = layoutgroups[i / 2].DesiredWidth;
+                                double childMin = _GetMinLength(InternalChildren[i]);
+                                if (deceed > 0)
+                                {
+                                    if (childlen - deceed > childMin)
+                                    {
+                                        InternalChildren[i].Arrange(new Rect(new Point(offset, 0), new Size(childlen - deceed, finalSize.Height)));
+                                        offset += childlen - deceed;
+                                        deceed = 0;
+                                    }
+                                    else
+                                    {
+                                        InternalChildren[i].Arrange(new Rect(new Point(offset, 0), new Size(childMin, finalSize.Height)));
+                                        offset += childMin;
+                                        deceed -= childlen - childMin;
+                                    }
+                                }
+                                else
+                                {
+                                    InternalChildren[i].Arrange(new Rect(new Point(offset, 0), new Size(childlen, finalSize.Height)));
+                                    offset += childlen;
+                                }
+                                if (i + 1 < InternalChildren.Count)
+                                {
+                                    InternalChildren[i + 1].Arrange(new Rect(new Point(offset, 0), new Size(Constants.SplitterSpan, finalSize.Height)));
+                                    offset += Constants.SplitterSpan;
+                                }
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            return _ClipToBounds_Arrange(finalSize);
+                        }
+                    }
+                    break;
+                case Direction.Vertical:
+                    wholelength = layoutgroups.Sum(group => group.DesiredHeight);
+                    foreach (var group in layoutgroups)
+                        stars.Add(group.DesiredHeight / wholelength);
+                    availableLength = Math.Max(finalSize.Height - Constants.SplitterSpan * (layoutgroups.Count - 1), 0);
+                    //当children中的最小可用空间都大于各自最小尺寸，则按每个child的实际长度比来分配空间
+                    bool canArrUniverseV = true;
+                    for (int i = 0; i < InternalChildren.Count; i += 2)
+                    {
+                        if (availableLength * stars[i / 2] < _GetMinLength(InternalChildren[i]))
+                        {
+                            canArrUniverseV = false;
+                            break;
+                        }
+                    }
+                    if (canArrUniverseV)
+                        return _ArrangeUniverse(finalSize);
+                    else
+                    {
+                        double totalMinArrV = 0;
+                        for (int i = 0; i < InternalChildren.Count; i += 2)
+                            totalMinArrV += _GetMinLength(InternalChildren[i]);
+                        double deceed = wholelength - availableLength;
+                        if (deceed >= 0 && (availableLength - totalMinArrV > 0))
+                        {
+                            double offset = 0;
+                            for (int i = 0; i < InternalChildren.Count; i += 2)
+                            {
+                                double childlen = layoutgroups[i / 2].DesiredHeight;
+                                double childMin = _GetMinLength(InternalChildren[i]);
+                                if (deceed > 0)
+                                {
+                                    if (childlen - deceed > childMin)
+                                    {
+                                        InternalChildren[i].Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, childlen - deceed)));
+                                        offset += childlen - deceed;
+                                        deceed = 0;
+                                    }
+                                    else
+                                    {
+                                        InternalChildren[i].Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, childMin)));
+                                        offset += childMin;
+                                        deceed -= childlen - childMin;
+                                    }
+                                }
+                                else
+                                {
+                                    InternalChildren[i].Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, childlen)));
+                                    offset += childlen;
+                                }
+                                if (i + 1 < InternalChildren.Count)
+                                {
+                                    InternalChildren[i + 1].Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, Constants.SplitterSpan)));
+                                    offset += Constants.SplitterSpan;
+                                }
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            return _ClipToBounds_Arrange(finalSize);
+                        }
+                    }
+                    break;
+                case Direction.None:
+                    InternalChildren[0].Arrange(new Rect(new Point(), finalSize));
+                    break;
+            }
+
+            return finalSize;
+        }
+
+        private Size _ArrangeOverrideSplit(Size finalSize)
+        {
+            ILayoutSize sizechild = default(ILayoutSize);
+            //这里的wholeLength表示不需要调整child类型为LayoutDocumentGroupControl大小的最小总长度
+            double wholeLength = 0;
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    foreach (var child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                            wholeLength += Constants.SplitterSpan;
+                        else
+                        {
+                            if (_IsDocumentChild(child))
+                                wholeLength += _GetMinLength(child);
+                            else wholeLength += (child as ILayoutSize).DesiredWidth;
+                        }
+                    }
+
+                    //自动调整child类型为LayoutDocumentGroupControl的大小，以适应布局
+                    if (wholeLength <= finalSize.Width)
+                        return _ArrangeUniverse(finalSize);
+                    else//否则减小其它child的大小，以适应布局
+                    {
+                        //这里计算所有child的最小长度和
+                        if (_GetMinLength(this) <= finalSize.Width)
+                        {
+                            double offset = 0;
+                            double exceed = wholeLength - finalSize.Width;
+                            foreach (FrameworkElement child in InternalChildren)
+                            {
+                                if (_IsDocumentChild(child))
+                                {
+                                    child.Arrange(new Rect(new Point(offset, 0), new Size(_GetMinLength(child), finalSize.Height)));
+                                    offset += _GetMinLength(child);
+                                }
+                                else
+                                {
+                                    if (child is LayoutDragSplitter)
+                                    {
+                                        child.Arrange(new Rect(new Point(offset, 0), new Size(Constants.SplitterSpan, finalSize.Height)));
+                                        offset += Constants.SplitterSpan;
+                                    }
+                                    else
+                                    {
+                                        sizechild = child as ILayoutSize;
+                                        double childMin = _GetMinLength(child);
+                                        if (exceed > 0)
+                                        {
+                                            if (sizechild.DesiredWidth - exceed >= childMin)
+                                            {
+                                                child.Arrange(new Rect(new Point(offset, 0), new Size(sizechild.DesiredWidth - exceed, finalSize.Height)));
+                                                offset += sizechild.DesiredWidth - exceed;
+                                                exceed = 0;
+                                            }
+                                            else
+                                            {
+                                                exceed -= sizechild.DesiredWidth - childMin;
+                                                child.Arrange(new Rect(new Point(offset, 0), new Size(childMin, finalSize.Height)));
+                                                offset += childMin;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            child.Arrange(new Rect(new Point(offset, 0), new Size(sizechild.DesiredWidth, finalSize.Height)));
+                                            offset += sizechild.DesiredWidth;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            _ClipToBounds_Arrange(finalSize);
+                        }
+                    }
+                    break;
+                case Direction.Vertical:
+                    foreach (var child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                            wholeLength += Constants.SplitterSpan;
+                        else
+                        {
+                            if (_IsDocumentChild(child))
+                                wholeLength += _GetMinLength(child);
+                            else wholeLength += (child as ILayoutSize).DesiredHeight;
+                        }
+                    }
+                    //自动调整child类型为LayoutDocumentGroupControl的大小，以适应布局
+                    if (wholeLength <= finalSize.Height)
+                        return _ArrangeUniverse(finalSize);
+                    else//否则减小其它child的大小，以适应布局
+                    {
+                        //这里计算所有child的最小长度和
+                        if (_GetMinLength(this) <= finalSize.Height)
+                        {
+                            double offset = 0;
+                            double exceed = wholeLength - finalSize.Height;
+                            foreach (FrameworkElement child in InternalChildren)
+                            {
+                                if (_IsDocumentChild(child))
+                                {
+                                    child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, _GetMinLength(child))));
+                                    offset += _GetMinLength(child);
+                                }
+                                else
+                                {
+                                    if (child is LayoutDragSplitter)
+                                    {
+                                        child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, Constants.SplitterSpan)));
+                                        offset += Constants.SplitterSpan;
+                                    }
+                                    else
+                                    {
+                                        sizechild = child as ILayoutSize;
+                                        double childMin = _GetMinLength(child);
+                                        if (exceed > 0)
+                                        {
+                                            if (sizechild.DesiredHeight - exceed >= childMin)
+                                            {
+                                                child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, sizechild.DesiredHeight - exceed)));
+                                                offset += sizechild.DesiredHeight - exceed;
+                                                exceed = 0;
+                                            }
+                                            else
+                                            {
+                                                exceed -= sizechild.DesiredHeight - childMin;
+                                                child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, childMin)));
+                                                offset += childMin;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, sizechild.DesiredHeight)));
+                                            offset += sizechild.DesiredHeight;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else//表示可用空间小于最小需求空间大小，故执行剪裁
+                        {
+                            _ClipToBounds_Arrange(finalSize);
+                        }
+                    }
+                    break;
+            }
+
+            return finalSize;
+        }
+
+        private Size _ArrangeUniverse(Size finalSize)
+        {
+            double offset = 0;
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    foreach (FrameworkElement child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                        {
+                            child.Arrange(new Rect(new Point(offset, 0), new Size(Constants.SplitterSpan, finalSize.Height)));
+                            offset += Constants.SplitterSpan;
+                        }
+                        else
+                        {
+                            child.Arrange(new Rect(new Point(offset, 0), new Size((child as ILayoutSize).DesiredWidth, finalSize.Height)));
+                            offset += (child as ILayoutSize).DesiredWidth;
+                        }
+                    }
+                    break;
+                case Direction.Vertical:
+                    foreach (FrameworkElement child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                        {
+                            child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, Constants.SplitterSpan)));
+                            offset += Constants.SplitterSpan;
+                        }
+                        else
+                        {
+                            child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, (child as ILayoutSize).DesiredHeight)));
+                            offset += (child as ILayoutSize).DesiredHeight;
+                        }
+                    }
+                    break;
+            }
+            return finalSize;
+        }
+
+        private Size _ClipToBounds_Arrange(Size finalSize)
+        {
+            double avaLength, offset = 0, minLength;
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    avaLength = finalSize.Width;
+
+                    foreach (FrameworkElement child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                        {
+                            if (avaLength >= Constants.SplitterSpan)
+                            {
+                                child.Arrange(new Rect(new Point(offset, 0), new Size(Constants.SplitterSpan, finalSize.Height)));
+                                offset += Constants.SplitterSpan;
+                                avaLength -= Constants.SplitterSpan;
+                            }
+                            else
+                            {
+                                child.Arrange(new Rect(new Point(offset, 0), new Size(avaLength, finalSize.Height)));
+                                offset += avaLength;
+                                avaLength = 0;
+                            }
+                        }
+                        else
+                        {
+                            minLength = _GetMinLength(child);
+                            if (avaLength >= minLength)
+                            {
+                                child.Arrange(new Rect(new Point(offset, 0), new Size(minLength, finalSize.Height)));
+                                offset += minLength;
+                                avaLength -= minLength;
+                            }
+                            else
+                            {
+                                child.Arrange(new Rect(new Point(offset, 0), new Size(avaLength, finalSize.Height)));
+                                offset += avaLength;
+                                avaLength = 0;
+                            }
+                        }
+                    }
+                    break;
+                case Direction.Vertical:
+                    avaLength = finalSize.Height;
+
+                    foreach (FrameworkElement child in InternalChildren)
+                    {
+                        if (child is LayoutDragSplitter)
+                        {
+                            if (avaLength >= Constants.SplitterSpan)
+                            {
+                                child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, Constants.SplitterSpan)));
+                                offset += Constants.SplitterSpan;
+                                avaLength -= Constants.SplitterSpan;
+                            }
+                            else
+                            {
+                                child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, avaLength)));
+                                offset += avaLength;
+                                avaLength = 0;
+                            }
+                        }
+                        else
+                        {
+                            minLength = _GetMinLength(child);
+                            if (avaLength >= minLength)
+                            {
+                                child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, minLength)));
+                                offset += minLength;
+                                avaLength -= minLength;
+                            }
+                            else
+                            {
+                                child.Arrange(new Rect(new Point(0, offset), new Size(finalSize.Width, avaLength)));
+                                offset += avaLength;
+                                avaLength = 0;
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            return finalSize;
+        }
+
+        #endregion
+
+        #region DragSplitter
+        private Popup _dragPopup;
+        private Point pToScreen;
+        private double _dragBound1;
+        private double _dragBound2;
+
+
+        private void OnDragStarted(object sender, DragStartedEventArgs e)
+        {
+            _ComputeDragBounds(sender as LayoutDragSplitter, ref _dragBound1, ref _dragBound2);
+            _CreateDragPopup(sender as LayoutDragSplitter);
+        }
+
+        private void OnDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            if (Direction == Direction.Horizontal)
+            {
+                if (e.HorizontalChange != 0)
+                {
+                    double newPos = pToScreen.X + e.HorizontalChange;
+
+                    var splitterIndex = Children.IndexOf(sender as UIElement);
+                    var previousMinLength = _GetMinLength(Children[splitterIndex - 1]);
+                    var nextMinLength = _GetMinLength(Children[splitterIndex + 1]);
+                    var minAllowedOffset = _dragBound1 + previousMinLength;
+                    var maxAllowedOffset = _dragBound2 - nextMinLength;
+                    var hasNoAvailableRange = minAllowedOffset >= maxAllowedOffset;
+                    if (hasNoAvailableRange)
+                    {
+                        return;
+                    }
+
+                    var isWithinRange = newPos >= minAllowedOffset && newPos <= maxAllowedOffset;
+                    if (isWithinRange)
+                    {
+                        _dragPopup.HorizontalOffset = newPos;
+                    }
+                    else
+                    {
+                        if (e.HorizontalChange > 0)
+                        {
+                            _dragPopup.HorizontalOffset = maxAllowedOffset;
+                        }
+                        else
+                        {
+                            _dragPopup.HorizontalOffset = minAllowedOffset;
+                        }
+                    }
+                }
+                else
+                {
+                    _dragPopup.HorizontalOffset = pToScreen.X;
+                }
+            }
+            else
+            {
+                if (e.VerticalChange != 0)
+                {
+                    double newPos = pToScreen.Y + e.VerticalChange;
+
+                    var splitterIndex = Children.IndexOf(sender as UIElement);
+                    var previousMinLength = _GetMinLength(Children[splitterIndex - 1]);
+                    var nextMinLength = _GetMinLength(Children[splitterIndex + 1]);
+                    var minAllowedOffset = _dragBound1 + previousMinLength;
+                    var maxAllowedOffset = _dragBound2 - nextMinLength;
+                    var hasNoAvailableRange = minAllowedOffset >= maxAllowedOffset;
+                    if (hasNoAvailableRange)
+                    {
+                        return;
+                    }
+
+                    var isWithinRange = newPos >= minAllowedOffset && newPos <= maxAllowedOffset;
+                    if (isWithinRange)
+                    {
+                        _dragPopup.VerticalOffset = newPos;
+                    }
+                    else
+                    {
+                        if (e.VerticalChange > 0)
+                        {
+                            _dragPopup.VerticalOffset = maxAllowedOffset;
+                        }
+                        else
+                        {
+                            _dragPopup.VerticalOffset = minAllowedOffset;
+                        }
+                    }
+                }
+                else
+                {
+                    _dragPopup.VerticalOffset = pToScreen.Y;
+                }
+            }
+        }
+
+        private void OnDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            double delta = Direction == Direction.Horizontal ? _dragPopup.HorizontalOffset - pToScreen.X : _dragPopup.VerticalOffset - pToScreen.Y;
+            double span1 = 0, span2 = 0;
+            var index = Children.IndexOf(sender as UIElement);
+            span1 = _GetMinLength(Children[index - 1]);
+            span2 = _GetMinLength(Children[index + 1]);
+            if (delta != 0)
+            {
+                if (Direction == Direction.Horizontal)
+                {
+                    if ((_dragPopup.HorizontalOffset >= _dragBound1 + span1) && (_dragPopup.HorizontalOffset <= _dragBound2 - span2))
+                    {
+                        (Children[index - 1] as ILayoutSize).DesiredWidth += delta;
+                        (Children[index + 1] as ILayoutSize).DesiredWidth -= delta;
+                    }
+                    else
+                    {
+                        if (delta > 0)
+                        {
+                            (Children[index - 1] as ILayoutSize).DesiredWidth += _dragBound2 - span2 - pToScreen.X;
+                            (Children[index + 1] as ILayoutSize).DesiredWidth -= _dragBound2 - span2 - pToScreen.X;
+                        }
+                        else
+                        {
+                            (Children[index - 1] as ILayoutSize).DesiredWidth += _dragBound1 + span1 - pToScreen.X;
+                            (Children[index + 1] as ILayoutSize).DesiredWidth -= _dragBound1 + span1 - pToScreen.X;
+                        }
+                    }
+                }
+                else
+                {
+                    if ((_dragPopup.VerticalOffset >= _dragBound1 + span1) && (_dragPopup.VerticalOffset <= _dragBound2 - span2))
+                    {
+                        (Children[index - 1] as ILayoutSize).DesiredHeight += delta;
+                        (Children[index + 1] as ILayoutSize).DesiredHeight -= delta;
+                    }
+                    else
+                    {
+                        if (delta > 0)
+                        {
+                            (Children[index - 1] as ILayoutSize).DesiredHeight += _dragBound2 - span2 - pToScreen.Y;
+                            (Children[index + 1] as ILayoutSize).DesiredHeight -= _dragBound2 - span2 - pToScreen.Y;
+                        }
+                        else
+                        {
+                            (Children[index - 1] as ILayoutSize).DesiredHeight += _dragBound1 + span1 - pToScreen.Y;
+                            (Children[index + 1] as ILayoutSize).DesiredHeight -= _dragBound1 + span1 - pToScreen.Y;
+                        }
+                    }
+                }
+            }
+            _DisposeDragPopup();
+
+            InvalidateMeasure();
+        }
+
+        /// <summary>
+        /// 计算拖动时的上下边界值
+        /// </summary>
+        /// <param name="splitter">拖动的对象</param>
+        /// <param name="x1">下界</param>
+        /// <param name="x2">上界</param>
+        private void _ComputeDragBounds(LayoutDragSplitter splitter, ref double x1, ref double x2)
+        {
+            int index = Children.IndexOf(splitter);
+            if (index > 1)
+            {
+                var splitter_x1 = Children[index - 2];
+                var pToScreen = this.PointToScreenDPIWithoutFlowDirection(new Point());
+                var transfrom = splitter_x1.TransformToAncestor(this);
+                var _pToInterPanel = transfrom.Transform(new Point(0, 0));
+                pToScreen.X += _pToInterPanel.X;
+                pToScreen.Y += _pToInterPanel.Y;
+                if (Direction == Direction.Horizontal)
+                    x1 = pToScreen.X + Constants.SplitterSpan;
+                else x1 = pToScreen.Y + Constants.SplitterSpan;
+            }
+            else
+            {
+                var pToScreen = this.PointToScreenDPIWithoutFlowDirection(new Point());
+                if (Direction == Direction.Horizontal)
+                    x1 = pToScreen.X;
+                else x1 = pToScreen.Y;
+            }
+
+            if (index < Children.Count - 2)
+            {
+                var splitter_x2 = Children[index + 2];
+                var pToScreen = this.PointToScreenDPIWithoutFlowDirection(new Point());
+                var transfrom = splitter_x2.TransformToAncestor(this);
+                var _pToInterPanel = transfrom.Transform(new Point(0, 0));
+                pToScreen.X += _pToInterPanel.X;
+                pToScreen.Y += _pToInterPanel.Y;
+                if (Direction == Direction.Horizontal)
+                    x2 = pToScreen.X - Constants.SplitterSpan;
+                else x2 = pToScreen.Y - Constants.SplitterSpan;
+            }
+            else
+            {
+                var pToScreen = this.PointToScreenDPIWithoutFlowDirection(new Point());
+                if (Direction == Direction.Horizontal)
+                    x2 = pToScreen.X + ActualWidth - Constants.SplitterSpan;
+                else x2 = pToScreen.Y + ActualHeight - Constants.SplitterSpan;
+            }
+        }
+
+        private void _CreateDragPopup(LayoutDragSplitter splitter)
+        {
+            pToScreen = this.PointToScreenDPIWithoutFlowDirection(new Point());
+            var transfrom = splitter.TransformToAncestor(this);
+            var _pToInterPanel = transfrom.Transform(new Point(0, 0));
+            pToScreen.X += _pToInterPanel.X;
+            pToScreen.Y += _pToInterPanel.Y;
+
+            int index = Children.IndexOf(splitter);
+            switch (Direction)
+            {
+                case Direction.Horizontal:
+                    (Children[index - 1] as ILayoutSize).DesiredWidth = (Children[index - 1] as FrameworkElement).ActualWidth;
+                    (Children[index + 1] as ILayoutSize).DesiredWidth = (Children[index + 1] as FrameworkElement).ActualWidth;
+                    break;
+                case Direction.Vertical:
+                    (Children[index - 1] as ILayoutSize).DesiredHeight = (Children[index - 1] as FrameworkElement).ActualHeight;
+                    (Children[index + 1] as ILayoutSize).DesiredHeight = (Children[index + 1] as FrameworkElement).ActualHeight;
+                    break;
+            }
+
+            _dragPopup = new Popup()
+            {
+                Child = new Rectangle()
+                {
+                    Height = splitter.ActualHeight,
+                    Width = splitter.ActualWidth,
+                    Fill = Brushes.Black,
+                    Opacity = Constants.DragOpacity,
+                    IsHitTestVisible = false,
+                },
+                Placement = PlacementMode.Absolute,
+                HorizontalOffset = pToScreen.X,
+                VerticalOffset = pToScreen.Y,
+                AllowsTransparency = true
+            };
+
+            DockHelper.ComputeSpliterLocation(_dragPopup, pToScreen, new Size(splitter.ActualWidth, splitter.ActualHeight));
+            _dragPopup.IsOpen = true;
+        }
+
+        private void _DisposeDragPopup()
+        {
+            _dragPopup.IsOpen = false;
+            _dragPopup = null;
+        }
+
+        internal LayoutDragSplitter _CreateSplitter(Cursor cursor)
+        {
+            var splitter = new LayoutDragSplitter()
+            {
+                Cursor = cursor,
+                Background = Direction == Direction.Horizontal ? ResourceManager.SplitterBrushVertical : ResourceManager.SplitterBrushHorizontal,
+            };
+            splitter.DragStarted += OnDragStarted;
+            splitter.DragDelta += OnDragDelta;
+            splitter.DragCompleted += OnDragCompleted;
+            return splitter;
+        }
+
+        internal void _DesstroySplitter(LayoutDragSplitter splitter)
+        {
+            splitter.DragStarted -= OnDragStarted;
+            splitter.DragDelta -= OnDragDelta;
+            splitter.DragCompleted -= OnDragCompleted;
+        }
+        #endregion
+
+        #region Auxiliary Method
+        /// <summary>
+        /// 判断Child是否包含文档（文档区域大小判定方式为Auto）
+        /// </summary>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        private bool _IsDocumentChild(object child)
+        {
+            return child is LayoutDocumentGroupControl
+                   || (child is LayoutGroupPanel && (child as LayoutGroupPanel).ContainDocument);
+        }
+
+
+        /// <summary>
+        /// 计算obj的中最小长度
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private double _GetMinLength(object obj)
+        {
+            if (obj is LayoutGroupPanel childPanel)
+            {
+                if (childPanel.Children.Count == 0)
+                {
+                    if (Direction == Direction.Horizontal)
+                    {
+                        return Constants.MinDockWidth;
+                    }
+
+                    if (Direction == Direction.Vertical)
+                    {
+                        return Constants.MinDockHeight;
+                    }
+
+                    return Math.Max(Constants.MinDockWidth, Constants.MinDockHeight);
+                }
+
+                if (childPanel.Direction == Direction)
+                {
+                    double length = 0;
+                    foreach (var childElement in childPanel.Children)
+                    {
+                        var childLength = _GetMinLength(childElement);
+                        length += childLength;
+                    }
+
+                    return length;
+                }
+
+                double max = 0;
+                foreach (var childElement in childPanel.Children)
+                {
+                    var childLength = _GetMinLength(childElement);
+                    if (max < childLength)
+                    {
+                        max = childLength;
+                    }
+                }
+
+                return max;
+            }
+
+            if (obj is LayoutDragSplitter)
+            {
+                return Constants.SplitterSpan;
+            }
+
+            if (obj is FrameworkElement fe)
+            {
+                if (Direction == Direction.Horizontal)
+                {
+                    return Math.Max(Constants.MinDockWidth, fe.MinWidth);
+                }
+
+                if (Direction == Direction.Vertical)
+                {
+                    return Math.Max(Constants.MinDockHeight, fe.MinHeight);
+                }
+            }
+
+            if (Direction == Direction.Horizontal)
+            {
+                return Constants.MinDockWidth;
+            }
+
+            if (Direction == Direction.Vertical)
+            {
+                return Constants.MinDockHeight;
+            }
+
+            return Math.Max(Constants.MinDockWidth, Constants.MinDockHeight);
+        }
+        #endregion
+
+        public virtual void AttachChild(IDockView child, AttachMode mode, int index)
+        {
+            if (index < 0 || index > Count) throw new ArgumentOutOfRangeException("index out of range!");
+            if (!_AssertMode(mode)) throw new ArgumentException("mode is illegal!");
+
+            bool flag = true;
+
+            switch (Direction)
+            {
+                case Direction.None:
+                    if (mode == AttachMode.Left || mode == AttachMode.Right)
+                        Direction = Direction.Horizontal;
+                    else Direction = Direction.Vertical;
+                    break;
+                case Direction.Horizontal:
+                    if (mode == AttachMode.Left || mode == AttachMode.Right)
+                    {
+                        if (child is LayoutGroupPanel && !(child as LayoutGroupPanel).IsDocumentPanel)
+                        {
+                            flag = false;
+                            _AttachSubPanel((child as LayoutGroupPanel), index);
+                        }
+                    }
+                    else
+                    {
+                        if (IsRootPanel)
+                        {
+                            flag = false;
+                            AttachToRootPanel(child, mode);
+                        }
+                        else throw new ArgumentException("mode is illegal!");
+                    }
+                    break;
+                case Direction.Vertical:
+                    if (mode == AttachMode.Top || mode == AttachMode.Bottom)
+                    {
+                        if (child is LayoutGroupPanel && !(child as LayoutGroupPanel).IsDocumentPanel)
+                        {
+                            flag = false;
+                            _AttachSubPanel((child as LayoutGroupPanel), index);
+                        }
+                    }
+                    else
+                    {
+                        if (IsRootPanel)
+                        {
+                            flag = false;
+                            AttachToRootPanel(child, mode);
+                        }
+                        else throw new ArgumentException("mode is illegal!");
+                    }
+                    break;
+            }
+            if (flag)
+                _AttachChild(child, index);
+        }
+
+        public virtual void DetachChild(IDockView child, bool force = true)
+        {
+            if (Children.Contains(child as UIElement))
+            {
+                _DetachChild(child);
+                if (force)
+                {
+                    if (Children.Count < 2)
+                    {
+                        Direction = Direction.None;
+                        _isAnchorPanel = false;
+                    }
+
+                    //若元素为空，且不是RootPanel，则递归的将其从Parent中移除
+                    if (Children.Count == 0 && !IsRootPanel)
+                    {
+                        (Parent as ILayoutViewParent).DetachChild(this);
+                        Dispose();
+                    }
+                    //若元素只有一个，则将子元素层次减一
+                    if (Children.Count == 1)
+                    {
+                        child = Children[0] as IDockView;
+                        var parent = Parent as ILayoutViewParent;
+                        var index = parent.IndexOf(this);
+                        //从父容器中移除自己
+                        parent.DetachChild(this, false);
+                        _Dispose();
+                        //从父容器中加入自己的子元素
+                        if (parent is LayoutGroupPanel)
+                        {
+                            switch ((parent as LayoutGroupPanel).Direction)
+                            {
+                                case Direction.None:
+                                    parent.AttachChild(child, AttachMode.None, Math.Max(index - 1, 0));
+                                    break;
+                                case Direction.Horizontal:
+                                    parent.AttachChild(child, AttachMode.Left, Math.Max(index - 1, 0));
+                                    break;
+                                case Direction.Vertical:
+                                    parent.AttachChild(child, AttachMode.Top, Math.Max(index - 1, 0));
+                                    break;
+                            }
+                        }
+                        else parent.AttachChild(child, AttachMode.None, Math.Max(index - 1, 0));
+                    }
+                }
+            }
+        }
+
+        public int IndexOf(IDockView child)
+        {
+            if (Children.Contains(child as UIElement))
+                return Children.IndexOf(child as UIElement);
+            else return -1;
+        }
+
+        internal void _AttachChild(IDockView child, int index)
+        {
+            Children.Insert(index, child as UIElement);
+            if (Children.Count > 1)
+            {
+                switch (Direction)
+                {
+                    case Direction.Horizontal:
+                        if (index % 2 == 0)
+                            Children.Insert(index + 1, _CreateSplitter(Cursors.SizeWE));
+                        else Children.Insert(index, _CreateSplitter(Cursors.SizeWE));
+                        break;
+                    case Direction.Vertical:
+                        if (index % 2 == 0)
+                            Children.Insert(index + 1, _CreateSplitter(Cursors.SizeNS));
+                        else Children.Insert(index, _CreateSplitter(Cursors.SizeNS));
+                        break;
+                }
+            }
+        }
+
+        internal void _DetachChild(IDockView child)
+        {
+            if (Children.Contains(child as UIElement))
+            {
+                int index = Children.IndexOf(child as UIElement);
+                if (index > 0)
+                {
+                    Children.RemoveAt(index);
+                    //移除对应的Spliter
+                    if (Children.Count > 0)
+                    {
+                        _DesstroySplitter(Children[index - 1] as LayoutDragSplitter);
+                        Children.RemoveAt(index - 1);
+                    }
+                }
+                else
+                {
+                    Children.RemoveAt(0);
+                    //移除对应的Spliter
+                    if (Children.Count > 0)
+                    {
+                        _DesstroySplitter(Children[0] as LayoutDragSplitter);
+                        Children.RemoveAt(0);
+                    }
+                }
+            }
+        }
+
+        protected void _AttachSubPanel(LayoutGroupPanel subpanel, int index)
+        {
+            List<UIElement> children = new List<UIElement>();
+            foreach (UIElement ele in subpanel.Children)
+                children.Add(ele);
+            children.Reverse();
+            subpanel.Children.Clear();
+            foreach (UIElement ele in children)
+                if (ele is IDockView)
+                    _AttachChild(ele as IDockView, index);
+        }
+
+        internal void AttachToRootPanel(IDockView child, AttachMode mode)
+        {
+            var parent = Parent as ILayoutViewParent;
+            parent.DetachChild(this);
+            var pparent = new LayoutGroupPanel()
+            {
+                Direction = (mode == AttachMode.Left || mode == AttachMode.Right) ? Direction.Horizontal : Direction.Vertical
+            };
+            parent.AttachChild(pparent, AttachMode.None, 0);
+            if (mode == AttachMode.Left || mode == AttachMode.Top)
+            {
+                pparent._AttachChild(this, 0);
+                pparent._AttachChild(child, 0);
+            }
+            else
+            {
+                pparent._AttachChild(child, 0);
+                pparent._AttachChild(this, 0);
+            }
+        }
+
+        internal virtual bool _AssertMode(AttachMode mode)
+        {
+            return mode == AttachMode.Left
+                || mode == AttachMode.Top
+                || mode == AttachMode.Right
+                || mode == AttachMode.Bottom;
+        }
+
+        #region Drag
+        private DropMode _dropMode = DropMode.None;
+        public DropMode DropMode
+        {
+            get { return _dropMode; }
+            set { _dropMode = value; }
+        }
+
+        DropWindow _dragWnd;
+        public void OnDrop(DragItem source)
+        {
+            IDockView child;
+            if (source.RelativeObj is BaseFloatWindow)
+            {
+                child = (source.RelativeObj as BaseFloatWindow).Child;
+                (source.RelativeObj as BaseFloatWindow).DetachChild(child);
+            }
+            else child = source.RelativeObj as IDockView;
+
+            DockManager.ChangeDockMode(child, DockMode.Normal);
+            DockManager.FormatChildSize(child as ILayoutSize, new Size(ActualWidth, ActualHeight));
+            //取消AttachObj信息
+            DockManager.ClearAttachObj(child);
+
+
+            switch (DropMode)
+            {
+                case DropMode.Left:
+                    DockManager.ChangeSide(child, DockSide.Left);
+                    AttachChild(child, AttachMode.Left, 0);
+                    break;
+                case DropMode.Top:
+                    DockManager.ChangeSide(child, DockSide.Top);
+                    AttachChild(child, AttachMode.Top, 0);
+                    break;
+                case DropMode.Right:
+                    DockManager.ChangeSide(child, DockSide.Right);
+                    AttachChild(child, AttachMode.Right, Count);
+                    break;
+                case DropMode.Bottom:
+                    DockManager.ChangeSide(child, DockSide.Bottom);
+                    AttachChild(child, AttachMode.Bottom, Count);
+                    break;
+            }
+
+            if (source.RelativeObj is BaseFloatWindow)
+                (source.RelativeObj as BaseFloatWindow).Close();
+        }
+
+        public void CreateDropWindow()
+        {
+            if (_dragWnd == null)
+                _dragWnd = new DropWindow(this);
+        }
+
+        public void CloseDropWindow()
+        {
+            if (_dragWnd != null)
+            {
+                _dropMode = DropMode.None;
+                _dragWnd.Close();
+                _dragWnd = null;
+            }
+        }
+
+        public void HideDropWindow()
+        {
+            _dragWnd?.Hide();
+        }
+
+        public void ShowDropWindow()
+        {
+            if (_dragWnd == null)
+                CreateDropWindow();
+            var p = this.PointToScreenDPIWithoutFlowDirection(new Point());
+            DockHelper.UpdateLocation(_dragWnd, p.X, p.Y, ActualWidth, ActualHeight);
+            if (!_dragWnd.IsOpen) _dragWnd.IsOpen = true;
+            _dragWnd.Show();
+        }
+
+        public void Update(Point mouseP)
+        {
+            _dragWnd?.Update(mouseP);
+        }
+        #endregion
+
+        #region Attach
+        public void AttachWith(IDockView source, AttachMode mode = AttachMode.Center)
+        {
+            switch (mode)
+            {
+                case AttachMode.Left:
+                    _dropMode = DropMode.Left;
+                    break;
+                case AttachMode.Top:
+                    _dropMode = DropMode.Top;
+                    break;
+                case AttachMode.Right:
+                    _dropMode = DropMode.Right;
+                    break;
+                case AttachMode.Bottom:
+                    _dropMode = DropMode.Bottom;
+                    break;
+                default:
+                    _dropMode = DropMode.None;
+                    break;
+            }
+            DragItem item = new DragItem(source, DockMode.Normal, DragMode.None, new Point(), Rect.Empty, Size.Empty);
+            OnDrop(item);
+            _dropMode = DropMode.None;
+        }
+        #endregion
+
+        #region Layout Setting
+        public XElement GenerateLayout()
+        {
+            var ele = new XElement("Panel");
+            ele.SetAttributeValue("IsDocument", IsDocumentPanel);
+            ele.SetAttributeValue("Side", _side);
+            ele.SetAttributeValue("Direction", _direction);
+            foreach (var child in Children)
+            {
+                if (child is BaseGroupControl)
+                    ele.Add((child as BaseGroupControl).GenerateLayout());
+                else if (child is LayoutGroupPanel)
+                    ele.Add((child as LayoutGroupPanel).GenerateLayout());
+            }
+
+            return ele;
+        }
+
+        internal void SyncActualSizeToLayout()
+        {
+            foreach (var child in Children)
+            {
+                if (child is LayoutDragSplitter)
+                {
+                    continue;
+                }
+
+                if (child is LayoutGroupPanel childPanel)
+                {
+                    childPanel.SyncActualSizeToLayout();
+                    continue;
+                }
+
+                if (child is not BaseGroupControl groupControl)
+                {
+                    continue;
+                }
+
+                var actualWidth = groupControl.ActualWidth;
+                var actualHeight = groupControl.ActualHeight;
+
+                if (actualWidth <= 0 || actualHeight <= 0)
+                {
+                    continue;
+                }
+
+                groupControl.DesiredWidth = actualWidth;
+                groupControl.DesiredHeight = actualHeight;
+            }
+        }
+        #endregion
+
+        #region Dispose
+        public event EventHandler Disposed = delegate { };
+
+        protected void _Dispose()
+        {
+            Children.Clear();
+            Disposed(this, new EventArgs());
+        }
+
+        public void Dispose()
+        {
+            foreach (var child in Children)
+                if (child is IDisposable)
+                    (child as IDisposable).Dispose();
+            Children.Clear();
+            Disposed(this ,new EventArgs());
+        }
+        #endregion
+    }
+}

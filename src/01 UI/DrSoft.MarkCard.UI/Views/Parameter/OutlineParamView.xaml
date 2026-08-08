@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.OutlineParamView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views"
+             xmlns:conv="clr-namespace:DrSoft.MarkCard.UI.Converters"   
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             mc:Ignorable="d" 
+             Background="Transparent">
+    <UserControl.Resources>
+        <conv:HexColorToBrushConverter x:Key="HexColorToBrushConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="#f5f5f5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 1. 顶部颜色和基本样式（参照 FillParamView） -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="外框颜色" Style="{StaticResource TitleRight}" />
+                <ComboBox Grid.Column="1" Width="120" HorizontalAlignment="Left" Margin="4,0,0,0"
+                          Style="{StaticResource DrComboxStyle}"
+                          SelectedIndex="{Binding OutlineStyleIndex}">
+                    <ComboBoxItem Content="外框实线"/>
+                    <ComboBoxItem Content="外框短虚线"/>
+                    <ComboBoxItem Content="外框点虚线"/>
+                    <ComboBoxItem Content="无外框"/>
+                </ComboBox>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Border Width="24" Height="24" CornerRadius="4" Margin="4,0,0,0"
+                            Background="{Binding OutlineColor, Converter={StaticResource HexColorToBrushConverter}, Mode=TwoWay}" 
+                            BorderBrush="Gray" 
+                            BorderThickness="1"
+                            Cursor="Hand">
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding BorderClickCommand}" CommandParameter="{Binding Model}"/>
+                        </Border.InputBindings>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <!-- 2. 填满按钮 -->
+            <Grid Grid.Row="1" Margin="0,6,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="创建填充"  Style="{StaticResource SecondActionButtonStyle}" Command="{Binding ShowDialogCommand}"/>
+                <Button Grid.Column="2" Content="反向雕刻"  Style="{StaticResource SecondActionButtonStyle}" Command="{Binding ReverseEngravingCommand}" Visibility="{Binding ButtonVisibility}"/>
+            </Grid>
+        </Grid>
+
+        <!-- 3. 套用当前页面按钮（参照 FillParamView） -->
+        <Border Grid.Row="1" BorderBrush="#E2E2E2" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch"/>
+        <Button  HorizontalAlignment="Right" Grid.Row="1"  Content="套用当前页面"  Style="{StaticResource  ActionButtonStyle}" Width="116"  Command="{Binding ApplyCommand}"/>
+    </Grid>
+</UserControl>

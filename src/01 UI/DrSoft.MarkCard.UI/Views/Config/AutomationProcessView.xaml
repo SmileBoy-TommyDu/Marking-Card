@@ -1,0 +1,54 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.Config.AutomationProcessView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+              xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             d:DesignHeight="450" d:DesignWidth="600"
+             Background="Transparent">
+    <StackPanel Orientation="Vertical" Margin="8 8 8 8">
+       
+        <!-- Title -->
+        <Border Background="{StaticResource MyBorderGradient}" Height="20" VerticalAlignment="Top">
+            <TextBlock Grid.Row="0" Text="自动化流程" Margin="4 0 0 0" VerticalAlignment="Center" FontSize="14" Foreground="#ffffff"/>
+        </Border>
+
+        <!-- Preload Settings Module -->
+        <TextBlock Foreground="#858e90" Text="预加载设置模块" FontSize="12" FontWeight="SemiBold" Margin="0 4 0 0"/>
+
+        <CheckBox Content="使用逾时设定" IsChecked="{Binding UseTimeoutSetting}" 
+          VerticalAlignment="Center" FontSize="12" Margin="0 4 0 0" Style="{StaticResource DrCheckBoxStyle}"/>
+        <!-- Use Timeout Setting -->
+        <StackPanel Orientation="Horizontal">
+            
+            <TextBlock Text="逾时时间(S)" Margin="0,0,5,0" VerticalAlignment="Center" FontSize="12"/>
+            <uc:NumericUpDownControl Value="{Binding TimeoutSeconds, UpdateSourceTrigger=PropertyChanged}" 
+                     Width="100" Height="28" MinValue="0" DecimalPlaces="0" VerticalContentAlignment="Center" Unit=""/>
+            
+        </StackPanel>
+
+        <!-- Display Settings -->
+        <TextBlock Foreground="#858e90" Text="画布显示设置" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0"/>
+
+        <StackPanel Orientation="Horizontal" Margin="-2,4,0,0">
+            <CheckBox Content="显示加工方向箭头" IsChecked="{Binding EnableDirectionArrow}"   Style="{StaticResource DrCheckBoxStyle}"
+                      VerticalAlignment="Center" FontSize="12"/>
+        </StackPanel>
+
+        <StackPanel  Orientation="Horizontal" Margin="-2,4,0,0">
+            <CheckBox Content="显示加工路径虚线" IsChecked="{Binding EnableJumpLine}"  Style="{StaticResource DrCheckBoxStyle}"
+                      VerticalAlignment="Center" FontSize="12"/>
+        </StackPanel>
+
+        <TextBlock Margin="0 8 0 0" Foreground="#858e90" Text="曲线采样(mm)" FontSize="12" FontWeight="SemiBold"/>
+
+        <StackPanel Orientation="Horizontal" Margin="0 4 0 0">
+
+
+            <uc:NumericUpDownControl Title="精度" DecimalPlaces="3" Width="120" Value="{Binding Resolution,Mode=TwoWay}" MinValue="0.001" MaxValue="1" Unit="mm" />
+
+        </StackPanel>
+
+    </StackPanel>
+</UserControl>

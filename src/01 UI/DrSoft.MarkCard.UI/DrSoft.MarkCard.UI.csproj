@@ -1,0 +1,456 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>DRLaserShop.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModes\新文件夹\**" />
+    <EmbeddedResource Remove="ViewModes\新文件夹\**" />
+    <None Remove="ViewModes\新文件夹\**" />
+    <Page Remove="ViewModes\新文件夹\**" />
+    <None Update="Layout.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="DRLaserShop.ico" />
+    <None Remove="DRWorkShop1.ico" />
+    <None Remove="Resource\image\10-0.png" />
+    <None Remove="Resource\image\10.png" />
+    <None Remove="Resource\image\CBdown.png" />
+    <None Remove="Resource\image\CBdownS.png" />
+    <None Remove="Resource\image\center.png" />
+    <None Remove="Resource\image\center0.png" />
+    <None Remove="Resource\image\center1.png" />
+    <None Remove="Resource\image\CloseButton.png" />
+    <None Remove="Resource\image\Common\ButtonCheck.png" />
+    <None Remove="Resource\image\Common\ButtonMouseOver.png" />
+    <None Remove="Resource\image\Common\LargeButtonCheck.png" />
+    <None Remove="Resource\image\Common\LargeButtonMouseOver.png" />
+    <None Remove="Resource\image\Curve\AddNodeDisable.png" />
+    <None Remove="Resource\image\Curve\AddNodeEnable.png" />
+    <None Remove="Resource\image\Curve\ConnectNodeDisable.png" />
+    <None Remove="Resource\image\Curve\ConnectNodeEnable.png" />
+    <None Remove="Resource\image\Curve\DeleteNodeDisable.png" />
+    <None Remove="Resource\image\Curve\DeleteNodeEnable.png" />
+    <None Remove="Resource\image\Curve\EditNodeDisable.png" />
+    <None Remove="Resource\image\Curve\EditNodeEnable.png" />
+    <None Remove="Resource\image\Curve\ExtendNodeDisable.png" />
+    <None Remove="Resource\image\Curve\ExtendNodeEnable.png" />
+    <None Remove="Resource\image\Curve\MoveNodeDisable.png" />
+    <None Remove="Resource\image\Curve\MoveNodeEnable.png" />
+    <None Remove="Resource\image\Curve\SelectNodeDisable.png" />
+    <None Remove="Resource\image\Curve\SelectNodeEnable.png" />
+    <None Remove="Resource\image\Curve\SeparateNodeDisable.png" />
+    <None Remove="Resource\image\Curve\SeparateNodeEnable.png" />
+    <None Remove="Resource\image\down2x.png" />
+    <None Remove="Resource\image\DragDotsIcon.png" />
+    <None Remove="Resource\image\Edit\AlignDisable.png" />
+    <None Remove="Resource\image\Edit\AlignEnable.png" />
+    <None Remove="Resource\image\Edit\align_bottom.png" />
+    <None Remove="Resource\image\Edit\align_bottom_active.png" />
+    <None Remove="Resource\image\Edit\align_center.png" />
+    <None Remove="Resource\image\Edit\align_center_active.png" />
+    <None Remove="Resource\image\Edit\align_left.png" />
+    <None Remove="Resource\image\Edit\align_left_active.png" />
+    <None Remove="Resource\image\Edit\align_middle.png" />
+    <None Remove="Resource\image\Edit\align_middle_active.png" />
+    <None Remove="Resource\image\Edit\align_right.png" />
+    <None Remove="Resource\image\Edit\align_right_active.png" />
+    <None Remove="Resource\image\Edit\align_top.png" />
+    <None Remove="Resource\image\Edit\align_top_active.png" />
+    <None Remove="Resource\image\Edit\CombineDisable.png" />
+    <None Remove="Resource\image\Edit\CombineEnable.png" />
+    <None Remove="Resource\image\Edit\ConvertToCurveDisable.png" />
+    <None Remove="Resource\image\Edit\ConvertToCurveEnable.png" />
+    <None Remove="Resource\image\Edit\ConvertToExtendNodeDisable.png" />
+    <None Remove="Resource\image\Edit\ConvertToExtendNodeEnable.png" />
+    <None Remove="Resource\image\Edit\ConvertToPointOrCircleDisable.png" />
+    <None Remove="Resource\image\Edit\ConvertToPointOrCircleEnable.png" />
+    <None Remove="Resource\image\Edit\DistributionDisable.png" />
+    <None Remove="Resource\image\Edit\DistributionEnable.png" />
+    <None Remove="Resource\image\Edit\GroupDisable.png" />
+    <None Remove="Resource\image\Edit\GroupEnable.png" />
+    <None Remove="Resource\image\Edit\HorizontalMirrorDisable.png" />
+    <None Remove="Resource\image\Edit\HorizontalMirrorEnable.png" />
+    <None Remove="Resource\image\Edit\horizontal_left.png" />
+    <None Remove="Resource\image\Edit\horizontal_middle.png" />
+    <None Remove="Resource\image\Edit\horizontal_middle_active.png" />
+    <None Remove="Resource\image\Edit\horizontal_right.png" />
+    <None Remove="Resource\image\Edit\MaterialCenterDisable.png" />
+    <None Remove="Resource\image\Edit\MaterialCenterEnable.png" />
+    <None Remove="Resource\image\Edit\mark_direction1.png" />
+    <None Remove="Resource\image\Edit\mark_direction2.png" />
+    <None Remove="Resource\image\Edit\UnCombineDisable.png" />
+    <None Remove="Resource\image\Edit\UnCombineEnable.png" />
+    <None Remove="Resource\image\Edit\UnGroupDisable.png" />
+    <None Remove="Resource\image\Edit\UnGroupEnable.png" />
+    <None Remove="Resource\image\Edit\VectorCombinationDisable.png" />
+    <None Remove="Resource\image\Edit\VectorCombinationEnable.png" />
+    <None Remove="Resource\image\Edit\VerticalMirrorDisable.png" />
+    <None Remove="Resource\image\Edit\VerticalMirrorEnable.png" />
+    <None Remove="Resource\image\Edit\vertical_bottom.png" />
+    <None Remove="Resource\image\Edit\vertical_middle.png" />
+    <None Remove="Resource\image\Edit\vertical_middle_active.png" />
+    <None Remove="Resource\image\Edit\vertical_spacing.png" />
+    <None Remove="Resource\image\Edit\vertical_top.png" />
+    <None Remove="Resource\image\File\CopyDisable.png" />
+    <None Remove="Resource\image\File\CopyEnable.png" />
+    <None Remove="Resource\image\File\CutDisable.png" />
+    <None Remove="Resource\image\File\CutEnable.png" />
+    <None Remove="Resource\image\File\ExportDxfDisable.png" />
+    <None Remove="Resource\image\File\ExportDxfEnable.png" />
+    <None Remove="Resource\image\File\ImportDxfDisable.png" />
+    <None Remove="Resource\image\File\ImportDxfEnable.png" />
+    <None Remove="Resource\image\File\ImportExportParametersDisable.png" />
+    <None Remove="Resource\image\File\ImportExportParametersEnable.png" />
+    <None Remove="Resource\image\File\New.png" />
+    <None Remove="Resource\image\File\New2.png" />
+    <None Remove="Resource\image\File\NewDisable.png" />
+    <None Remove="Resource\image\File\NewEnable.png" />
+    <None Remove="Resource\image\File\OpenDisable.png" />
+    <None Remove="Resource\image\File\OpenEnable.png" />
+    <None Remove="Resource\image\File\PasteDisable.png" />
+    <None Remove="Resource\image\File\PasteEnable.png" />
+    <None Remove="Resource\image\File\ReDoDisable.png" />
+    <None Remove="Resource\image\File\ReDoEnable.png" />
+    <None Remove="Resource\image\File\SaveDisable.png" />
+    <None Remove="Resource\image\File\SaveEnable.png" />
+    <None Remove="Resource\image\File\UnDoDisable.png" />
+    <None Remove="Resource\image\File\UnDoEnable.png" />
+    <None Remove="Resource\image\Fonts\BoldDisable.png" />
+    <None Remove="Resource\image\Fonts\BoldEnable.png" />
+    <None Remove="Resource\image\Fonts\FontAlignDisable.png" />
+    <None Remove="Resource\image\Fonts\FontAlignEnable.png" />
+    <None Remove="Resource\image\Fonts\FontDistanceDisable.png" />
+    <None Remove="Resource\image\Fonts\FontDistanceEnable.png" />
+    <None Remove="Resource\image\Fonts\FontFamilyArrowDisable.png" />
+    <None Remove="Resource\image\Fonts\FontFamilyArrowEnable.png" />
+    <None Remove="Resource\image\Fonts\align-center.png" />
+    <None Remove="Resource\image\Fonts\align-left.png" />
+    <None Remove="Resource\image\Fonts\align-right.png" />
+    <None Remove="Resource\image\Fonts\HeightDistanceDisable.png" />
+    <None Remove="Resource\image\Fonts\HeightDistanceEnable.png" />
+    <None Remove="Resource\image\Fonts\HorizontalAlignmentDisable.png" />
+    <None Remove="Resource\image\Fonts\HorizontalAlignmentEnable.png" />
+    <None Remove="Resource\image\Fonts\ItalicDisable.png" />
+    <None Remove="Resource\image\Fonts\ItalicEnable.png" />
+    <None Remove="Resource\image\Fonts\NumberDownDisable.png" />
+    <None Remove="Resource\image\Fonts\NumberDownEnable.png" />
+    <None Remove="Resource\image\Fonts\NumberUpDisable.png" />
+    <None Remove="Resource\image\Fonts\NumberUpEnable.png" />
+    <None Remove="Resource\image\Fonts\UnderlineDisable.png" />
+    <None Remove="Resource\image\Fonts\UnderlineEnable.png" />
+    <None Remove="Resource\image\Fonts\VerticalAlignmentDisable.png" />
+    <None Remove="Resource\image\Fonts\VerticalAlignmentEnable.png" />
+    <None Remove="Resource\image\gou1-2.png" />
+    <None Remove="Resource\image\gou2.png" />
+    <None Remove="Resource\image\hen1.png" />
+    <None Remove="Resource\image\hen2.png" />
+    <None Remove="Resource\image\icon1.png" />
+    <None Remove="Resource\image\import.png" />
+    <None Remove="Resource\image\import_active.png" />
+    <None Remove="Resource\image\light_off.png" />
+    <None Remove="Resource\image\light_on.png" />
+    <None Remove="Resource\image\lineshow.png" />
+    <None Remove="Resource\image\lineshow2.png" />
+    <None Remove="Resource\image\lock.png" />
+    <None Remove="Resource\image\MaximizeButton.png" />
+    <None Remove="Resource\image\MinimizeButton.png" />
+    <None Remove="Resource\image\NormalButton.png" />
+    <None Remove="Resource\image\rotate.png" />
+    <None Remove="Resource\image\rotate_sign.png" />
+    <None Remove="Resource\image\s1.png" />
+    <None Remove="Resource\image\s2.png" />
+    <None Remove="Resource\image\S3.png" />
+    <None Remove="Resource\image\s4.png" />
+    <None Remove="Resource\image\s5.png" />
+    <None Remove="Resource\image\selected_expand.png" />
+    <None Remove="Resource\image\shift.png" />
+    <None Remove="Resource\image\shift_sign.png" />
+    <None Remove="Resource\image\star0.png" />
+    <None Remove="Resource\image\star1.png" />
+    <None Remove="Resource\image\tilt.png" />
+    <None Remove="Resource\image\Toast\error.png" />
+    <None Remove="Resource\image\Toast\info.png" />
+    <None Remove="Resource\image\Toast\warning.png" />
+    <None Remove="Resource\image\unlock.png" />
+    <None Remove="Resource\image\unselect_expand.png" />
+    <None Remove="Resource\image\unselect_unexpand.png" />
+    <None Remove="Resource\image\up2x.png" />
+    <None Remove="Resource\image\up2xs.png" />
+    <None Remove="Resource\image\Vector\IntersectDisable.png" />
+    <None Remove="Resource\image\Vector\IntersectEnable.png" />
+    <None Remove="Resource\image\Vector\KeepMainDisable.png" />
+    <None Remove="Resource\image\Vector\KeepMainEnable.png" />
+    <None Remove="Resource\image\Vector\TrimDisable.png" />
+    <None Remove="Resource\image\Vector\TrimEnable.png" />
+    <None Remove="Resource\image\Vector\UnionDisable.png" />
+    <None Remove="Resource\image\Vector\UnionEnable.png" />
+    <None Remove="Resource\image\zoom.png" />
+    <None Remove="Resource\image\尺寸方位.png" />
+    <None Remove="UserControls\SizeLockUserControl.xaml~RF413903f9.TMP" />
+    <None Remove="UserControls\SizeLockUserControl.xaml~RF41900356.TMP" />
+    <None Remove="Views\Parameter\Shape\ArcParamView.xaml~RF25718186.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DRLaserShop.ico" />
+    <Content Include="DRWorkShop1.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DR.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\image\10-0.png" />
+    <Resource Include="Resource\image\10.png" />
+    <Resource Include="Resource\image\CloseButton.png" />
+    <Resource Include="Resource\image\Edit\align_bottom.png" />
+    <Resource Include="Resource\image\Edit\align_bottom_active.png" />
+    <Resource Include="Resource\image\Edit\align_center.png" />
+    <Resource Include="Resource\image\Edit\align_center_active.png" />
+    <Resource Include="Resource\image\Edit\align_left.png" />
+    <Resource Include="Resource\image\Edit\align_left_active.png" />
+    <Resource Include="Resource\image\Edit\align_middle.png" />
+    <Resource Include="Resource\image\Edit\align_middle_active.png" />
+    <Resource Include="Resource\image\Edit\align_right.png" />
+    <Resource Include="Resource\image\Edit\align_right_active.png" />
+    <Resource Include="Resource\image\Edit\align_top.png" />
+    <Resource Include="Resource\image\Edit\align_top_active.png" />
+    <Resource Include="Resource\image\Edit\ConvertToExtendNodeDisable.png" />
+    <Resource Include="Resource\image\Edit\ConvertToExtendNodeEnable.png" />
+    <Resource Include="Resource\image\Edit\horizontal_left.png" />
+    <Resource Include="Resource\image\Edit\horizontal_middle.png" />
+    <Resource Include="Resource\image\Edit\horizontal_middle_active.png" />
+    <Resource Include="Resource\image\Edit\horizontal_right.png" />
+    <Resource Include="Resource\image\Edit\horizontal_spacing.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <!--<PackageReference Include="FeatureAlgorithm" Version="1.5.1.3" />
+    <PackageReference Include="FeatureCommon" Version="1.5.1.3" />
+    <PackageReference Include="FeatureDesignerNet" Version="1.5.1.3" />-->
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
+    <PackageReference Include="NPOI" Version="2.7.2" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Map" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\02 Service\DrSoft.MarkCard.Service\DrSoft.MarkCard.Service.csproj" />
+    <ProjectReference Include="..\..\03 Domain\DrSoft.MarkCard.Impl\DrSoft.MarkCard.Impl.csproj" />
+    <ProjectReference Include="..\..\03 Domain\DrSoft.MarkCard.Interface\DrSoft.MarkCard.Interface.csproj" />
+    <ProjectReference Include="..\..\03 Domain\DrSoft.MarkCard.Model\DrSoft.MarkCard.Model.csproj" />
+    <ProjectReference Include="..\..\04 Infrastructure\DrSoft.MarkCard.BoChu\DrSoft.MarkCard.BoChu.csproj" />
+    <ProjectReference Include="..\..\04 Infrastructure\DrSoft.MarkCard.EasternLogic\DrSoft.MarkCard.EasternLogic.csproj" />
+    <ProjectReference Include="..\..\04 Infrastructure\DrSoft.MarkCard.RTC\DrSoft.MarkCard.RTC.csproj" />
+    <ProjectReference Include="..\..\05 Common\DrSoft.MarkCard.Event\DrSoft.MarkCard.Event.csproj" />
+    <ProjectReference Include="..\..\05 Common\DrSoft.MarkCard.Utils\DrSoft.MarkCard.Utils.csproj" />
+    <ProjectReference Include="..\..\99 Components\Docking\DrSoft.Docking.csproj" />
+    <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.Contracts\DrSoft.Drawing.Contracts.csproj" />
+    <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.Controls\DrSoft.Drawing.Controls.csproj" />
+    <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.DTO\DrSoft.Drawing.DTO.csproj" />
+    <ProjectReference Include="..\..\99 Components\Drawing\DrSoft.Drawing.Registration\DrSoft.Drawing.Registration.csproj" />
+    <ProjectReference Include="..\..\DrSoft.FlowControl.Service\DrSoft.FlowControl.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DR.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Calibrate\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\image\CBdown.png" />
+    <Resource Include="Resource\image\CBdownS.png" />
+    <Resource Include="Resource\image\center.png" />
+    <Resource Include="Resource\image\center0.png" />
+    <Resource Include="Resource\image\center1.png" />
+    <Resource Include="Resource\image\Common\ButtonCheck.png" />
+    <Resource Include="Resource\image\Common\ButtonMouseOver.png" />
+    <Resource Include="Resource\image\Common\LargeButtonCheck.png" />
+    <Resource Include="Resource\image\Common\LargeButtonMouseOver.png" />
+    <Resource Include="Resource\image\Curve\AddNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\AddNodeEnable.png" />
+    <Resource Include="Resource\image\Curve\ConnectNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\ConnectNodeEnable.png" />
+    <Resource Include="Resource\image\Curve\DeleteNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\DeleteNodeEnable.png" />
+    <Resource Include="Resource\image\Curve\EditNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\EditNodeEnable.png" />
+    <Resource Include="Resource\image\Curve\ExtendNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\ExtendNodeEnable.png" />
+    <Resource Include="Resource\image\Curve\MoveNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\MoveNodeEnable.png" />
+    <Resource Include="Resource\image\Curve\SelectNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\SelectNodeEnable.png" />
+    <Resource Include="Resource\image\Curve\SeparateNodeDisable.png" />
+    <Resource Include="Resource\image\Curve\SeparateNodeEnable.png" />
+    <Resource Include="Resource\image\down2xs.png" />
+    <Resource Include="Resource\image\down2x.png" />
+    <Resource Include="Resource\image\DragDotsIcon.png" />
+    <Resource Include="Resource\image\Edit\AlignDisable.png" />
+    <Resource Include="Resource\image\Edit\AlignEnable.png" />
+    <Resource Include="Resource\image\Edit\CombineDisable.png" />
+    <Resource Include="Resource\image\Edit\CombineEnable.png" />
+    <Resource Include="Resource\image\Edit\ConvertToCurveDisable.png" />
+    <Resource Include="Resource\image\Edit\ConvertToCurveEnable.png" />
+    <Resource Include="Resource\image\Edit\ConvertToPointOrCircleDisable.png" />
+    <Resource Include="Resource\image\Edit\ConvertToPointOrCircleEnable.png" />
+    <Resource Include="Resource\image\Edit\DistributionDisable.png" />
+    <Resource Include="Resource\image\Edit\DistributionEnable.png" />
+    <Resource Include="Resource\image\Edit\GroupDisable.png" />
+    <Resource Include="Resource\image\Edit\GroupEnable.png" />
+    <Resource Include="Resource\image\Edit\HorizontalMirrorDisable.png" />
+    <Resource Include="Resource\image\Edit\HorizontalMirrorEnable.png" />
+    <Resource Include="Resource\image\Edit\MaterialCenterDisable.png" />
+    <Resource Include="Resource\image\Edit\MaterialCenterEnable.png" />
+    <Resource Include="Resource\image\Edit\mark_direction1.png" />
+    <Resource Include="Resource\image\Edit\mark_direction2.png" />
+    <Resource Include="Resource\image\Edit\UnCombineDisable.png" />
+    <Resource Include="Resource\image\Edit\UnCombineEnable.png" />
+    <Resource Include="Resource\image\Edit\UnGroupDisable.png" />
+    <Resource Include="Resource\image\Edit\UnGroupEnable.png" />
+    <Resource Include="Resource\image\Edit\VectorCombinationDisable.png" />
+    <Resource Include="Resource\image\Edit\VectorCombinationEnable.png" />
+    <Resource Include="Resource\image\Edit\VerticalMirrorDisable.png" />
+    <Resource Include="Resource\image\Edit\VerticalMirrorEnable.png" />
+    <Resource Include="Resource\image\Edit\vertical_bottom.png" />
+    <Resource Include="Resource\image\Edit\vertical_middle.png" />
+    <Resource Include="Resource\image\Edit\vertical_middle_active.png" />
+    <Resource Include="Resource\image\Edit\vertical_spacing.png" />
+    <Resource Include="Resource\image\Edit\vertical_top.png" />
+    <Resource Include="Resource\image\File\CopyDisable.png" />
+    <Resource Include="Resource\image\File\CopyEnable.png" />
+    <Resource Include="Resource\image\File\CutDisable.png" />
+    <Resource Include="Resource\image\File\CutEnable.png" />
+    <Resource Include="Resource\image\File\ExportDxfDisable.png" />
+    <Resource Include="Resource\image\File\ExportDxfEnable.png" />
+    <Resource Include="Resource\image\File\ImportDxfDisable.png" />
+    <Resource Include="Resource\image\File\ImportDxfEnable.png" />
+    <Resource Include="Resource\image\File\ImportExportParametersDisable.png" />
+    <Resource Include="Resource\image\File\ImportExportParametersEnable.png" />
+    <Resource Include="Resource\image\File\New.png" />
+    <Resource Include="Resource\image\File\New2.png" />
+    <Resource Include="Resource\image\File\NewDisable.png" />
+    <Resource Include="Resource\image\File\NewEnable.png" />
+    <Resource Include="Resource\image\File\OpenDisable.png" />
+    <Resource Include="Resource\image\File\OpenEnable.png" />
+    <Resource Include="Resource\image\File\PasteDisable.png" />
+    <Resource Include="Resource\image\File\PasteEnable.png" />
+    <Resource Include="Resource\image\File\ReDoDisable.png" />
+    <Resource Include="Resource\image\File\ReDoEnable.png" />
+    <Resource Include="Resource\image\File\SaveDisable.png" />
+    <Resource Include="Resource\image\File\SaveEnable.png" />
+    <Resource Include="Resource\image\File\UnDoDisable.png" />
+    <Resource Include="Resource\image\File\UnDoEnable.png" />
+    <Resource Include="Resource\image\Fonts\BoldDisable.png" />
+    <Resource Include="Resource\image\Fonts\BoldEnable.png" />
+    <Resource Include="Resource\image\Fonts\FontAlignDisable.png" />
+    <Resource Include="Resource\image\Fonts\FontAlignEnable.png" />
+    <Resource Include="Resource\image\Fonts\FontDistanceDisable.png" />
+    <Resource Include="Resource\image\Fonts\FontDistanceEnable.png" />
+    <Resource Include="Resource\image\Fonts\FontFamilyArrowDisable.png" />
+    <Resource Include="Resource\image\Fonts\FontFamilyArrowEnable.png" />
+    <Resource Include="Resource\image\Fonts\align-center.png" />
+    <Resource Include="Resource\image\Fonts\align-left.png" />
+    <Resource Include="Resource\image\Fonts\align-right.png" />
+    <Resource Include="Resource\image\Fonts\HeightDistanceDisable.png" />
+    <Resource Include="Resource\image\Fonts\HeightDistanceEnable.png" />
+    <Resource Include="Resource\image\Fonts\HorizontalAlignmentDisable.png" />
+    <Resource Include="Resource\image\Fonts\HorizontalAlignmentEnable.png" />
+    <Resource Include="Resource\image\Fonts\ItalicDisable.png" />
+    <Resource Include="Resource\image\Fonts\ItalicEnable.png" />
+    <Resource Include="Resource\image\Fonts\NumberDownDisable.png" />
+    <Resource Include="Resource\image\Fonts\NumberDownEnable.png" />
+    <Resource Include="Resource\image\Fonts\NumberUpDisable.png" />
+    <Resource Include="Resource\image\Fonts\NumberUpEnable.png" />
+    <Resource Include="Resource\image\Fonts\UnderlineDisable.png" />
+    <Resource Include="Resource\image\Fonts\UnderlineEnable.png" />
+    <Resource Include="Resource\image\Fonts\VerticalAlignmentDisable.png" />
+    <Resource Include="Resource\image\Fonts\VerticalAlignmentEnable.png" />
+    <Resource Include="Resource\image\gou1-2.png" />
+    <Resource Include="Resource\image\gou2.png" />
+    <Resource Include="Resource\image\hen1.png" />
+    <Resource Include="Resource\image\hen2.png" />
+    <Resource Include="Resource\image\icon1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resource\image\import.png" />
+    <Resource Include="Resource\image\import_active.png" />
+    <Resource Include="Resource\image\light_off.png" />
+    <Resource Include="Resource\image\light_on.png" />
+    <Resource Include="Resource\image\lineshow.png" />
+    <Resource Include="Resource\image\lineshow2.png" />
+    <Resource Include="Resource\image\lock.png" />
+    <Resource Include="Resource\image\MaximizeButton.png" />
+    <Resource Include="Resource\image\MinimizeButton.png" />
+    <Resource Include="Resource\image\NormalButton.png" />
+    <Resource Include="Resource\image\rotate.png" />
+    <Resource Include="Resource\image\rotate_sign.png" />
+    <Resource Include="Resource\image\selected_expand.png" />
+    <Resource Include="Resource\image\selected_unexpand.png" />
+    <Resource Include="Resource\image\shift.png" />
+    <Resource Include="Resource\image\shift_sign.png" />
+    <Resource Include="Resource\image\star0.png" />
+    <Resource Include="Resource\image\star1.png" />
+    <Resource Include="Resource\image\tilt.png" />
+    <Resource Include="Resource\image\Toast\error.png" />
+    <Resource Include="Resource\image\Toast\info.png" />
+    <Resource Include="Resource\image\Toast\warning.png" />
+    <Resource Include="Resource\image\unlock.png" />
+    <Resource Include="Resource\image\unselect_expand.png" />
+    <Resource Include="Resource\image\unselect_unexpand.png" />
+    <Resource Include="Resource\image\up2x.png" />
+    <Resource Include="Resource\image\up2xs.png" />
+    <Resource Include="Resource\image\Vector\IntersectDisable.png" />
+    <Resource Include="Resource\image\Vector\IntersectEnable.png" />
+    <Resource Include="Resource\image\Vector\KeepMainDisable.png" />
+    <Resource Include="Resource\image\Vector\KeepMainEnable.png" />
+    <Resource Include="Resource\image\Vector\TrimDisable.png" />
+    <Resource Include="Resource\image\Vector\TrimEnable.png" />
+    <Resource Include="Resource\image\Vector\UnionDisable.png" />
+    <Resource Include="Resource\image\Vector\UnionEnable.png" />
+    <Resource Include="Resource\image\zoom.png" />
+    <Resource Include="Resource\image\尺寸方位.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\EditMenu\AlignPopupView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EditMenu\DistributionPopupView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EditMenu\ExtendHeadTailPopupView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EditMenu\PartitionPopupView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EditMenu\SkyWritingPopupView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

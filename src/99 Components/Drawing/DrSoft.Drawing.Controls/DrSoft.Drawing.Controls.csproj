@@ -1,0 +1,271 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="DrawShapes\DrawingGroup.cs~RF3521a0e8.TMP" />
+	  <None Remove="Resources\arc.cur" />
+	  <None Remove="Resources\bezier.cur" />
+	  <None Remove="Resources\circle.cur" />
+	  <None Remove="Resources\dot.cur" />
+	  <None Remove="Resources\image\Canvas\add.png" />
+	  <None Remove="Resources\image\Canvas\add_press.png" />
+	  <None Remove="Resources\image\Canvas\left.png" />
+	  <None Remove="Resources\image\Canvas\left_press.png" />
+	  <None Remove="Resources\image\Canvas\right.png" />
+	  <None Remove="Resources\image\Canvas\right_press.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ArbitraryCurveDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ArbitraryCurveEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\BezierCurveDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\BezierCurveEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\CircleDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\CircleEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\CurveDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\CurveEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\DragDown.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\LineDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\LineEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\MoveDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\MoveEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\NodeEditDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\NodeEditEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\PointDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\PointEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\PolygonDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\PolygonEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\RectangleDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\RectangleEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\SelectDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\SelectEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\SeparatorDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\SeparatorEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\TextDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\TextEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomBackDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomBackEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomInDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomInEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomOutDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomOutEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomTo SelectionDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomToFitDisable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomToFitEnable.png" />
+	  <None Remove="Resources\image\DrawingToolIcon\ZoomToSelectionDisable.png" />
+	  <None Remove="Resources\layer\129.png" />
+	  <None Remove="Resources\layer\67.png" />
+	  <None Remove="Resources\layer\68.png" />
+	  <None Remove="Resources\layer\69.png" />
+	  <None Remove="Resources\layer\7-0.png" />
+	  <None Remove="Resources\layer\7.png" />
+	  <None Remove="Resources\layer\71-0.png" />
+	  <None Remove="Resources\layer\71-1.png" />
+	  <None Remove="Resources\layer\8-0.png" />
+	  <None Remove="Resources\layer\8.png" />
+	  <None Remove="Resources\layer\9-0.png" />
+	  <None Remove="Resources\layer\9.png" />
+	  <None Remove="Resources\layer\add.png" />
+	  <None Remove="Resources\layer\adds.png" />
+	  <None Remove="Resources\layer\arc.png" />
+	  <None Remove="Resources\layer\Bezier.png" />
+	  <None Remove="Resources\layer\circle.png" />
+	  <None Remove="Resources\layer\copy.png" />
+	  <None Remove="Resources\layer\copys.png" />
+	  <None Remove="Resources\layer\del.png" />
+	  <None Remove="Resources\layer\dels.png" />
+	  <None Remove="Resources\layer\fileclose.png" />
+	  <None Remove="Resources\layer\fileopen.png" />
+	  <None Remove="Resources\layer\group-0.png" />
+	  <None Remove="Resources\layer\group-1.png" />
+	  <None Remove="Resources\layer\hatch.png" />
+	  <None Remove="Resources\layer\line.png" />
+	  <None Remove="Resources\layer\lock.png" />
+	  <None Remove="Resources\layer\minus-square.png" />
+	  <None Remove="Resources\layer\noshow.png" />
+	  <None Remove="Resources\layer\plus-square.png" />
+	  <None Remove="Resources\layer\point.png" />
+	  <None Remove="Resources\layer\Polygon.png" />
+	  <None Remove="Resources\layer\Rectangle.png" />
+	  <None Remove="Resources\layer\shape %282%29.png" />
+	  <None Remove="Resources\layer\shape.png" />
+	  <None Remove="Resources\layer\shape2.png" />
+	  <None Remove="Resources\layer\show.png" />
+	  <None Remove="Resources\layer\text.png" />
+	  <None Remove="Resources\layer\unlock.png" />
+	  <None Remove="Resources\layer\xiangliang.png" />
+	  <None Remove="Resources\line.cur" />
+	  <None Remove="Resources\Move.cur" />
+	  <None Remove="Resources\MoveActive.cur" />
+	  <None Remove="Resources\Node.cur" />
+	  <None Remove="Resources\NodeAdd.cur" />
+	  <None Remove="Resources\NodeReduce.cur" />
+	  <None Remove="Resources\pointer.cur" />
+	  <None Remove="Resources\circlepoint.cur" />
+	  <None Remove="Resources\polygon.cur" />
+	  <None Remove="Resources\rectangle.cur" />
+	  <None Remove="Resources\text.cur" />
+	  <None Remove="Resources\ZoomBack.cur" />
+	  <None Remove="Resources\ZoomIn.cur" />
+	  <None Remove="Resources\ZoomOut.cur" />
+	  <None Remove="Resources\ZoomToFit.cur" />
+	  <None Remove="Resources\ZoomToFullScreen.cur" />
+	  <None Remove="Resources\ZoomToSelection.cur" />
+	  <None Remove="Views\LayerViewView.xaml~RF49387491.TMP" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\arbitrarycurve.cur" />
+	  <Resource Include="Resources\layer\129.png" />
+	  <Resource Include="Resources\layer\67.png" />
+	  <Resource Include="Resources\layer\68.png" />
+	  <Resource Include="Resources\layer\69.png" />
+	  <Resource Include="Resources\layer\7-0.png" />
+	  <Resource Include="Resources\layer\7.png" />
+	  <Resource Include="Resources\layer\71-0.png" />
+	  <Resource Include="Resources\layer\71-1.png" />
+	  <Resource Include="Resources\layer\8-0.png" />
+	  <Resource Include="Resources\layer\8.png" />
+	  <Resource Include="Resources\layer\9-0.png" />
+	  <Resource Include="Resources\layer\9.png" />
+	  <Resource Include="Resources\layer\add.png" />
+	  <Resource Include="Resources\layer\adds.png" />
+	  <Resource Include="Resources\layer\arc.png" />
+	  <Resource Include="Resources\layer\Bezier.png" />
+	  <Resource Include="Resources\layer\circle.png" />
+	  <Resource Include="Resources\layer\copy.png" />
+	  <Resource Include="Resources\layer\copys.png" />
+	  <Resource Include="Resources\layer\del.png" />
+	  <Resource Include="Resources\layer\dels.png" />
+	  <Resource Include="Resources\layer\fileclose.png" />
+	  <Resource Include="Resources\layer\fileopen.png" />
+	  <Resource Include="Resources\layer\group-0.png" />
+	  <Resource Include="Resources\layer\group-1.png" />
+	  <Resource Include="Resources\layer\hatch.png" />
+	  <Resource Include="Resources\layer\line.png" />
+	  <Resource Include="Resources\layer\lock.png" />
+	  <Resource Include="Resources\layer\minus-square.png" />
+	  <Resource Include="Resources\layer\noshow.png" />
+	  <Resource Include="Resources\layer\plus-square.png" />
+	  <Resource Include="Resources\layer\point.png" />
+	  <Resource Include="Resources\layer\Polygon.png" />
+	  <Resource Include="Resources\layer\Rectangle.png" />
+	  <Resource Include="Resources\layer\shape.png" />
+	  <Resource Include="Resources\layer\shape2.png" />
+	  <Resource Include="Resources\layer\show.png" />
+	  <Resource Include="Resources\layer\text.png" />
+	  <Resource Include="Resources\layer\unlock.png" />
+	  <Resource Include="Resources\layer\xiangliang.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+	  <PackageReference Include="Riok.Mapperly" Version="4.3.1" PrivateAssets="all" />
+	  <PackageReference Include="Rougamo.Fody" Version="5.0.2" />
+	  <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.2" />
+	  <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
+	  <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="FodyWeavers.xml" />
+	  <Content Include="FodyWeavers.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\DrSoft.MarkCard.CommonUI\DrSoft.MarkCard.CommonUI.csproj" />
+		<ProjectReference Include="..\DrSoft.Drawing.Contracts\DrSoft.Drawing.Contracts.csproj" />
+		<ProjectReference Include="..\DrSoft.Drawing.DTO\DrSoft.Drawing.DTO.csproj" />
+		<ProjectReference Include="..\DrSoft.Drawing.Event\DrSoft.Drawing.Event.csproj" />
+		<ProjectReference Include="..\DrSoft.Drawing.Models\DrSoft.Drawing.Model.csproj" />
+		<ProjectReference Include="..\DrSoft.Drawing.Utility\DrSoft.Drawing.Utility.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\arc.cur" />
+	  <Resource Include="Resources\bezier.cur" />
+	  <Resource Include="Resources\circle.cur" />
+	  <Resource Include="Resources\dot.cur" />
+	  <Resource Include="Resources\image\Canvas\add.png" />
+	  <Resource Include="Resources\image\Canvas\add_press.png" />
+	  <Resource Include="Resources\image\Canvas\left.png" />
+	  <Resource Include="Resources\image\Canvas\left_press.png" />
+	  <Resource Include="Resources\image\Canvas\right.png" />
+	  <Resource Include="Resources\image\Canvas\right_press.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ArbitraryCurveDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ArbitraryCurveEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\BezierCurveDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\BezierCurveEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\CircleDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\CircleEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\CurveDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\CurveEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\DragDown.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomToFullScreenDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomToFullScreenEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\LineDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\LineEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\MoveDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\MoveEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\NodeEditDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\NodeEditEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\PointDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\PointEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\PolygonDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\PolygonEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\RectangleDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\RectangleEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\SelectDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\SelectEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\SeparatorDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\SeparatorEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\TextDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\TextEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomBackDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomBackEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomInDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomInEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomOutDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomOutEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomToSelectionDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomToSelectionEnable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomToFitDisable.png" />
+	  <Resource Include="Resources\image\DrawingToolIcon\ZoomToFitEnable.png" />
+	  <Resource Include="Resources\line.cur" />
+	  <Resource Include="Resources\Move.cur" />
+	  <Resource Include="Resources\MoveActive.cur" />
+	  <Resource Include="Resources\Node.cur" />
+	  <Resource Include="Resources\NodeAdd.cur" />
+	  <Resource Include="Resources\NodeReduce.cur" />
+	  <Resource Include="Resources\pointer.cur" />
+	  <Resource Include="Resources\circlepoint.cur" />
+	  <Resource Include="Resources\polygon.cur" />
+	  <Resource Include="Resources\rectangle.cur" />
+	  <Resource Include="Resources\text.cur" />
+	  <Resource Include="Resources\ZoomBack.cur" />
+	  <Resource Include="Resources\ZoomIn.cur" />
+	  <Resource Include="Resources\ZoomOut.cur" />
+	  <Resource Include="Resources\ZoomToFit.cur" />
+	  <Resource Include="Resources\ZoomToFullScreen.cur" />
+	  <Resource Include="Resources\ZoomToSelection.cur" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Views\MoveNodePopupView.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="Views\SeparateNodePopupView.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="Views\ToolTextPopupView.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
+</Project>

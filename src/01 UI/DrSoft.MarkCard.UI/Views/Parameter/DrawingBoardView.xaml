@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.DrawingBoardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views"   
+             xmlns:localuc="clr-namespace:DrSoft.MarkCard.UI.UserControls"
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             mc:Ignorable="d" Background="#F5F5F5"
+               d:DesignHeight="420"
+                d:DesignWidth="328" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+            <Grid Margin="8,0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="32"/>
+                </Grid.ColumnDefinitions>
+                <!--<TextBlock Grid.Row="0" Grid.Column="0" Text="原点设置" Style="{StaticResource HeaderLabel}"/>
+            <uc:NumericExpressionTextBox   Grid.Row="1" Grid.Column="0" Title="X" Unit=""  VerticalAlignment="Center"   Text="{Binding Model.OriginX}"  Style="{StaticResource InputBoxStyle}"/>
+            <uc:NumericExpressionTextBox Grid.Row="1" Grid.Column="2" Title="Y" Unit=""  VerticalAlignment="Center"  Text="{Binding Model.OriginY}" Style="{StaticResource InputBoxStyle}"/>
+            <Button Grid.Row="1" Grid.Column="3" Width="24" Height="24" Background="Transparent" BorderThickness="0" Command="{Binding GoCenterCommand}">
+                <Image Source="/Resource/image/center.png"  Stretch="Fill" VerticalAlignment="Center"/>
+            </Button>-->
+
+
+                <uc:SizeLockUserControl 
+Grid.Row="2"  
+          Grid.ColumnSpan="4"
+Title="画布大小" 
+Unit="" 
+WidthLabel="W" 
+HeightLabel="H" 
+WidthValue="{Binding Model.BoardW, Mode=TwoWay}" 
+HeightValue="{Binding Model.BoardH, Mode=TwoWay}" 
+IsLocked="{Binding Model.IsBoardLocked, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="微调移动" Style="{StaticResource HeaderLabel}"/>
+
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="4" Grid.Column="0" Title="X" Unit=""  VerticalAlignment="Center"  Value="{Binding Model.MicroMoveX}"  Style="{StaticResource MainNumericUpDown}"/>
+
+                <uc:NumericUpDownControl MinValue="0" Grid.Row="4" Grid.Column="2" Title="Y" Unit=""  VerticalAlignment="Center"   Value="{Binding Model.MicroMoveY}" Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <uc:SizeLockUserControl 
+          Grid.ColumnSpan="4"
+       Grid.Row="5"  
+       Title="格点大小" 
+       Unit="" 
+       WidthLabel="W" 
+       HeightLabel="H" 
+       WidthValue="{Binding Model.GridSizeW, Mode=TwoWay}" 
+       HeightValue="{Binding Model.GridSizeH, Mode=TwoWay}" 
+       IsLocked="{Binding Model.IsGridLocked, Mode=TwoWay}"/>
+
+
+            </Grid>
+
+        </ScrollViewer>
+        <Border Grid.Row="1" BorderBrush="#E2E2E2" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch"/>
+        <Button  HorizontalAlignment="Right"  Grid.Row="1" Content="套用当前页面" Style="{StaticResource  ActionButtonStyle}" Width="116"  Command="{Binding ApplyCommand}" />
+
+    </Grid>
+
+
+</UserControl>

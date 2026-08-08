@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.DelayParamView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"     
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             mc:Ignorable="d" 
+             Background="#F5F5F5"
+             d:DesignHeight="420"
+            d:DesignWidth="328">
+    <UserControl.Resources>
+   
+        <Style x:Key="ucNumeric" TargetType="uc:NumericUpDownControl">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer MinHeight="300"  VerticalScrollBarVisibility="Auto">
+            <Grid Margin="8" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- 雕刻延迟参数 GroupBox -->
+                <RowDefinition Height="Auto"/>
+                <!-- 位移参数 GroupBox -->
+                <RowDefinition Height="Auto"/>
+                <!-- 占位 -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <!-- 底部按钮 -->
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"  Text="雕刻延迟参数" Style="{StaticResource HeaderLabel}"/>
+            <!-- 1. 雕刻延迟参数 -->
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="88"/>
+                    <ColumnDefinition Width="*"/>
+        
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource TitleRight}" Grid.Row="0" Text="起始点延迟" />
+                <uc:NumericUpDownControl  MinValue="0" Grid.Row="0" Grid.Column="1" Title="" Unit="ms" Value="{Binding Model.StartDelay}" Margin="4,2" Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <TextBlock Style="{StaticResource TitleRight}" Grid.Row="1" Text="转角延迟" />
+                <uc:NumericUpDownControl  MinValue="0" Grid.Row="1" Grid.Column="1" Title=""  Unit="ms" Value="{Binding Model.CornerDelay}" Margin="4,2"  Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <TextBlock Style="{StaticResource TitleRight}" Grid.Row="2" Text="终止点延迟"/>
+                <uc:NumericUpDownControl  MinValue="0" Grid.Row="2" Grid.Column="1" Title="" Unit="ms"  Value="{Binding Model.EndDelay}" Margin="4,2"  Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <TextBlock Style="{StaticResource TitleRight}" Grid.Row="3" Text="雕刻延迟" />
+                <uc:NumericUpDownControl  MinValue="0" Grid.Row="3" Grid.Column="1" Title="" Unit="ms"  Value="{Binding Model.EngraveDelay}" Margin="4,2"  Style="{StaticResource MainNumericUpDown}"/>
+              
+            </Grid>
+
+            <TextBlock Grid.Row="2"  Text="位移参数" Style="{StaticResource HeaderLabel}"/>
+            <!-- 2. 位移参数 -->
+
+            <Grid Grid.Row="3" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="88"/>
+                    <ColumnDefinition Width="*"/>
+               
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Style="{StaticResource TitleRight}" Grid.Row="0" Text="位移速度"/>
+                <uc:NumericUpDownControl  MinValue="0" Grid.Row="0" Grid.Column="1" Title="" Unit="mm/ms"  Value="{Binding Model.JumpSpeed}" Margin="4,2"  Style="{StaticResource MainNumericUpDown}"/>
+
+
+                <TextBlock Style="{StaticResource TitleRight}" Grid.Row="1" Text="位移延迟"/>
+                <uc:NumericUpDownControl  MinValue="0" Grid.Row="1" Grid.Column="1" Title="" Unit="ms"  Value="{Binding Model.JumpDelay}" Margin="4,2"  Style="{StaticResource MainNumericUpDown}"/>
+             
+            </Grid>
+
+
+
+        </Grid>
+            </ScrollViewer>
+        <Border Grid.Row="1" BorderBrush="#E2E2E2" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch"/>
+        <Button  HorizontalAlignment="Right" Grid.Row="1" Content="套用当前页面" Style="{StaticResource  ActionButtonStyle}" Width="116"  Command="{Binding ApplyCommand}" />
+
+    </Grid>
+</UserControl>

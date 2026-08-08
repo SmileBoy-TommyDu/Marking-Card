@@ -1,0 +1,76 @@
+<!-- 
+ToastNotification 使用示例
+
+1. 在 XAML 中放置 Toast 控件：
+   放在窗体或用户控件的顶部/底部，作为覆盖层显示
+   
+   <Grid>
+       <!-- 你的其他内容 -->
+       
+       <!-- Toast 通知（放在最上层） -->
+       <controls:ToastNotification x:Name="ToastNotification"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Margin="0,20,0,0"/>
+   </Grid>
+
+
+2. 在代码中使用：
+
+   // 显示提示信息
+   ToastNotification.Show("操作成功！", ToastType.Info);
+   
+   // 显示错误信息
+   ToastNotification.Show("操作失败，请重试！", ToastType.Error);
+   
+   // 自定义显示时间（默认3秒）
+   ToastNotification.Show("保存成功！", ToastType.Info, 5);
+   
+   // 手动隐藏
+   ToastNotification.Hide();
+
+
+3. 在 ViewModel 中使用（通过事件或消息传递）：
+   
+   // 方式1：通过事件
+   public event Action<string, ToastType> ShowToast;
+   
+   private void SomeMethod()
+   {
+       ShowToast?.Invoke("操作成功！", ToastType.Info);
+   }
+   
+   // 在 View 的构造函数中订阅：
+   public MainWindow()
+   {
+       InitializeComponent();
+       viewModel.ShowToast += (msg, type) => 
+       {
+           ToastNotification.Show(msg, type);
+       };
+   }
+   
+   // 方式2：通过 Messenger（推荐）
+   // 定义消息类
+   public class ToastMessageEvent
+   {
+       public string Message { get; }
+       public ToastType Type { get; }
+       
+       public ToastMessageEvent(string message, ToastType type)
+       {
+           Message = message;
+           Type = type;
+       }
+   }
+   
+   // ViewModel 中发送
+   WeakReferenceMessenger.Default.Send(new ToastMessageEvent("成功！", ToastType.Info));
+   
+   // View 中接收
+   WeakReferenceMessenger.Default.Register<ToastMessageEvent>(this, (r, m) =>
+   {
+       ToastNotification.Show(m.Message, m.Type);
+   });
+
+-->

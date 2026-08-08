@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+	<UseWPF>true</UseWPF>   <!-- 关键：启用 WPF 支持 -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\image\down2x.png" />
+    <Resource Include="Resource\image\down2xs.png" />
+    <Resource Include="Resource\image\up2x.png" />
+    <Resource Include="Resource\image\up2xs.png" />
+  </ItemGroup>
+
+</Project>

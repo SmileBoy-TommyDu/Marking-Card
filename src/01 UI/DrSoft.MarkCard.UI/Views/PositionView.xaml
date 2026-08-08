@@ -1,0 +1,239 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.PositionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views"
+             xmlns:conv="clr-namespace:DrSoft.MarkCard.UI.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"    
+             xmlns:localuc="clr-namespace:DrSoft.MarkCard.UI.UserControls"
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             Background="#F5F5F5"
+             VerticalAlignment="Stretch"
+             VerticalContentAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             HorizontalContentAlignment="Stretch"
+             PreviewMouseDown="OnPreviewMouseDown"    
+             d:DesignHeight="420"
+             d:DesignWidth="328"
+  >
+
+    <UserControl.Resources>
+        <!-- 注册转换器：配置锁定为 RoyalBlue，未锁定为 DarkGray -->
+        <conv:BoolToBrushConverter x:Key="BoolToColorConverter" 
+                           TrueBrush="RoyalBlue" 
+                           FalseBrush="#A0A0A0"/>
+
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="156"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="对齐" FontSize="12" Foreground="#858e90"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Cursor="">
+                    <uc:IconToggleButton Width="32" Height="32" Style="{StaticResource DistToggle}"
+                        ToolTip="左对齐：使选中物件左边缘对齐到同一条垂直线" Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_left.png" IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_left_active.png" IsEnabled="{Binding IsAlignEnabled}" IsChecked="{Binding IsAlignLeft, Mode=TwoWay}">
+
+                    </uc:IconToggleButton>
+                    <uc:IconToggleButton Width="32" Height="32"  Style="{StaticResource DistToggle}"
+        ToolTip="垂直居中：使选中物件的垂直中心对齐到同一条水平线" Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_middle.png" IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_middle_active.png" IsEnabled="{Binding IsAlignEnabled}" IsChecked="{Binding  IsAlignCenter, Mode=TwoWay}"/>
+
+
+                    <uc:IconToggleButton Width="32" Height="32"  Style="{StaticResource DistToggle}"
+                        ToolTip="右对齐：使选中物件右边缘对齐到同一条垂直线"  Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_right.png" IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_right_active.png" IsEnabled="{Binding IsAlignEnabled}" IsChecked="{Binding IsAlignRight, Mode=TwoWay}">
+
+                    </uc:IconToggleButton>
+                    <uc:IconToggleButton Width="32" Height="32" Style="{StaticResource DistToggle}"
+                        ToolTip="顶部对齐：使选中物件上边缘对齐到同一条水平线" Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_top.png" IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_top_active.png" IsEnabled="{Binding IsAlignEnabled}" IsChecked="{Binding IsAlignTop, Mode=TwoWay}">
+                    </uc:IconToggleButton>
+
+                    <uc:IconToggleButton Width="32" Height="32"  Style="{StaticResource DistToggle}"
+                ToolTip="水平居中：使选中物件的水平中心对齐到同一条垂直线" Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_center.png" IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_center_active.png" IsEnabled="{Binding IsAlignEnabled}" IsChecked="{Binding IsAlignMiddle, Mode=TwoWay}"/>
+                    <uc:IconToggleButton Width="32" Height="32"  Style="{StaticResource DistToggle}"
+                        ToolTip="底部对齐：使选中物件下边缘对齐到同一条水平线" Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_bottom.png" IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/align_bottom_active.png" IsEnabled="{Binding IsAlignEnabled}" IsChecked="{Binding IsAlignBottom, Mode=TwoWay}" Cursor="Hand"/>
+
+
+                </StackPanel>
+
+                <!-- 对齐选项 -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <RadioButton GroupName="AlignStandard" Content="最后所选对象" IsEnabled="{Binding IsDistributeSelectAreaEnabled}" Style="{StaticResource DrRadioButtonStyle}" FontSize="14" Margin="0,0,8,0" IsChecked="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding AlignStandardRadioCheckedCommand}" CommandParameter="LastChooseOne"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
+                    <RadioButton GroupName="AlignStandard" Content="页面边缘" IsEnabled="{Binding IsUEnabled}" Style="{StaticResource DrRadioButtonStyle}" FontSize="14"  Margin="0,0,8,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding AlignStandardRadioCheckedCommand}" CommandParameter="PageEdge"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
+                    <RadioButton GroupName="AlignStandard" Content="页面中心" IsEnabled="{Binding IsUEnabled}" Style="{StaticResource DrRadioButtonStyle}" FontSize="14"  Margin="0,0,0,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding AlignStandardRadioCheckedCommand}" CommandParameter="PageCenter"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
+                    <!--<RadioButton GroupName="AlignStandard" Content="基线" Style="{StaticResource DrRadioButtonStyle}" Margin="0,0,20,5">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Checked">
+                <i:InvokeCommandAction Command="{Binding AlignStandardRadioCheckedCommand}" CommandParameter="Baseline"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </RadioButton>-->
+                </StackPanel>
+
+                <TextBlock Text="分布" Grid.Row="3" FontSize="12" Foreground="#858e90"/>
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                   Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_left.png"
+                   IsChecked="{Binding IsAlignLeftDistribute, Mode=TwoWay}"/>-->
+                    <uc:IconToggleButton Width="32" Height="32" Style="{StaticResource DistToggle}"
+                   ToolTip="水平居中分布：按物件中心点在水平方向均匀分布" 
+                   Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_middle.png"
+                   IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_middle_active.png"
+                   IsEnabled="{Binding IsDistributeEnabled}"
+                   IsChecked="{Binding IsAlignCenterDistribute, Mode=TwoWay}"/>
+                    <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                 ToolTip="水平等间距分布" 
+                 Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_spacing.png"
+                 IsChecked="{Binding IsAlignHorizontalSpaceDistribute, Mode=TwoWay}"/>
+   <ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                   ToolTip="右对齐分布" 
+                   Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/horizontal_right.png"
+                   IsChecked="{Binding IsAlignRightDistribute, Mode=TwoWay}"/>-->
+
+
+                    <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}" Margin="12 0 0 0"
+                   ToolTip="顶部对齐分布" 
+                   Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_top.png"
+                   IsChecked="{Binding IsAlignTopDistribute, Mode=TwoWay}"/>-->
+                    <uc:IconToggleButton Width="32" Height="32" Style="{StaticResource DistToggle}"
+                   ToolTip="垂直居中分布：按物件中心点在垂直方向均匀分布" 
+                   Icon="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_middle.png"
+                   IconActive="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_middle_active.png"
+                   IsEnabled="{Binding IsDistributeEnabled}"
+                   IsChecked="{Binding IsAlignMiddleDistribute, Mode=TwoWay}"/>
+                    <!--<ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+         ToolTip="垂直等间距分布"
+         Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_middle.png"
+         IsChecked="{Binding IsAlignVerticalSpaceDistribute, Mode=TwoWay}"/>
+   <ToggleButton Width="36" Height="36" Style="{StaticResource DistToggle}"
+                   ToolTip="底部对齐分布" Tag="底对齐"
+                   Content="pack://application:,,,/DrSoft.MarkCard.UI;component/Resource/image/Edit/vertical_bottom.png"
+                   IsChecked="{Binding IsAlignBottomDistribute, Mode=TwoWay}"/>-->
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0 4 0 0">
+                    <RadioButton GroupName="DistributionSettingsStandard" Tag="SelectArea" IsEnabled="{Binding IsDistributeSelectAreaEnabled}" FontSize="14" Style="{StaticResource DrRadioButtonStyle}" Content="选取范围" IsChecked="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding DistributionStandardRadioCheckedCommand}" CommandParameter="SelectArea"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
+                    <RadioButton GroupName="DistributionSettingsStandard" IsEnabled="{Binding IsDistributeSelectAreaEnabled}" Tag="CanvasArea" Style="{StaticResource DrRadioButtonStyle}" FontSize="14" Margin="16,0,0,0" Content="画布范围">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Checked">
+                                <i:InvokeCommandAction Command="{Binding DistributionStandardRadioCheckedCommand}" CommandParameter="CanvasArea"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </RadioButton>
+                </StackPanel>
+
+            </Grid>
+            <Grid Margin="8 0 8 8"  Grid.Row="1" x:Name="RootPanel" IsEnabled="{Binding IsUEnabled}" HorizontalAlignment="Stretch" MinWidth="240">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 1. 位置 (X, Y) -->
+
+                <TextBlock   Grid.Row="0"   Text="位置" Style="{StaticResource HeaderLabel}"/>
+
+
+                <!-- Use Grid so the button can be right-aligned and won't be clipped by StackPanel sizing -->
+                <Grid Grid.Row="1">
+                    <!-- Left column takes remaining space, right column sized to button -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <!-- Give controls a sensible min width so they don't push the button out of view -->
+                        <uc:NumericUpDownControl   Title="X" Unit="" Style="{StaticResource MainNumericUpDown}"   Value="{Binding X}"  CommittedCommand="{Binding OnXCommittedCommand}" />
+                        <uc:NumericUpDownControl  MinWidth="120" Margin="34,0,0,0"  Title="Y" Unit="" Style="{StaticResource MainNumericUpDown}"  Value="{Binding Y}" CommittedCommand="{Binding OnYCommittedCommand}"  />
+                        <Button  Margin="8,0,0,0"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 ToolTip="物件居中：将选中物件中心移动到页面中心坐标 (0, 0)"
+                                 Command="{Binding GoCenterCommand}"
+                                 Style="{StaticResource  PressableIconButtonStyle}">
+                            <Image  Source="/Resource/image/center0.png" Width="24" Height="24" Stretch="Fill" VerticalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
+
+
+
+                <!-- 2. 大小 (W, H) -->
+                <uc:SizeLockUserControl     
+                    Grid.Row="2" 
+                    Title="大小" 
+                    Unit="" 
+                    WidthLabel="W" 
+                    HeightLabel="H" 
+                    WidthValue="{Binding Width}" 
+                    HeightValue="{Binding Height}" 
+                    IsEnabled="{Binding IsScaleEnabled}"
+                    IsLocked="{Binding IsLocked,Mode=TwoWay}" 
+                    IsLockToggleEnabled="{Binding IsLockToggleEnabled}"
+                            CommittedCommand="{Binding OnSizeCommittedCommand}"  />
+                <!-- 3. 旋转中心 -->
+                <TextBlock Grid.Row="3"  Text="旋转中心" Style="{StaticResource HeaderLabel}"/>
+                <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <uc:NumericUpDownControl   Title="X" Unit="" Style="{StaticResource MainNumericUpDown}"  Value="{Binding CenterX}"  CommittedCommand="{Binding OnCenterXCommittedCommand}"  />
+                    <uc:NumericUpDownControl   Margin="34,0,0,0"  Title="Y" Unit="" Style="{StaticResource MainNumericUpDown}"  Value="{Binding CenterY}"  CommittedCommand="{Binding OnCenterYCommittedCommand}" />
+
+                </StackPanel>
+
+                <!-- 4. 旋转角度 -->
+                <TextBlock  Grid.Row="5"   Text="旋转角度" Style="{StaticResource HeaderLabel}"/>
+                <StackPanel  Grid.Row="6">
+                    <uc:NumericUpDownControl  Step="1" DecimalPlaces="1" HorizontalAlignment="Left" Title="A" Unit="" Style="{StaticResource MainNumericUpDown}"  Value="{Binding Angle}"    CommittedCommand="{Binding OnAngleCommittedCommand}"/>
+                </StackPanel>
+
+
+            </Grid>
+            <!--<Border Grid.Row="2" BorderBrush="#E2E2E2" BorderThickness="0,1,0,0" />-->
+        </Grid>
+    </ScrollViewer>
+</UserControl>

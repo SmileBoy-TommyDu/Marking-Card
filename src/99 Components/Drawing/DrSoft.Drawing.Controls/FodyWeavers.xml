@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <Rougamo skip-ref-struct="true">
+    <Mos>
+      <!-- BoxSelectionSession: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.BoxSelectionSession.Start(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.BoxSelectionSession.Complete(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.BoxSelectionSession.Cancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.BoxSelectionSession.SelectShapesInRect(..))" />
+      
+      <!-- PathNodeEditSession: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.EnterNodeEditMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.ExitNodeEditMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.SetNodeEditSubMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.SetDeleteNodesMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.SetAddNodesMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.SetSeparateNodesMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.CompletePathNodeDrag(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.Cancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.TryHandlePathNodeClickToDelete(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.TryHandlePathNodeClickToSeparate(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.TryHandlePathLineClickToAddNode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.SetMoveNodeSelection(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.PathNodeEditSession.ClearSelectedMoveNode(..))" />
+      
+      <!-- ControlPointResizeSession: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ControlPointResizeSession.Start(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ControlPointResizeSession.Complete(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ControlPointResizeSession.Cancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ControlPointResizeSession.ResetState(..))" />
+      
+      <!-- RotationCenterDragSession: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.RotationCenterDragSession.Start(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.RotationCenterDragSession.Complete(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.RotationCenterDragSession.Cancel(..))" />
+      
+      <!-- ShapeDragSession: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ShapeDragSession.Start(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ShapeDragSession.Complete(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ShapeDragSession.Cancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ShapeDragSession.CommitPendingTransformCommand(..))" />
+      
+      <!-- SelectionControlPointService: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionControlPointService.GetSelectionControlPoints(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionControlPointService.GetControlPointWorldPosition(..))" />
+      
+      <!-- SelectionHitService: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionHitService.FindClosestHitShape(..))" />
+      
+      <!-- SelectionStateService: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionStateService.SelectShape(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionStateService.ClearSelection(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionStateService.UpdateAlignmentReference(..))" />
+      
+      <!-- SelectionMouseDownService: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionMouseDownService.Handle(..))" />
+      
+      <!-- SelectionMouseMoveService: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.SelectionMouseMoveService.TryPromotePendingSelectionDrag(..))" />
+      
+      <!-- ToolArc: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolArc.FinishArc(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolArc.OnCancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolArc.ResetState(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolArc.ActivateTool(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolArc.DeactivateTool(..))" />
+      
+      <!-- ToolBase: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBase.OnCancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBase.FinishDrawing(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBase.CalculateMergedBounds(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBase.NotifyMenuEvent(..))" />
+      
+      <!-- ToolBezier: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBezier.AddAnchor(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBezier.OnCancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBezier.FinishBezierAsClosed(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolBezier.Reset(..))" />
+      
+      <!-- ToolCircle: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolCircle.FinishCircle(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolCircle.OnCancel(..))" />
+      
+      <!-- ToolDot: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolDot.FinishDot(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolDot.OnCancel(..))" />
+      
+      <!-- ToolLine: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolLine.FinishLine(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolLine.FinishLineAsClosed(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolLine.OnCancel(..))" />
+      
+      <!-- ToolPolygon: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolPolygon.BuildPolygon(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolPolygon.OnCancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolPolygon.Reset(..))" />
+      
+      <!-- ToolRectangle: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolRectangle.FinishRectangle(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolRectangle.OnCancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolRectangle.UpdateRectanglePoints(..))" />
+      
+      <!-- ToolSelect: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.ClearSelection(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.SetDeleteNodesMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.SetAddNodesMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.SetSeparateNodesMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.EnterNodeEditMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.ExitNodeEditMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.SetNodeEditSubMode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.SetMoveNodeSelection(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.ClearSelectedMoveNode(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.OnCancel(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.ArmStickyControlPoint(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolSelect.ClearStickyControlPoint(..))" />
+      
+      <!-- ToolText: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolText.FinishText(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolText.OnTextModelChanged(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolText.CloneFontSettings(..))" />
+      
+      <!-- ToolViewportMove: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolViewportMove.OnCancel(..))" />
+      
+      <!-- ToolZoom: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.ZoomAt(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.ZoomToFit(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.ZoomToSelection(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.SaveViewportState(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.ResetViewportState(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.NotifyZoomChanged(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.CalculateBounds(..))" />
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolZoom.CalculateZoomPercent(..))" />
+      
+      <!-- ToolArbitraryCurve: 低频方法 -->
+      <Mo assembly="DrSoft.Drawing.Utility"
+          type="DrSoft.Drawing.Utility.AOP.LogAttribute"
+          pattern="method(* DrSoft.Drawing.Controls.Tools.ToolArbitraryCurve.OnCancel(..))" />
+    </Mos>
+  </Rougamo>
+</Weavers>

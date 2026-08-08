@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.Parameter.Shape.DashSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views.Parameter.Shape"
+                          xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"  
+             mc:Ignorable="d"          
+            Background="#F5F5F5">
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <!--<RowDefinition Height="40"/>-->
+        </Grid.RowDefinitions>
+
+        <ScrollViewer MinHeight="300"  VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="8">
+                <TextBlock Text="虚线设定" Style="{StaticResource HeaderLabel}" Margin="0,10,0,5"/>
+                <Image Source="/Resource/image/lineshow2.png"/>
+
+
+                <CheckBox x:Name="OutputAsDashedCheckBox" Content="输出为虚线" 
+                  IsChecked="{Binding Model.OutputAsDashed}" 
+                  Margin="0,9,0,0"
+                  Style="{StaticResource DrCheckBoxStyle}"/>
+
+                <StackPanel IsEnabled="{Binding IsChecked, ElementName=OutputAsDashedCheckBox}">
+                    <!-- 虚线参数分组区域 -->
+                    <GroupBox Header="多组" Margin="0,4" Padding="4">
+                        <StackPanel>
+                            <!-- 组数 + 组号 选择行 -->
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="组数" Style="{StaticResource LabelText}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <ComboBox Grid.Column="1" Width="88" Style="{StaticResource DrComboxStyle}" 
+                              ItemsSource="{Binding GroupCountOptions}" 
+                              SelectedItem="{Binding SelectedGroupCount}" 
+                              VerticalAlignment="Center"/>
+                                <ComboBox Grid.Column="3" Width="88" Style="{StaticResource DrComboxStyle}" 
+                              ItemsSource="{Binding GroupNameOptions}" 
+                              SelectedIndex="{Binding SelectedGroupIndex}" 
+                              VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- A / B 参数 -->
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="A" Style="{StaticResource LabelText}" />
+                                <uc:NumericUpDownControl Margin="0,2" Grid.Row="0" Grid.Column="1" Unit="mm" Style="{StaticResource SeconedNumericUpDown}" 
+                                             Value="{Binding CurrentGroupA}" />
+
+                                <TextBlock Grid.Row="1" Text="B" Style="{StaticResource LabelText}" />
+                                <uc:NumericUpDownControl Margin="0,2" Grid.Row="1" Grid.Column="1" Unit="mm" Style="{StaticResource SeconedNumericUpDown}" 
+                                             Value="{Binding CurrentGroupB}" />
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- C 参数（独立于分组） -->
+                    <Grid Margin="10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="C" Style="{StaticResource LabelText}" />
+                        <uc:NumericUpDownControl Margin="0,2" Grid.Row="0" Grid.Column="1" Unit="mm" Style="{StaticResource SeconedNumericUpDown}" Value="{Binding Model.DashC}"/>
+                    </Grid>
+
+                    <CheckBox Content="奇偶行对齐" 
+                  IsChecked="{Binding Model.IsOddEvenAlign}" 
+                  Margin="0,5"
+                  Style="{StaticResource DrCheckBoxStyle}"/>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="95"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="偶数行偏移量" Style="{StaticResource LabelText}"/>
+                        <uc:NumericUpDownControl Margin="0,2" Grid.Row="0" Grid.Column="1" Unit="mm" Style="{StaticResource SeconedNumericUpDown}" Value="{Binding Model.EvenRowOffset}"/>
+
+                        <TextBlock Grid.Row="1" Text="起点偏位" Style="{StaticResource LabelText}"/>
+                        <uc:NumericUpDownControl Margin="0,2" Grid.Row="1" Grid.Column="1" Unit="mm" Style="{StaticResource SeconedNumericUpDown}" Value="{Binding Model.StartPointOffset}"/>
+
+                        <TextBlock Grid.Row="2" Text="水平缩放" Style="{StaticResource LabelText}"/>
+                        <uc:NumericUpDownControl Margin="0,2" Grid.Row="2" Grid.Column="1" Unit="mm" Style="{StaticResource SeconedNumericUpDown}" Value="{Binding Model.HorizontalScale}"/>
+
+                        <TextBlock Grid.Row="3" Text="垂直缩放" Style="{StaticResource LabelText}"/>
+                        <uc:NumericUpDownControl Margin="0,2" Grid.Row="3" Grid.Column="1" Unit="mm" Style="{StaticResource SeconedNumericUpDown}" Value="{Binding Model.VerticalScale}"/>
+                    </Grid>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

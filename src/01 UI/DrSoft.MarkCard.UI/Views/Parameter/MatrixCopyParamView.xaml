@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.UI.Views.MatrixCopyParamView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.UI.Views"
+             xmlns:conv="clr-namespace:DrSoft.MarkCard.UI.Converters" 
+             xmlns:uc="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls;assembly=DrSoft.MarkCard.CommonUI"
+             Background="#F5F5F5" >
+    <UserControl.Resources>
+        <!-- 需要在项目中定义此转换器 -->
+        <conv:EnumToVisibilityConverter x:Key="EnumToVis" />
+        <conv:InverseBooleanConverter x:Key="InverseBool" />
+
+        <!-- 标签样式 -->
+        <Style x:Key="SectionLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+        <Style x:Key="NumericInput" TargetType="TextBox">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#EAEAEA"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5,0,20,0"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid >
+     
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer MinHeight="300"  VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="8">
+            <!-- 1. 复制模式选择 -->
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="复制模式 " VerticalAlignment="Center" />
+                <ComboBox  SelectedIndex="{Binding SelectedModeIndex}" Width="88" Style="{StaticResource DrComboxStyle}">
+                    <ComboBoxItem Content="无"/>
+                    <ComboBoxItem Content="矩阵复制"/>
+                    <ComboBoxItem Content="环状复制"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- 2. 矩阵复制面板 (仅在 SelectedMode == Matrix 时显示) -->
+
+            <StackPanel Visibility="{Binding SelectedMode, Converter={StaticResource EnumToVis}, ConverterParameter=Matrix}">
+                <TextBlock Text="水平方向" Style="{StaticResource HeaderLabel}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="数量" VerticalAlignment="Center" TextAlignment="Right" Margin="26,0,0,0"/>
+                    <uc:NumericUpDownControl MinValue="1" DecimalPlaces="0" Value="{Binding Model.ColumnCount}" Margin="4,0,0,0" Style="{StaticResource SeconedNumericUpDown}"/>
+                    <TextBlock Text="间距(mm)" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                    <uc:NumericUpDownControl   MinValue="0" Value="{Binding Model.ColumnSpacing}" Margin="4,0,0,0" Style="{StaticResource SeconedNumericUpDown}"/>
+                </StackPanel>
+
+                <TextBlock Text="垂直方向" Style="{StaticResource HeaderLabel}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="数量"  VerticalAlignment="Center" TextAlignment="Right" Margin="26,0,0,0"/>
+                    <uc:NumericUpDownControl MinValue="1" DecimalPlaces="0" Value="{Binding Model.RowCount}" Margin="4,0,0,0"  Style="{StaticResource SeconedNumericUpDown}"/>
+                    <TextBlock Text="间距(mm)" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                    <uc:NumericUpDownControl   MinValue="0" Value="{Binding Model.RowSpacing}" Margin="4,0,0,0" Style="{StaticResource SeconedNumericUpDown}"/>
+
+                </StackPanel>
+
+                <!--<TextBlock Text="复制顺序" Style="{StaticResource HeaderLabel}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="选择 " VerticalAlignment="Center" />
+                    --><!-- 模拟图标 ComboBox --><!--
+                    <ComboBox SelectedIndex="{Binding Model.OrderIndex}" Width="88" Style="{StaticResource DrComboxStyle}">
+                        <ComboBoxItem Content="水平循环"/>
+                        <ComboBoxItem Content="垂直循环"/>
+                        <ComboBoxItem Content="水平顺向"/>
+                        <ComboBoxItem Content="垂直顺向"/>
+                    </ComboBox>
+
+                </StackPanel>-->
+            </StackPanel>
+
+            <!-- 3. 环状复制面板 (仅在 SelectedMode == Circular 时显示) -->
+            <StackPanel Visibility="{Binding SelectedMode, Converter={StaticResource EnumToVis}, ConverterParameter=Circular}">
+                <TextBlock Text="复制设置" Style="{StaticResource HeaderLabel}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel  Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="圆心半径" VerticalAlignment="Center"/>
+                        <uc:NumericUpDownControl   Value="{Binding Model.Radius}" Margin="4,0,0,0" Style="{StaticResource SeconedNumericUpDown}" HorizontalAlignment="Left" />
+
+                        <TextBlock  Margin="30,0,0,0" Text="复制数量" VerticalAlignment="Center"/>
+                        <uc:NumericUpDownControl MinValue="1" DecimalPlaces="0" Value="{Binding Model.Count}" Margin="4,0,0,0" Style="{StaticResource SeconedNumericUpDown}" HorizontalAlignment="Left" />
+                    </StackPanel>
+
+                    <StackPanel  Grid.Row="1" Orientation="Horizontal"  Margin="0,8,0,0">
+                        <TextBlock  Text="起始角度" VerticalAlignment="Center"/>
+                        <uc:NumericUpDownControl   Value="{Binding Model.StartAngle}" Margin="4,0,0,0" Style="{StaticResource SeconedNumericUpDown}" HorizontalAlignment="Left" />
+
+                        <TextBlock Margin="30,0,0,0"  Text="间隔角度" VerticalAlignment="Center"
+                                   IsEnabled="{Binding IsAverageDistribute, Converter={StaticResource InverseBool}}"/>
+                        <uc:NumericUpDownControl   Value="{Binding Model.IntervalAngle}" Margin="4,0,0,0" Style="{StaticResource SeconedNumericUpDown}" HorizontalAlignment="Left"
+                                                 IsEnabled="{Binding IsAverageDistribute, Converter={StaticResource InverseBool}}"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <CheckBox Content="平均分布" IsChecked="{Binding IsAverageDistribute}" Margin="0,0,8,0" Style="{StaticResource DrCheckBoxStyle}"/>
+                    <CheckBox Content="对象旋转" IsChecked="{Binding Model.IsObjectRotate}" Margin="0,0,8,0" Style="{StaticResource DrCheckBoxStyle}"/>
+                    <CheckBox Content="逆时针复制" IsChecked="{Binding Model.IsCounterClockwise}" Style="{StaticResource DrCheckBoxStyle}"/>
+                </StackPanel>
+            </StackPanel>
+
+
+
+        </StackPanel>
+            </ScrollViewer>
+        <Border Grid.Row="1" BorderBrush="#E2E2E2" BorderThickness="0,1,0,0" HorizontalAlignment="Stretch"/>
+        <Button  HorizontalAlignment="Right" Grid.Row="1"  Content="套用当前页面"  Style="{StaticResource  ActionButtonStyle}" Width="116"  Command="{Binding ApplyCommand}"/>
+
+    </Grid>
+</UserControl>

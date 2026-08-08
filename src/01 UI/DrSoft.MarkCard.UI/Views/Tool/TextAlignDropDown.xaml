@@ -1,0 +1,88 @@
+<UserControl x:Class="DrSoft.MarkCard.UI.Views.Tool.TextAlignDropDown"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="HoverBrush" Color="#E6E6E6"/>
+        <SolidColorBrush x:Key="PressedBrush" Color="#D8D8D8"/>
+        <SolidColorBrush x:Key="SelectedBrush" Color="#DDEEFF"/>
+        <SolidColorBrush x:Key="PopupBorderBrush" Color="#D0D0D0"/>
+
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="4,5,4,0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="RootBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="RootBorder" Property="Background" Value="{StaticResource HoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="RootBorder" Property="Background" Value="{StaticResource PressedBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="RootBorder" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PopupOptionButtonStyle" TargetType="Button" BasedOn="{StaticResource IconButtonStyle}">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Button x:Name="DropDownButton"
+                Style="{StaticResource IconButtonStyle}"
+                Click="DropDownButton_Click"
+                ToolTip="左对齐"/>
+
+        <Popup x:Name="AlignmentPopup"
+               PlacementTarget="{Binding ElementName=DropDownButton}"
+               Placement="Bottom"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               PopupAnimation="Fade">
+            <Border Background="White"
+                    BorderBrush="{StaticResource PopupBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="4">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="LeftAlignOption"
+                            Tag="0"
+                            ToolTip="左对齐"
+                            Style="{StaticResource PopupOptionButtonStyle}"
+                            Click="AlignmentOption_Click"/>
+                    <Button x:Name="CenterAlignOption"
+                            Tag="1"
+                            ToolTip="居中对齐"
+                            Style="{StaticResource PopupOptionButtonStyle}"
+                            Click="AlignmentOption_Click"/>
+                    <Button x:Name="RightAlignOption"
+                            Tag="2"
+                            ToolTip="右对齐"
+                            Style="{StaticResource PopupOptionButtonStyle}"
+                            Click="AlignmentOption_Click"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

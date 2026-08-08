@@ -1,0 +1,22 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/.vs
+/src/.qwen
+*.lscache
+/docs
+/.codex-*
+/src/MarkCard-task*.sln
+/.claude-*
+/Tests
+/artifacts/obj
+.idea/
+/.playwright-mcp
+/.artifacts
+/artifacts
+/src/global.json
+/artifacts
+/src/AGENTS.md
+/src/.joycode/memory
+/logs

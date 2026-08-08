@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Layouts>
+	<Layout Name="MainWindow">
+		<ActiveItem>2</ActiveItem>
+		<Elements>
+			<Item ID="0" DesiredWidth="200" DesiredHeight="553" FloatLeft="437" FloatTop="192" CanSelect="true" />
+			<Item ID="1" DesiredWidth="1376" DesiredHeight="936" FloatLeft="0" FloatTop="0" CanSelect="true" />
+			<Item ID="2" DesiredWidth="328" DesiredHeight="483" FloatLeft="1483" FloatTop="580" CanSelect="true" />
+			<Item ID="3" DesiredWidth="328" DesiredHeight="450" FloatLeft="0" FloatTop="0" CanSelect="true" />
+			<Item ID="4" DesiredWidth="328" DesiredHeight="420" FloatLeft="1128" FloatTop="393" CanSelect="true" />
+			<Item ID="5" DesiredWidth="200" DesiredHeight="380" FloatLeft="12" FloatTop="314" CanSelect="true" />
+		</Elements>
+		<ToolBar>
+			<LeftBar />
+			<TopBar />
+			<RightBar />
+			<BottomBar />
+		</ToolBar>
+		<Panel IsDocument="false" Side="None" Direction="Horizontal">
+			<Panel IsDocument="false" Side="Left" Direction="Vertical">
+				<Group IsDocument="false" Side="Left">
+					<Item>0</Item>
+				</Group>
+				<Group IsDocument="false" Side="Left">
+					<Item>5</Item>
+				</Group>
+			</Panel>
+			<Panel IsDocument="true" Side="None" Direction="None">
+				<Group IsDocument="true" Side="None">
+					<Item>1</Item>
+				</Group>
+			</Panel>
+			<Panel IsDocument="false" Side="Right" Direction="Vertical">
+				<Group IsDocument="false" Side="Right">
+					<Item>3</Item>
+					<Item>4</Item>
+				</Group>
+				<Group IsDocument="false" Side="Right">
+					<Item>2</Item>
+				</Group>
+			</Panel>
+		</Panel>
+		<FloatWindows />
+	</Layout>
+</Layouts>

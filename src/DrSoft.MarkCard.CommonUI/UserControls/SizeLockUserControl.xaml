@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.CommonUI.UserControls.SizeLockUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls"
+             mc:Ignorable="d" 
+                   x:Name="root"
+         d:DesignHeight="120" 
+         d:DesignWidth="500">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="32"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 标题行 -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal"  >
+            <TextBlock Text="{Binding Title, ElementName=root}" Style="{StaticResource HeaderLabel}" />
+            <TextBlock Text="{Binding Unit, ElementName=root}"  Style="{StaticResource HeaderLabel}"/>
+        </StackPanel>
+
+        <local:NumericUpDownControl 
+             Grid.Row="1"
+            Grid.Column="0" 
+            x:Name="wText"
+            Tag="Width"
+            Title="{Binding WidthLabel, ElementName=root}"
+            Unit="{Binding Unit, ElementName=root}"
+            MinValue="0"
+            Value="{Binding WidthValue, ElementName=root, UpdateSourceTrigger=LostFocus}"
+            CommittedCommand="{Binding WidthCommittedCommand, ElementName=root}"
+            Style="{StaticResource MainNumericUpDown}"
+            VerticalAlignment="Center"/>
+        <ToggleButton   Grid.Row="1"
+                        Grid.Column="1" 
+                      ToolTip="锁定宽高比：开启后宽度和高度按原比例联动调整"
+                      IsChecked="{Binding IsLocked, ElementName=root, Mode=TwoWay}" 
+                      IsEnabled="{Binding IsLockToggleEnabled, ElementName=root}"
+                      Width="24" 
+                      Height="24" 
+                      Margin="5,0" 
+                      BorderBrush="Transparent"
+                      BorderThickness="0"
+                      Background="Transparent" 
+                      Click="LockButton_Click">
+            <ToggleButton.Style>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4">
+                                    <Grid Width="20" Height="20">
+                                        <!-- 开锁图标（默认显示） -->
+                                        <Image 
+                                        Width="16" Height="16"
+                                            x:Name="imgUnlock" 
+                                            Source="/Resource/image/unlock.png" 
+                                           Visibility="Visible" />
+                                        <!-- 闭锁图标（默认隐藏） -->
+                                        <Image 
+                                              Width="16" Height="16"
+                                            x:Name="imgLock"
+                                            Source="/Resource/image/lock.png" 
+                                           Visibility="Collapsed" />
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <!-- 锁定状态（IsChecked=True）时，显示闭锁图标 -->
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter TargetName="imgLock" Property="Visibility" Value="Visible"/>
+                                        <Setter TargetName="imgUnlock" Property="Visibility" Value="Collapsed"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
+
+        <local:NumericUpDownControl  
+            Grid.Row="1"
+            Grid.Column="2" 
+            x:Name="hText"
+            Tag="Height"
+            Title="{Binding HeightLabel, ElementName=root}"
+            Unit="{Binding Unit, ElementName=root}"
+            Style="{StaticResource MainNumericUpDown}"
+             
+       MinValue="0"
+            Value="{Binding HeightValue, ElementName=root, UpdateSourceTrigger=LostFocus}" 
+            CommittedCommand="{Binding HeightCommittedCommand, ElementName=root}"
+            VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>

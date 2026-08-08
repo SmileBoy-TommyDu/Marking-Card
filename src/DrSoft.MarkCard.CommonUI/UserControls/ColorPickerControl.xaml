@@ -1,0 +1,260 @@
+﻿<UserControl x:Class="DrSoft.MarkCard.CommonUI.UserControls.ColorPickerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DrSoft.MarkCard.CommonUI.UserControls"
+             mc:Ignorable="d" 
+                         d:DesignHeight="420" d:DesignWidth="580"
+             Background="#F0F0F0">
+
+    <UserControl.Resources>
+        <!-- 颜色格子按钮样式（含选中虚线边框） -->
+        <Style x:Key="ColorCellStyle" TargetType="Button">
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#808080"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="outerBd"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <!-- 选中外黑虚线 -->
+                            <Rectangle x:Name="dashRectOuter"
+                                       Stroke="Black" StrokeThickness="1.5"
+                                       StrokeDashArray="2,2"
+                                       Visibility="Collapsed"
+                                       IsHitTestVisible="False"
+                                       Margin="1"/>
+                            <!-- 选中内白虚线 -->
+                            <Rectangle x:Name="dashRectInner"
+                                       Stroke="White" StrokeThickness="1.5"
+                                       StrokeDashArray="2,2"
+                                       Visibility="Collapsed"
+                                       IsHitTestVisible="False"
+                                       Margin="3"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="outerBd" Property="BorderBrush" Value="#000000"/>
+                                <Setter TargetName="outerBd" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="Selected">
+                                <Setter TargetName="dashRectOuter" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="dashRectInner" Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="#F0F0F0" Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ========== 左列 ========== -->
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="基本颜色(B):" FontSize="12" Margin="0,0,0,4"/>
+                <UniformGrid x:Name="BasicColorGrid" Columns="8" Rows="6" HorizontalAlignment="Left"/>
+
+                <TextBlock Text="自定义颜色(C):" FontSize="12" Margin="0,12,0,4"/>
+                <UniformGrid x:Name="CustomColorGrid" Columns="8" Rows="2" HorizontalAlignment="Left"/>
+
+                <Button x:Name="DefineCustomBtn"
+                        Content="规定自定义颜色(D) >>"
+                        Height="24" HorizontalAlignment="Left"
+                        Margin="0,8,0,0" Padding="6,0" FontSize="11"
+                        Click="DefineCustomBtn_Click"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                    <Button x:Name="ConfirmBtn" Content="确定" Width="68" Height="26"
+                            Margin="0,0,6,0" FontSize="12" Click="ConfirmBtn_Click"/>
+                    <Button x:Name="CancelBtn" Content="取消" Width="68" Height="26"
+                            FontSize="12" Click="CancelBtn_Click"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- ========== 右列：取色器（默认折叠） ========== -->
+            <Grid x:Name="PickerPanel" Grid.Column="2" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 取色板 + 色相条 -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 主色板（用 Grid 叠加层实现十字光标） -->
+                    <Grid Grid.Column="0"
+                          MinWidth="200" MinHeight="180"
+                          Cursor="Cross"
+                          MouseDown="ColorSpectrum_MouseDown"
+                          MouseMove="ColorSpectrum_MouseMove"
+                          MouseUp="ColorSpectrum_MouseUp">
+
+                        <!-- 色相→白渐变（水平） -->
+                        <Border x:Name="ColorSpectrumBorder"
+                                BorderBrush="#808080" BorderThickness="1">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop x:Name="HueStop" Color="Red" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+
+                        <!-- 黑色→透明叠加（垂直） -->
+                        <Border IsHitTestVisible="False">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="Transparent" Offset="0"/>
+                                    <GradientStop Color="Black" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+
+                        <!-- 十字光标 -->
+                        <Canvas IsHitTestVisible="False">
+                            <Ellipse x:Name="CrosshairCircle"
+                                     Width="10" Height="10"
+                                     Stroke="White" StrokeThickness="1.5"
+                                     Fill="Transparent"
+                                     Canvas.Left="0" Canvas.Top="0"/>
+                        </Canvas>
+                    </Grid>
+
+                    <!-- 色相竖条 -->
+                    <Grid Grid.Column="1" Margin="4,0,0,0"
+                          Width="16"
+                          Cursor="Hand"
+                          MouseDown="HueBar_MouseDown"
+                          MouseMove="HueBar_MouseMove"
+                          MouseUp="HueBar_MouseUp">
+
+                        <Border BorderBrush="#808080" BorderThickness="1">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#FF0000" Offset="0"/>
+                                    <GradientStop Color="#FFFF00" Offset="0.167"/>
+                                    <GradientStop Color="#00FF00" Offset="0.333"/>
+                                    <GradientStop Color="#00FFFF" Offset="0.5"/>
+                                    <GradientStop Color="#0000FF" Offset="0.667"/>
+                                    <GradientStop Color="#FF00FF" Offset="0.833"/>
+                                    <GradientStop Color="#FF0000" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+
+                        <!-- 色相指示线 -->
+                        <Canvas x:Name="HueIndicatorCanvas" IsHitTestVisible="False">
+                            <Rectangle x:Name="HueArrowLine"
+                                       Width="16" Height="2"
+                                       Fill="Transparent"
+                                       Stroke="Black" StrokeThickness="1"
+                                       Canvas.Left="0" Canvas.Top="0"/>
+                        </Canvas>
+                    </Grid>
+                </Grid>
+
+                <!-- 下方：预览 + 数值 + 添加按钮 -->
+                <Grid Grid.Row="1" Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 颜色预览（上旧/下新） -->
+                    <Grid Grid.Column="0" Height="50">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="OldColorBorder" Grid.Row="0"
+                                BorderBrush="#808080" BorderThickness="1"
+                                Background="Black"/>
+                        <Border x:Name="PreviewBorder" Grid.Row="1"
+                                BorderBrush="#808080" BorderThickness="1,0,1,1"
+                                Background="Black"/>
+                    </Grid>
+
+                    <!-- HSL / RGB 数值输入 -->
+                    <Grid Grid.Column="1" Margin="8,0,8,0" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,3">
+                            <TextBlock Text="色调(E):" FontSize="11" VerticalAlignment="Center" Width="52"/>
+                            <TextBox x:Name="HueTBox" Width="38" Height="20" FontSize="11"
+                                     VerticalContentAlignment="Center"
+                                     TextChanged="HslRgb_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,3">
+                            <TextBlock Text="饱和度(S):" FontSize="11" VerticalAlignment="Center" Width="52"/>
+                            <TextBox x:Name="SatTBox" Width="38" Height="20" FontSize="11"
+                                     VerticalContentAlignment="Center"
+                                     TextChanged="HslRgb_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+                            <TextBlock Text="亮度(L):" FontSize="11" VerticalAlignment="Center" Width="52"/>
+                            <TextBox x:Name="LumTBox" Width="38" Height="20" FontSize="11"
+                                     VerticalContentAlignment="Center"
+                                     TextChanged="HslRgb_TextChanged"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,3">
+                            <TextBlock Text="红(R):" FontSize="11" VerticalAlignment="Center" Width="38"/>
+                            <TextBox x:Name="RTextBox" Width="38" Height="20" FontSize="11"
+                                     VerticalContentAlignment="Center"
+                                     TextChanged="RGB_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,3">
+                            <TextBlock Text="绿(G):" FontSize="11" VerticalAlignment="Center" Width="38"/>
+                            <TextBox x:Name="GTextBox" Width="38" Height="20" FontSize="11"
+                                     VerticalContentAlignment="Center"
+                                     TextChanged="RGB_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                            <TextBlock Text="蓝(U):" FontSize="11" VerticalAlignment="Center" Width="38"/>
+                            <TextBox x:Name="BTextBox" Width="38" Height="20" FontSize="11"
+                                     VerticalContentAlignment="Center"
+                                     TextChanged="RGB_TextChanged"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- 添加到自定义颜色 -->
+                    <Button Grid.Column="2"
+                            Content="添加到自定义颜色(A)"
+                            Height="26" Padding="8,0" FontSize="11"
+                            VerticalAlignment="Center"
+                            Click="AddCustomColor_Click"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

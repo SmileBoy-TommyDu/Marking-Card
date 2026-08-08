@@ -1,0 +1,33 @@
+<UserControl x:Class="DrSoft.Drawing.Controls.Views.SeparateNodePopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:DrSoft.Drawing.Controls.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:SeparateNodePopupViewModel}"
+             mc:Ignorable="d" 
+             Height="120" Width="340">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="分离节点距离" FontSize="14" FontWeight="SemiBold" 
+                   Foreground="#FF5B00"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="距离" VerticalAlignment="Center" Width="50" TextAlignment="Center" FontWeight="SemiBold"/>
+            <TextBox Grid.Column="2" Text="{Binding InputDistance, StringFormat=F2}" Height="28" TextAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBlock Grid.Column="4" Text="mm" VerticalAlignment="Center" FontWeight="SemiBold"/>
+        </Grid>
+    </Grid>
+</UserControl>
